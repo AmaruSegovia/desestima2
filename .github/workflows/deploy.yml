@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # O 'master' si usas esa rama
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,8 @@ jobs:
         run: npm run build
         
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        # CAMBIO AQUÍ: De @v2 a @v3 (esto soluciona el error)
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
@@ -42,4 +43,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        # CAMBIO RECOMENDADO: De @v3 a @v4 para compatibilidad total
+        uses: actions/deploy-pages@v4
