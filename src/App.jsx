@@ -472,7 +472,7 @@ const App = () => {
     if (isOpening) {
       setTimeout(() => {
         if (detailsRef.current) {
-          const yOffset = -100; // Ajuste para dejar espacio arriba
+          const yOffset = +10; // Ajuste para dejar espacio arriba
           const element = detailsRef.current;
           const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
           window.scrollTo({ top: y, behavior: 'smooth' });
