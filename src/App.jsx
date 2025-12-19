@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play } from 'lucide-react';
 
 // --- IMPORTS DE ASSETS ---
@@ -10,6 +10,9 @@ import estrellitaImg from './assets/estrellita_owo.png';
 import portadaRufino from './assets/portada.png'; 
 import magiaCover from './assets/magia.png'; 
 import aurora from './assets/aurora.png';
+
+// --- NUEVO IMPORT DEL ICONO (Asegúrate de tener el archivo en la carpeta assets) ---
+import iconoImg from './assets/icono.png'; 
 
 // Iconos Tech
 import clipstudio from './assets/clipstudio.png';
@@ -83,7 +86,7 @@ const projectsData = {
     subtitle: "Survival Horror / RPG",
     desc: "Olvidar no te librará de tus cadenas... Eres Aurora, atrapada en una dimensión alterna de Jujuy llena de niebla y monstruos.",
     cover: estrellitaImg,
-    gameImages: [estrellitaImg, aurora], // Puedes agregar más imágenes aquí
+    gameImages: [estrellitaImg, aurora], 
     bgType: 'snow',
     btnColor: 'bg-red-800 hover:bg-red-700',
     accentColor: 'text-red-500',
@@ -101,7 +104,7 @@ const projectsData = {
     subtitle: "Action Platformer",
     desc: "¡Caos pixelado! Defiende tu rancho de una invasión alienígena con tu perro bizco en este frenético juego estilo Pizza Tower.",
     cover: portadaRufino,
-    gameImages: [portadaRufino, estrellitaImg], // Puedes agregar más imágenes aquí
+    gameImages: [portadaRufino, estrellitaImg], 
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
@@ -118,7 +121,7 @@ const projectsData = {
     subtitle: "Roguelike Shooter",
     desc: "Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este bullet-hell. ¡Toca la pantalla para disparar!",
     cover: magiaCover,
-    gameImages: [magiaCover], // Puedes agregar más imágenes aquí
+    gameImages: [magiaCover], 
     bgType: 'magia',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500',
     accentColor: 'text-indigo-400',
@@ -363,13 +366,39 @@ const ProjectViewer = ({ activeProjectKey }) => {
 
 const App = () => {
   const [activeProject, setActiveProject] = useState(null);
-  const projectRef = useRef(null);
+  const footerRef = useRef(null); 
+
+  // --- USEEFFECT PARA EL COLOR DE LA BARRA, TITULO E ICONO ---
+  useEffect(() => {
+    // 1. Cambiar color de barra de navegador a blanco
+    const metaThemeColor = document.querySelector("meta[name=theme-color]") || document.createElement('meta');
+    metaThemeColor.name = "theme-color";
+    metaThemeColor.content = "#ffffff";
+    document.head.appendChild(metaThemeColor);
+
+    // 2. Cambiar Título de la página
+    document.title = "Desestima2 | Portfolio";
+
+    // 3. Cambiar Icono (Favicon) - AHORA USA icono.png
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+    }
+    link.href = iconoImg; // <--- AQUÍ SE USA LA NUEVA IMAGEN
+  }, []);
 
   const toggleProject = (key) => {
     setActiveProject(prev => prev === key ? null : key);
+    
+    // AUMENTÉ EL TIEMPO A 800ms PARA ESPERAR LA ANIMACIÓN CSS (700ms)
     setTimeout(() => {
-      if (activeProject !== key) projectRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+      // SI HAY PROYECTO ACTIVO, SCROLL HASTA EL FINAL (FOOTER)
+      if (activeProject !== key) {
+        footerRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 200); 
   };
 
   const isAnyActive = activeProject !== null;
@@ -415,7 +444,7 @@ const App = () => {
       </section>
 
       {/* SECCIÓN PROYECTOS */}
-      <section className="bg-gray-900 text-white py-10 md:py-12 lg:py-16 px-3 md:px-4 relative overflow-hidden" ref={projectRef}>
+      <section className="bg-gray-900 text-white py-10 md:py-12 lg:py-16 px-3 md:px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -458,7 +487,7 @@ const App = () => {
 
       <ProjectViewer activeProjectKey={activeProject} />
 
-      <footer className="bg-black text-white py-6 md:py-8 border-t border-gray-900 text-center">
+      <footer ref={footerRef} className="bg-black text-white py-6 md:py-8 border-t border-gray-900 text-center">
         <p className="font-pixel text-[8px] md:text-xs text-gray-500 px-4">© 2024 DESESTIMA2 • JUJUY, ARGENTINA</p>
       </footer>
 
