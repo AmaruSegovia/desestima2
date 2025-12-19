@@ -472,7 +472,7 @@ const App = () => {
     if (isOpening) {
       setTimeout(() => {
         if (detailsRef.current) {
-          const yOffset = +10; // Ajuste para dejar espacio arriba
+          const yOffset = +12; // Ajuste para dejar espacio arriba
           const element = detailsRef.current;
           const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
           window.scrollTo({ top: y, behavior: 'smooth' });
@@ -508,20 +508,20 @@ const App = () => {
             <MemberCard name="Milagros Sosa" lvl="24" role="3D & Anim" icon={<Monitor size={11}/>} color="bg-blue-500" image={neruImg} />
             <MemberCard name="Cristian Arraya" lvl="20" role="Dev Mecánicas" icon={<Code size={11}/>} color="bg-green-500" image={cristianImg} />
           </div>
-
-          <div className="border-t border-gray-200 pt-6 md:pt-8 lg:pt-12">
-            <div className="flex items-center justify-center gap-1.5 md:gap-2 mb-3 md:mb-4 lg:mb-6 text-gray-400 font-mono text-[9px] md:text-[10px] lg:text-xs uppercase tracking-widest">
-              <Layers size={10} className="md:w-3 md:h-3 lg:w-3.5 lg:h-3.5" /> Stack Tecnológico General
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 md:gap-2.5 lg:gap-3 px-1 md:px-2">
-              <TechCard name="Unreal 5" logoUrl={unreal} colorClass="bg-black" />
-              <TechCard name="Unity 6" logoUrl={unity} colorClass="bg-gray-700" />
-              <TechCard name="Blender" logoUrl={blender} colorClass="bg-orange-500" />
-              <TechCard name="AseSprite" logoUrl={aseprite} colorClass="bg-blue-500" />
-              <TechCard name="Clip Studio" logoUrl={clipstudio} colorClass="bg-pink-500" />
-              <TechCard name="Git" logoUrl={git} colorClass="bg-orange-600" />
-            </div>
-          </div>
+<div className="border-t border-gray-200 pt-12">
+  <div className="flex items-center justify-center gap-2 mb-6 text-gray-400 font-mono text-xs uppercase tracking-widest">
+    <Layers size={14} /> Stack Tecnológico General
+  </div>
+  {/* AQUÍ ESTÁ EL CAMBIO: Cambia grid-cols-2 por grid-cols-3 */}
+  <div className="grid grid-cols-3 md:grid-cols-6 gap-2 px-1"> 
+    <TechCard name="Unreal 5" logoUrl={unreal} colorClass="bg-black" />
+    <TechCard name="Unity 6" logoUrl={unity} colorClass="bg-gray-700" />
+    <TechCard name="Blender" logoUrl={blender} colorClass="bg-orange-500" />
+    <TechCard name="AseSprite" logoUrl={aseprite} colorClass="bg-blue-500" />
+    <TechCard name="Clip Studio" logoUrl={clipstudio} colorClass="bg-pink-500" />
+    <TechCard name="Git" logoUrl={git} colorClass="bg-orange-600" />
+  </div>
+</div>
         </div>
       </section>
 
