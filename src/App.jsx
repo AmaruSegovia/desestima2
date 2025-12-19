@@ -10,14 +10,12 @@ import estrellitaImg from './assets/estrellita_owo.png';
 import portadaRufino from './assets/portada.png'; 
 import magiaCover from './assets/magia.png'; 
 import aurora from './assets/aurora.png';
+import iconoImg from './assets/icono.png'; 
 import magia1 from './assets/magia1.png';
 import magia2 from './assets/magia2.png';
 import magia3 from './assets/magia3.png';
-import magia4 from './assets/magia4.png'; 
+import magia4 from './assets/magia4.png';
 import magia5 from './assets/magia5.png';
-
-// --- NUEVO IMPORT DEL ICONO (Asegúrate de tener el archivo en la carpeta assets) ---
-import iconoImg from './assets/icono.png'; 
 
 // Iconos Tech
 import clipstudio from './assets/clipstudio.png';
@@ -180,6 +178,11 @@ const ProjectViewer = ({ activeProjectKey }) => {
   const [isDragging, setIsDragging] = useState(false);
   const imageRef = useRef(null);
   
+  // REINICIAR IMAGEN AL CAMBIAR DE PROYECTO
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [activeProjectKey]); 
+
   const getBg = () => {
     if (!project) return null;
     if (project.bgType === 'snow') return <SnowEffect />;
@@ -201,14 +204,24 @@ const ProjectViewer = ({ activeProjectKey }) => {
     if (!isDragging || !dragStart) return;
     const deltaX = clientX - dragStart.x;
     const deltaY = clientY - dragStart.y;
-    setDragOffset({ x: deltaX, y: deltaY });
+
+    // --- LÓGICA DE PROTECCIÓN DE SCROLL ---
+    // Si el movimiento es más Vertical que Horizontal...
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        // ...IGNORAMOS el arrastre de la carta y dejamos que el navegador haga scroll.
+        return; 
+    }
+
+    // Si es Horizontal, actualizamos SOLO X (Y se queda en 0 para efecto raíl)
+    setDragOffset({ x: deltaX, y: 0 });
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
     
+    // Solo verificamos X porque Y siempre es 0 ahora
     const threshold = 80;
-    if (Math.abs(dragOffset.x) > threshold || Math.abs(dragOffset.y) > threshold) {
+    if (Math.abs(dragOffset.x) > threshold) {
       nextImage();
     }
     
@@ -297,6 +310,7 @@ const ProjectViewer = ({ activeProjectKey }) => {
                     
                     if (!isActive && !isNext) return null;
                     
+                    // Solo usamos X para la rotación
                     const rotation = isDragging && isActive ? dragOffset.x * 0.03 : 0;
                     const scale = isActive ? 1 : 0.95;
                     const opacity = isActive ? 1 : 0.5;
@@ -306,10 +320,11 @@ const ProjectViewer = ({ activeProjectKey }) => {
                       <div
                         key={i}
                         ref={isActive ? imageRef : null}
-                        className="absolute inset-0 touch-none select-none"
+                        // CAMBIO CRUCIAL AQUÍ: 'touch-pan-y' permite scroll vertical, 'touch-none' lo bloqueaba
+                        className="absolute inset-0 touch-pan-y select-none"
                         style={{
                           transform: isActive 
-                            ? `translate(${isDragging ? dragOffset.x : 0}px, ${isDragging ? dragOffset.y : 0}px) rotate(${rotation}deg) scale(${scale})`
+                            ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})` // forzamos Y a 0px en translate visual también
                             : `scale(${scale})`,
                           opacity: opacity,
                           zIndex: zIndex,
@@ -341,7 +356,7 @@ const ProjectViewer = ({ activeProjectKey }) => {
                 {/* Instrucciones de swipe */}
                 {project?.gameImages && project.gameImages.length > 1 && (
                   <div className="text-center mt-2 md:mt-3 text-white/60 text-[10px] md:text-xs font-mono">
-                    Arrastra para ver más →
+                    ↔ Desliza izquierda/derecha para ver más
                   </div>
                 )}
 
@@ -384,26 +399,25 @@ const App = () => {
     // 2. Cambiar Título de la página
     document.title = "Desestima2 | Portfolio";
 
-    // 3. Cambiar Icono (Favicon) - AHORA USA icono.png
+    // 3. Cambiar Icono (Favicon)
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
         link = document.createElement('link');
         link.rel = 'icon';
         document.head.appendChild(link);
     }
-    link.href = iconoImg; // <--- AQUÍ SE USA LA NUEVA IMAGEN
+    link.href = iconoImg;
   }, []);
 
   const toggleProject = (key) => {
     setActiveProject(prev => prev === key ? null : key);
     
-    // AUMENTÉ EL TIEMPO A 800ms PARA ESPERAR LA ANIMACIÓN CSS (700ms)
+    // TIEMPO DE ESPERA PARA SCROLL (800ms)
     setTimeout(() => {
-      // SI HAY PROYECTO ACTIVO, SCROLL HASTA EL FINAL (FOOTER)
       if (activeProject !== key) {
         footerRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 600); 
+    }, 800); 
   };
 
   const isAnyActive = activeProject !== null;
