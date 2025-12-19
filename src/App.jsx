@@ -6,10 +6,17 @@ import candelaImg from './assets/candela.png';
 import amaruImg from './assets/amaru.png';
 import neruImg from './assets/mila.png';
 import cristianImg from './assets/cristian.png';
-import estrellitaImg from './assets/estrellita_owo.png'; 
+import estrellita1Img from './assets/estrellita_owo.png'; 
+import estrellita2Img from './assets/auroraportada.jpg';
+import estrellita3Img from './assets/estrellita_owo_1.png';
+import estrellita4Img from './assets/estrellita_owo_2.gif';
 import portadaRufino from './assets/portada.png'; 
 import magiaCover from './assets/magia.png'; 
 import aurora from './assets/aurora.png';
+import aurora1 from './assets/esbirro.gif';
+import aurora2 from './assets/aurora2.gif';
+import aurora3 from './assets/aurora3.gif';
+import aurora4 from './assets/aurora4.jpeg';
 import iconoImg from './assets/icono.png'; 
 import magia1 from './assets/magia1.png';
 import magia2 from './assets/magia2.png';
@@ -88,8 +95,8 @@ const projectsData = {
     title: "CIUDAD DEL OLVIDO",
     subtitle: "Survival Horror / RPG",
     desc: "Olvidar no te librará de tus cadenas... Eres Aurora, atrapada en una dimensión alterna de Jujuy llena de niebla y monstruos.",
-    cover: estrellitaImg,
-    gameImages: [estrellitaImg, aurora], 
+    cover: estrellita2Img,
+    gameImages: [estrellita2Img, aurora2, aurora3, aurora4,estrellita4Img, estrellita3Img, aurora1,aurora], 
     bgType: 'snow',
     btnColor: 'bg-red-800 hover:bg-red-700',
     accentColor: 'text-red-500',
@@ -107,7 +114,7 @@ const projectsData = {
     subtitle: "Action Platformer",
     desc: "¡Caos pixelado! Defiende tu rancho de una invasión alienígena con tu perro bizco en este frenético juego estilo Pizza Tower.",
     cover: portadaRufino,
-    gameImages: [portadaRufino, estrellitaImg], 
+    gameImages: [portadaRufino], 
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
@@ -417,7 +424,7 @@ const App = () => {
       if (activeProject !== key) {
         footerRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 800); 
+    }, 500); 
   };
 
   const isAnyActive = activeProject !== null;
