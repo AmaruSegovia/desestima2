@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useMemo, useEffect, memo } from 'react'; // <--- AÑADÍ 'memo'
 import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play } from 'lucide-react';
 
 // --- IMPORTS DE ASSETS ---
@@ -39,7 +39,8 @@ const cloudSVG = `data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/s
 
 // --- EFECTOS VISUALES ---
 
-const SnowEffect = () => {
+// Usamos memo aquí para que la nieve no se recalcule si cambia algo ajeno
+const SnowEffect = memo(() => {
   const snowflakes = useMemo(() => [...Array(30)].map((_, i) => ({
     left: `${Math.random() * 100}%`,
     animationDelay: `${Math.random() * 5}s`,
@@ -57,9 +58,9 @@ const SnowEffect = () => {
        ))}
     </div>
   );
-};
+});
 
-const CloudEffect = () => {
+const CloudEffect = memo(() => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#4a7a94]">
        <div className="clouds-animation absolute inset-0 opacity-40" 
@@ -67,16 +68,16 @@ const CloudEffect = () => {
        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
     </div>
   );
-};
+});
 
 // Fondo con patrón de puntos para MagIA
-const MagiaBackground = () => (
+const MagiaBackground = memo(() => (
   <div className="absolute inset-0 bg-[#1a0b2e]">
     <div className="absolute inset-0 opacity-20" style={{backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
   </div>
-);
+));
 
-const FloatingStars = () => (
+const FloatingStars = memo(() => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {[...Array(12)].map((_, i) => (
       <div key={i} className="absolute animate-pulse" style={{
@@ -87,7 +88,7 @@ const FloatingStars = () => (
       </div>
     ))}
   </div>
-);
+));
 
 // --- DATOS DE CONFIGURACIÓN ---
 const projectsData = {
@@ -144,9 +145,9 @@ const projectsData = {
   }
 };
 
-// --- COMPONENTES UI ---
+// --- COMPONENTES UI (OPTIMIZADOS CON MEMO) ---
 
-const MemberCard = ({ name, role, icon, color, image, lvl }) => (
+const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
   <div className="relative bg-white/90 backdrop-blur-md rounded-xl md:rounded-2xl overflow-hidden shadow-md border border-white/50 w-full group hover:-translate-y-1 transition-transform duration-300">
     <div className={`h-16 md:h-20 ${color} relative`}>
       <div className="absolute inset-0 bg-black/10"></div>
@@ -154,7 +155,8 @@ const MemberCard = ({ name, role, icon, color, image, lvl }) => (
     </div>
     <div className="flex justify-center -mt-8 md:-mt-10 relative z-10">
       <div className="p-1 bg-white rounded-xl md:rounded-2xl shadow-lg">
-        <img src={image} alt={name} className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-lg md:rounded-xl bg-gray-100" />
+        {/* OPTIMIZACIÓN: loading="lazy" */}
+        <img src={image} alt={name} loading="lazy" decoding="async" className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-lg md:rounded-xl bg-gray-100" />
       </div>
     </div>
     <div className="text-center p-3 md:p-4">
@@ -167,16 +169,17 @@ const MemberCard = ({ name, role, icon, color, image, lvl }) => (
       </div>
     </div>
   </div>
-);
+));
 
-const TechCard = ({ name, logoUrl, colorClass }) => (
+const TechCard = memo(({ name, logoUrl, colorClass }) => (
   <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl p-2 md:p-3 flex flex-col items-center justify-center gap-1.5 md:gap-2 hover:shadow-lg transition-all group min-h-[80px] md:min-h-[100px]">
     <div className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-50 rounded-md md:rounded-lg group-hover:bg-white`}>
-      <img src={logoUrl} alt={name} className="w-full h-full object-contain p-0.5 md:p-1" />
+      {/* OPTIMIZACIÓN: loading="lazy" */}
+      <img src={logoUrl} alt={name} loading="lazy" decoding="async" className="w-full h-full object-contain p-0.5 md:p-1" />
     </div>
     <span className="font-bold text-gray-800 text-[10px] md:text-xs text-center leading-tight">{name}</span>
   </div>
-);
+));
 
 const ProjectViewer = ({ activeProjectKey }) => {
   const project = projectsData[activeProjectKey];
@@ -186,7 +189,6 @@ const ProjectViewer = ({ activeProjectKey }) => {
   const [isDragging, setIsDragging] = useState(false);
   const imageRef = useRef(null);
   
-  // REINICIAR IMAGEN AL CAMBIAR DE PROYECTO
   useEffect(() => {
     setCurrentImageIndex(0);
   }, [activeProjectKey]); 
@@ -213,21 +215,16 @@ const ProjectViewer = ({ activeProjectKey }) => {
     const deltaX = clientX - dragStart.x;
     const deltaY = clientY - dragStart.y;
 
-    // --- LÓGICA DE PROTECCIÓN DE SCROLL ---
-    // Si el movimiento es más Vertical que Horizontal...
     if (Math.abs(deltaY) > Math.abs(deltaX)) {
-        // ...IGNORAMOS el arrastre de la carta y dejamos que el navegador haga scroll.
         return; 
     }
 
-    // Si es Horizontal, actualizamos SOLO X (Y se queda en 0 para efecto raíl)
     setDragOffset({ x: deltaX, y: 0 });
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
     
-    // Solo verificamos X porque Y siempre es 0 ahora
     const threshold = 80;
     if (Math.abs(dragOffset.x) > threshold) {
       nextImage();
@@ -263,7 +260,8 @@ const ProjectViewer = ({ activeProjectKey }) => {
                   {project?.techStack.map(t => (
                     <div key={t.name} className="flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-black/40 backdrop-blur-sm px-1.5 md:px-2 lg:px-3 py-1 md:py-1 lg:py-1.5 rounded-md md:rounded-lg border border-white/10 shadow-sm">
                       <div className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-md p-0.5 flex items-center justify-center bg-white">
-                        <img src={t.icon} className="w-full h-full object-contain" alt=""/>
+                        {/* OPTIMIZACIÓN: lazy load en iconos pequeños también */}
+                        <img src={t.icon} className="w-full h-full object-contain" alt="" loading="lazy" decoding="async"/>
                       </div>
                       <span className="text-gray-200 text-[9px] md:text-[10px] lg:text-xs font-bold font-mono">{t.name}</span>
                     </div>
@@ -279,7 +277,8 @@ const ProjectViewer = ({ activeProjectKey }) => {
                      {project.gallery.map((media, i) => (
                         <div key={i} className="flex-shrink-0 w-24 h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 bg-black rounded overflow-hidden border border-white/30 relative group cursor-pointer hover:scale-105 transition-transform">
                            {media.type === 'image' ? (
-                             <img src={media.url} className="w-full h-full object-cover" alt="Gallery"/>
+                             // OPTIMIZACIÓN: Galería con lazy loading
+                             <img src={media.url} className="w-full h-full object-cover" alt="Gallery" loading="lazy" decoding="async"/>
                            ) : (
                              <div className="w-full h-full flex items-center justify-center bg-gray-800">
                                 <Play size={16} className="text-white md:w-5 md:h-5"/>
@@ -318,7 +317,6 @@ const ProjectViewer = ({ activeProjectKey }) => {
                     
                     if (!isActive && !isNext) return null;
                     
-                    // Solo usamos X para la rotación
                     const rotation = isDragging && isActive ? dragOffset.x * 0.03 : 0;
                     const scale = isActive ? 1 : 0.95;
                     const opacity = isActive ? 1 : 0.5;
@@ -328,11 +326,10 @@ const ProjectViewer = ({ activeProjectKey }) => {
                       <div
                         key={i}
                         ref={isActive ? imageRef : null}
-                        // CAMBIO CRUCIAL AQUÍ: 'touch-pan-y' permite scroll vertical, 'touch-none' lo bloqueaba
                         className="absolute inset-0 touch-pan-y select-none"
                         style={{
                           transform: isActive 
-                            ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})` // forzamos Y a 0px en translate visual también
+                            ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})`
                             : `scale(${scale})`,
                           opacity: opacity,
                           zIndex: zIndex,
@@ -349,7 +346,14 @@ const ProjectViewer = ({ activeProjectKey }) => {
                       >
                         <div className="relative bg-white p-1.5 md:p-2 lg:p-3 pb-6 md:pb-8 lg:pb-10 shadow-[6px_6px_0px_rgba(0,0,0,0.5)] md:shadow-[8px_8px_0px_rgba(0,0,0,0.5)] lg:shadow-[10px_10px_0px_rgba(0,0,0,0.5)] transform rotate-2 border-2 border-black h-full">
                           <div className="bg-black w-full h-full relative overflow-hidden border-2 border-black">
-                            <img src={img} alt={`${project.title} ${i + 1}`} className="w-full h-full object-cover" />
+                            {/* OPTIMIZACIÓN: Estas son las imágenes más pesadas. Lazy loading es crucial aquí */}
+                            <img 
+                                src={img} 
+                                alt={`${project.title} ${i + 1}`} 
+                                loading="lazy" 
+                                decoding="async"
+                                className="w-full h-full object-cover" 
+                            />
                           </div>
                           
                           <div className="absolute bottom-1 md:bottom-1.5 lg:bottom-2 left-0 w-full text-center font-pixel text-black text-[7px] md:text-[8px] lg:text-xs font-bold uppercase tracking-wider px-2 pointer-events-none">
@@ -396,18 +400,14 @@ const App = () => {
   const [activeProject, setActiveProject] = useState(null);
   const footerRef = useRef(null); 
 
-  // --- USEEFFECT PARA EL COLOR DE LA BARRA, TITULO E ICONO ---
   useEffect(() => {
-    // 1. Cambiar color de barra de navegador a blanco
     const metaThemeColor = document.querySelector("meta[name=theme-color]") || document.createElement('meta');
     metaThemeColor.name = "theme-color";
     metaThemeColor.content = "#ffffff";
     document.head.appendChild(metaThemeColor);
 
-    // 2. Cambiar Título de la página
     document.title = "Desestima2 | Portfolio";
 
-    // 3. Cambiar Icono (Favicon)
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
         link = document.createElement('link');
@@ -420,7 +420,6 @@ const App = () => {
   const toggleProject = (key) => {
     setActiveProject(prev => prev === key ? null : key);
     
-    // TIEMPO DE ESPERA PARA SCROLL (800ms)
     setTimeout(() => {
       if (activeProject !== key) {
         footerRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -495,7 +494,14 @@ const App = () => {
                   className={containerClass}
                 >
                   <div className="aspect-video relative overflow-hidden">
-                    <img src={p.cover} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} />
+                    {/* OPTIMIZACIÓN: lazy load en las portadas */}
+                    <img 
+                        src={p.cover} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        alt={p.title} 
+                        loading="lazy"
+                        decoding="async"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                     <div className="absolute bottom-2 md:bottom-3 lg:bottom-4 left-2 md:left-3 lg:left-4 right-2 md:right-3 lg:right-4">
                       <h3 className="font-bold text-sm md:text-base lg:text-lg leading-tight mb-0.5 md:mb-1 text-white drop-shadow-md">{p.title}</h3>
