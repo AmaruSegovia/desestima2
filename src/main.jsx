@@ -5,6 +5,8 @@ import './index.css' // <--- ESTA LÍNEA ES IMPORTANTE
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <BrowserRouter basename="/desestima2">
     <App />
+    </BrowserRouter>
   </React.StrictMode>,
 )
