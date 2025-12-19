@@ -23,6 +23,7 @@ import magia2 from './assets/magia2.png';
 import magia3 from './assets/magia3.png';
 import magia4 from './assets/magia4.png';
 import magia5 from './assets/magia5.png';
+import rufino from './assets/rufino.gif';
 
 // Iconos Tech
 import clipstudio from './assets/clipstudio.png';
@@ -114,7 +115,7 @@ const projectsData = {
     subtitle: "Action Platformer",
     desc: "¡Caos pixelado! Defiende tu rancho de una invasión alienígena con tu perro bizco en este frenético juego estilo Pizza Tower.",
     cover: portadaRufino,
-    gameImages: [portadaRufino], 
+    gameImages: [portadaRufino, rufino], 
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
