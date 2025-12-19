@@ -1,11 +1,12 @@
-import React, { useState, useRef, useMemo, useEffect, memo } from 'react';
-import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play, Instagram, X } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
+import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play, Instagram, X, PlayCircle, Image as ImageIcon } from 'lucide-react';
 
 // --- IMPORTS DE ASSETS (Tus imágenes) ---
 import candelaImg from './assets/candela.png';
 import amaruImg from './assets/amaru.png';
 import neruImg from './assets/mila.png';
 import cristianImg from './assets/cristian.png';
+import estrellitaImg from './assets/estrellita_owo.png'; // Nota: Usé la variable genérica para simplificar el ejemplo, asegúrate de que sea la correcta
 import estrellita1Img from './assets/estrellita_owo.png'; 
 import estrellita2Img from './assets/auroraportada.jpg';
 import estrellita3Img from './assets/estrellita_owo_1.png';
@@ -29,6 +30,10 @@ import magia8 from './assets/magia8.gif';
 import rufino from './assets/rufino.gif';
 import rufino1 from './assets/rufino1.png';
 import rufino2 from './assets/rufino2.gif';
+import jefeFinal from './assets/jefefinal.png'; 
+import torretaImg from './assets/torreta.png'; 
+import balaImg from './assets/bala.png'; 
+import jugadorImg from './assets/jugador.png'; 
 
 // Iconos Tech
 import clipstudio from './assets/clipstudio.png';
@@ -92,7 +97,7 @@ const FloatingStars = memo(() => (
   </div>
 ));
 
-// --- NUEVO COMPONENTE: MODAL "COMING SOON" ---
+// --- COMPONENTE MODAL "COMING SOON" ---
 const ComingSoonModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -136,12 +141,12 @@ const projectsData = {
     title: "CIUDAD DEL OLVIDO",
     subtitle: "Survival Horror / RPG",
     desc: "¿Que es lo que queda en un mundo que se desvanece? Explora una ciudad abandonada, toma fotos y descubre los secretos que hay debajo de la nieve.",
-     cover: estrellita1Img,
+    cover: estrellita1Img,
     gameImages: [estrellita2Img, aurora2, aurora3, aurora4, estrellita4Img, estrellita3Img, aurora1, aurora], 
     bgType: 'snow',
     btnColor: 'bg-red-800 hover:bg-red-700',
     accentColor: 'text-red-500',
-    demoLink: "", // <--- SI LO DEJAS VACÍO, SALE EL POPUP DE INSTAGRAM
+    demoLink: "", 
     techStack: [
       { name: 'Unreal 5', icon: unreal },
       { name: 'Blender', icon: blender },
@@ -160,7 +165,7 @@ const projectsData = {
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
-    demoLink: "https://miiiiin.itch.io/desestipapus", // <--- VACÍO PARA PROBAR EL POPUP
+    demoLink: "https://miiiiin.itch.io/desestipapus",
     techStack: [
       { name: 'Unity', icon: unity },
       { name: 'AseSprite', icon: aseprite },
@@ -179,11 +184,11 @@ const projectsData = {
     bgType: 'magia',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500',
     accentColor: 'text-indigo-400',
-    demoLink: "https://marufelis.itch.io/mag-ia", // <--- VACÍO PARA PROBAR EL POPUP
+    demoLink: "https://marufelis.itch.io/mag-ia",
     techStack: [
       { name: 'Processing', icon: processingLogo },
       { name: 'AseSprite', icon: aseprite },
-         { name: 'Git', icon: git }
+      { name: 'Git', icon: git }
     ],
     gallery: []
   }
@@ -350,7 +355,6 @@ const ImageStack = ({ images, title }) => {
   );
 };
 
-// Modificamos ProjectViewer para recibir la función de abrir modal
 const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
   const project = projectsData[activeProjectKey];
 
@@ -362,10 +366,9 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
   };
 
   const handleDownloadClick = (e) => {
-    // LÓGICA DE DESCARGA O MODAL
     if (!project?.demoLink) {
-        e.preventDefault(); // Evita navegar si no hay link
-        onOpenModal(); // Abre el modal
+      e.preventDefault(); 
+      onOpenModal();
     }
   };
 
@@ -408,7 +411,7 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
                              <img src={media.url} className="w-full h-full object-cover" alt="Gallery" loading="lazy" decoding="async"/>
                            ) : (
                              <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                                <Play size={16} className="text-white md:w-5 md:h-5"/>
+                                <PlayCircle size={16} className="text-white md:w-5 md:h-5"/>
                              </div>
                            )}
                         </div>
@@ -441,8 +444,8 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
 
 const App = () => {
   const [activeProject, setActiveProject] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // ESTADO DEL MODAL
-  const footerRef = useRef(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const detailsRef = useRef(null); // NUEVA REFERENCIA PARA EL CONTENEDOR DE DETALLES
 
   useEffect(() => {
     const metaThemeColor = document.querySelector("meta[name=theme-color]") || document.createElement('meta');
@@ -462,13 +465,20 @@ const App = () => {
   }, []);
 
   const toggleProject = (key) => {
+    const isOpening = activeProject !== key;
     setActiveProject(prev => prev === key ? null : key);
     
-    setTimeout(() => {
-      if (activeProject !== key) {
-        footerRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 350); 
+    // Scrollear UN POCO más arriba (no al footer, sino al contenedor de detalles - 100px)
+    if (isOpening) {
+      setTimeout(() => {
+        if (detailsRef.current) {
+          const yOffset = -100; // Ajuste para dejar espacio arriba
+          const element = detailsRef.current;
+          const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 350); 
+    }
   };
 
   const isAnyActive = activeProject !== null;
@@ -476,7 +486,6 @@ const App = () => {
   return (
     <div className="min-h-screen w-full font-sans bg-gray-50 text-gray-900 overflow-x-hidden">
       
-      {/* EL MODAL VIVE AQUÍ, FUERA DE TODO LO DEMÁS */}
       <ComingSoonModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* HERO SECTION */}
@@ -563,21 +572,17 @@ const App = () => {
         </div>
       </section>
 
-      {/* Pasamos la función para abrir el modal al visor */}
+      {/* REFERENCIA PARA EL SCROLL (Invisible) */}
+      <div ref={detailsRef} />
+
       <ProjectViewer activeProjectKey={activeProject} onOpenModal={() => setIsModalOpen(true)} />
 
-      <footer ref={footerRef} className="bg-black text-white py-8 border-t border-gray-900 text-center">
+      <footer className="bg-black text-white py-8 border-t border-gray-900 text-center">
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-4">
-          
-          {/* Texto de Copyright */}
           <p className="font-pixel text-[10px] md:text-xs text-gray-500">
             © 2025 DESESTIMA2 • JUJUY, ARGENTINA
           </p>
-
-          {/* Separador visual (opcional, solo visible en PC) */}
           <span className="hidden md:block text-gray-700">|</span>
-
-          {/* Logo Instagram al lado */}
           <a 
             href="https://www.instagram.com/desestimadoss" 
             target="_blank" 
@@ -589,7 +594,6 @@ const App = () => {
               @desestimadoss
             </span>
           </a>
-
         </div>
       </footer>
 
@@ -615,7 +619,6 @@ const App = () => {
           display: none;
         }
         
-        /* Animación simple para el modal */
         @keyframes fadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
