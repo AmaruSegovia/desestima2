@@ -27,6 +27,8 @@ import magia6 from './assets/magia6.gif';
 import magia7 from './assets/magia7.gif';
 import magia8 from './assets/magia8.gif';
 import rufino from './assets/rufino.gif';
+import rufino1 from './assets/rufino1.png';
+import rufino2 from './assets/rufino2.gif';
 
 // Iconos Tech
 import clipstudio from './assets/clipstudio.png';
@@ -133,14 +135,7 @@ const projectsData = {
     id: 'ciudad',
     title: "CIUDAD DEL OLVIDO",
     subtitle: "Survival Horror / RPG",
-    desc: (
-      <>
-        <strong className="text-gray-100 font-bold block mb-1">
-         ¿Que es lo que queda en un mundo que se desvanece?
-        </strong>
-        Explora una ciudad abandonada, toma fotos y descubre los secretos que hay debajo de la nieve.
-      </>
-    ),
+    desc: "¿Que es lo que queda en un mundo que se desvanece? Explora una ciudad abandonada, toma fotos y descubre los secretos que hay debajo de la nieve.",
      cover: estrellita1Img,
     gameImages: [estrellita2Img, aurora2, aurora3, aurora4, estrellita4Img, estrellita3Img, aurora1, aurora], 
     bgType: 'snow',
@@ -159,16 +154,9 @@ const projectsData = {
     id: 'rufino',
     title: "RUFINO VS ALIENS",
     subtitle: "Tower Defense",
-    desc: (
-      <>
-        <strong className="text-gray-100 font-bold block mb-1">
-         ¡Los aliens quieren capturar todas las ovejas de Rufino!
-        </strong>
-        Defiendete con tu perro bizco y obtiene nuevos poderes al derrotar a las leyendas. Recuerda mantener las ovejas bajo techo.
-      </>
-    ),
+    desc:"¡Los aliens quieren capturar todas las ovejas de Rufino! Defiendete con tu perro bizco y obtiene nuevos poderes al derrotar a las leyendas. Recuerda mantener las ovejas bajo techo.",
     cover: portadaRufino,
-    gameImages: [portadaRufino, rufino], 
+    gameImages: [portadaRufino, rufino, rufino1,rufino2], 
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
@@ -185,14 +173,7 @@ const projectsData = {
     id: 'magia',
     title: "MagIA",
     subtitle: "Roguelike 2D",
-    desc: (
-      <>
-        <strong className="text-gray-100 font-bold block mb-1">
-         Magia vs Inteligencia Artificial
-        </strong>
-        Limpia mazmorras procedurales en este roguelike intenso. Mata a todos los robots o ¿Vas a dejar que la IA te domine?
-      </>
-    ),
+    desc:"Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este roguelike intenso. ¿Podras contra todos los robots o vas a dejar que la IA te domine?",
     cover: magiaCover,
     gameImages: [magiaCover,magia7,magia4, magia5, magia6,magia3], 
     bgType: 'magia',
@@ -585,24 +566,31 @@ const App = () => {
       {/* Pasamos la función para abrir el modal al visor */}
       <ProjectViewer activeProjectKey={activeProject} onOpenModal={() => setIsModalOpen(true)} />
 
-      <footer ref={footerRef} className="bg-black text-white py-6 md:py-8 border-t border-gray-900 text-center">
-        
-        {/* REDES SOCIALES EN FOOTER */}
-        <div className="flex justify-center items-center gap-6 mb-4">
-           <a 
-             href="https://www.instagram.com/desestimadoss" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             className="group flex flex-col items-center gap-2 text-gray-400 hover:text-pink-500 transition-colors"
-           >
-             <div className="p-2 rounded-full bg-gray-900 group-hover:bg-gray-800 transition-colors border border-gray-800 group-hover:border-pink-500/50">
-               <Instagram size={20} />
-             </div>
-             <span className="text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity -mt-1">Instagram</span>
-           </a>
-        </div>
+      <footer ref={footerRef} className="bg-black text-white py-8 border-t border-gray-900 text-center">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-4">
+          
+          {/* Texto de Copyright */}
+          <p className="font-pixel text-[10px] md:text-xs text-gray-500">
+            © 2025 DESESTIMA2 • JUJUY, ARGENTINA
+          </p>
 
-        <p className="font-pixel text-[8px] md:text-xs text-gray-500 px-4">© 2024 DESESTIMA2 • JUJUY, ARGENTINA</p>
+          {/* Separador visual (opcional, solo visible en PC) */}
+          <span className="hidden md:block text-gray-700">|</span>
+
+          {/* Logo Instagram al lado */}
+          <a 
+            href="https://www.instagram.com/desestimadoss" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gray-500 hover:text-pink-500 transition-colors group"
+          >
+            <Instagram size={16} />
+            <span className="font-pixel text-[10px] md:text-xs group-hover:underline decoration-pink-500 underline-offset-4">
+              @desestimadoss
+            </span>
+          </a>
+
+        </div>
       </footer>
 
       <style jsx>{`
