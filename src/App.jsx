@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect, memo } from 'react';
-import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play } from 'lucide-react';
+import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play, Instagram, X } from 'lucide-react';
 
-// --- IMPORTS DE ASSETS (Mismos imports que tenías) ---
+// --- IMPORTS DE ASSETS (Tus imágenes) ---
 import candelaImg from './assets/candela.png';
 import amaruImg from './assets/amaru.png';
 import neruImg from './assets/mila.png';
@@ -11,7 +11,7 @@ import estrellita2Img from './assets/auroraportada.jpg';
 import estrellita3Img from './assets/estrellita_owo_1.png';
 import estrellita4Img from './assets/estrellita_owo_2.gif';
 import portadaRufino from './assets/portada.png'; 
-import magiaCover from './assets/magia.png'; 
+import magiaCover from './assets/splash.png'; 
 import aurora from './assets/aurora.png';
 import aurora1 from './assets/esbirro.gif';
 import aurora2 from './assets/aurora2.gif';
@@ -23,6 +23,9 @@ import magia2 from './assets/magia2.png';
 import magia3 from './assets/magia3.png';
 import magia4 from './assets/magia4.png';
 import magia5 from './assets/magia5.png';
+import magia6 from './assets/magia6.gif';
+import magia7 from './assets/magia7.gif';
+import magia8 from './assets/magia8.gif';
 import rufino from './assets/rufino.gif';
 
 // Iconos Tech
@@ -87,56 +90,119 @@ const FloatingStars = memo(() => (
   </div>
 ));
 
+// --- NUEVO COMPONENTE: MODAL "COMING SOON" ---
+const ComingSoonModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={onClose}>
+      <div className="bg-gray-900 border-2 border-indigo-500/50 rounded-2xl p-6 max-w-sm w-full relative shadow-2xl transform transition-all scale-100" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors">
+          <X size={20} />
+        </button>
+        
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 mb-4">
+            <Code size={24} />
+          </div>
+          <h3 className="font-pixel text-yellow-400 text-xs md:text-sm mb-2 uppercase tracking-wide">Work in Progress</h3>
+          <p className="text-gray-300 text-sm mb-6 leading-relaxed">
+            ¡Lo sentimos! Todavía estamos puliendo este proyecto.
+            <br/>
+            <span className="text-white/60 text-xs mt-2 block">Pero puedes seguirnos para enterarte cuando salga:</span>
+          </p>
+          
+          <a 
+            href="https://www.instagram.com/desestimadoss" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl transition-all hover:scale-105 shadow-lg group"
+          >
+            <Instagram size={18} className="group-hover:rotate-12 transition-transform"/>
+            @desestimadoss
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- DATOS ---
 const projectsData = {
   ciudad: {
     id: 'ciudad',
     title: "CIUDAD DEL OLVIDO",
     subtitle: "Survival Horror / RPG",
-    desc: "Olvidar no te librará de tus cadenas... Eres Aurora, atrapada en una dimensión alterna de Jujuy llena de niebla y monstruos.",
-    cover: estrellita2Img,
+    desc: (
+      <>
+        <strong className="text-gray-100 font-bold block mb-1">
+         ¿Que es lo que queda en un mundo que se desvanece?
+        </strong>
+        Explora una ciudad abandonada, toma fotos y descubre los secretos que hay debajo de la nieve.
+      </>
+    ),
+     cover: estrellita1Img,
     gameImages: [estrellita2Img, aurora2, aurora3, aurora4, estrellita4Img, estrellita3Img, aurora1, aurora], 
     bgType: 'snow',
     btnColor: 'bg-red-800 hover:bg-red-700',
     accentColor: 'text-red-500',
+    demoLink: "", // <--- SI LO DEJAS VACÍO, SALE EL POPUP DE INSTAGRAM
     techStack: [
       { name: 'Unreal 5', icon: unreal },
       { name: 'Blender', icon: blender },
       { name: 'Clip Studio', icon: clipstudio },
-      { name: 'GitHub', icon: git },
+      { name: 'Git', icon: git }
     ],
     gallery: []
   },
   rufino: {
     id: 'rufino',
     title: "RUFINO VS ALIENS",
-    subtitle: "Action Platformer",
-    desc: "¡Caos pixelado! Defiende tu rancho de una invasión alienígena con tu perro bizco en este frenético juego estilo Pizza Tower.",
+    subtitle: "Tower Defense",
+    desc: (
+      <>
+        <strong className="text-gray-100 font-bold block mb-1">
+         ¡Los aliens quieren capturar todas las ovejas de Rufino!
+        </strong>
+        Defiendete con tu perro bizco y obtiene nuevos poderes al derrotar a las leyendas. Recuerda mantener las ovejas bajo techo.
+      </>
+    ),
     cover: portadaRufino,
     gameImages: [portadaRufino, rufino], 
     bgType: 'clouds',
     btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
     accentColor: 'text-yellow-300',
+    demoLink: "https://miiiiin.itch.io/desestipapus", // <--- VACÍO PARA PROBAR EL POPUP
     techStack: [
       { name: 'Unity', icon: unity },
       { name: 'AseSprite', icon: aseprite },
       { name: 'Clip Studio', icon: clipstudio },
+      { name: 'Git', icon: git }
     ],
     gallery: []
   },
   magia: {
     id: 'magia',
     title: "MagIA",
-    subtitle: "Roguelike Shooter",
-    desc: "Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este bullet-hell. ¡Toca la pantalla para disparar!",
+    subtitle: "Roguelike 2D",
+    desc: (
+      <>
+        <strong className="text-gray-100 font-bold block mb-1">
+         Magia vs Inteligencia Artificial
+        </strong>
+        Limpia mazmorras procedurales en este roguelike intenso. Mata a todos los robots o ¿Vas a dejar que la IA te domine?
+      </>
+    ),
     cover: magiaCover,
-    gameImages: [magiaCover, magia1, magia2, magia3, magia4, magia5], 
+    gameImages: [magiaCover,magia7,magia4, magia5, magia6,magia3], 
     bgType: 'magia',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500',
     accentColor: 'text-indigo-400',
+    demoLink: "https://marufelis.itch.io/mag-ia", // <--- VACÍO PARA PROBAR EL POPUP
     techStack: [
       { name: 'Processing', icon: processingLogo },
       { name: 'AseSprite', icon: aseprite },
+         { name: 'Git', icon: git }
     ],
     gallery: []
   }
@@ -176,9 +242,6 @@ const TechCard = memo(({ name, logoUrl, colorClass }) => (
   </div>
 ));
 
-// --- NUEVO COMPONENTE: IMAGE STACK ---
-// Este componente aísla TODA la lógica de renderizado del drag.
-// Cuando arrastras, SOLO esto se renderiza de nuevo, no toda la página.
 const ImageStack = ({ images, title }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [dragStart, setDragStart] = useState(null);
@@ -201,7 +264,7 @@ const ImageStack = ({ images, title }) => {
     const deltaX = clientX - dragStart.x;
     const deltaY = clientY - dragStart.y;
 
-    if (Math.abs(deltaY) > Math.abs(deltaX)) return; // Bloqueo de scroll
+    if (Math.abs(deltaY) > Math.abs(deltaX)) return; 
 
     setDragOffset({ x: deltaX, y: 0 });
   };
@@ -219,7 +282,6 @@ const ImageStack = ({ images, title }) => {
 
   return (
     <div className="relative w-full max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:max-w-md">
-      {/* Indicadores */}
       {images && images.length > 1 && (
         <div className="flex gap-0.5 md:gap-1 mb-2 md:mb-3 px-2">
           {images.map((_, i) => (
@@ -230,7 +292,6 @@ const ImageStack = ({ images, title }) => {
         </div>
       )}
 
-      {/* Stack de imágenes */}
       <div className="relative h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
         {images?.map((img, i) => {
           const isActive = i === currentImageIndex;
@@ -256,7 +317,7 @@ const ImageStack = ({ images, title }) => {
                 zIndex: zIndex,
                 transition: isDragging ? 'none' : 'all 0.3s ease-out',
                 cursor: isActive ? 'grab' : 'default',
-                willChange: isDragging ? 'transform' : 'auto' // ACELERACIÓN DE HARDWARE
+                willChange: isDragging ? 'transform' : 'auto'
               }}
               onMouseDown={(e) => isActive && handleDragStart(e.clientX, e.clientY)}
               onMouseMove={(e) => isDragging && handleDragMove(e.clientX, e.clientY)}
@@ -285,14 +346,12 @@ const ImageStack = ({ images, title }) => {
         })}
       </div>
 
-      {/* Instrucciones */}
       {images && images.length > 1 && (
         <div className="text-center mt-2 md:mt-3 text-white/60 text-[10px] md:text-xs font-mono">
           ↔ Desliza izquierda/derecha para ver más
         </div>
       )}
       
-      {/* Botones Desktop */}
       {images && images.length > 1 && (
           <div className="flex justify-center gap-1.5 md:gap-2 mt-2 md:mt-3">
             {images.map((_, i) => (
@@ -310,7 +369,8 @@ const ImageStack = ({ images, title }) => {
   );
 };
 
-const ProjectViewer = memo(({ activeProjectKey }) => {
+// Modificamos ProjectViewer para recibir la función de abrir modal
+const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
   const project = projectsData[activeProjectKey];
 
   const getBg = () => {
@@ -320,17 +380,23 @@ const ProjectViewer = memo(({ activeProjectKey }) => {
     if (project.bgType === 'magia') return <MagiaBackground />;
   };
 
+  const handleDownloadClick = (e) => {
+    // LÓGICA DE DESCARGA O MODAL
+    if (!project?.demoLink) {
+        e.preventDefault(); // Evita navegar si no hay link
+        onOpenModal(); // Abre el modal
+    }
+  };
+
   return (
     <div className={`transition-all duration-700 ease-in-out overflow-hidden relative ${activeProjectKey ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'}`}>
       <div className="relative border-t-4 border-black min-h-[700px] bg-gray-900">
-        {/* El fondo ahora es estático aunque muevas las fotos */}
         {getBg()}
         
         <div className="relative z-10 max-w-6xl mx-auto py-5 md:py-8 lg:py-12 xl:py-20 px-3 md:px-4 pointer-events-none flex flex-col justify-between h-full">
           
           <div className="flex flex-col-reverse lg:flex-row gap-5 md:gap-6 lg:gap-16 items-center lg:items-start">
             
-            {/* TEXTO (Estático) */}
             <div className="flex-1 space-y-3 md:space-y-4 lg:space-y-6 w-full text-gray-200 pointer-events-auto">
               <div className="inline-block border-b-4 border-current pb-1.5 md:pb-2 mb-2 px-2 md:px-4">
                 <h3 className="text-lg md:text-2xl lg:text-3xl xl:text-5xl font-serif font-black drop-shadow-md uppercase leading-tight">{project?.title}</h3>
@@ -370,14 +436,18 @@ const ProjectViewer = memo(({ activeProjectKey }) => {
                 </div>
               )}
               
-              <button className={`flex items-center gap-1.5 md:gap-2 px-5 md:px-6 lg:px-8 py-2.5 md:py-3 lg:py-4 rounded-lg md:rounded-xl font-black shadow-xl hover:scale-105 transition-all text-white w-full md:w-auto justify-center text-xs md:text-sm lg:text-base ${project?.btnColor}`}>
+              <a 
+                href={project?.demoLink || "#"} 
+                onClick={handleDownloadClick}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={`flex items-center gap-1.5 md:gap-2 px-5 md:px-6 lg:px-8 py-2.5 md:py-3 lg:py-4 rounded-lg md:rounded-xl font-black shadow-xl hover:scale-105 transition-all text-white w-full md:w-auto justify-center text-xs md:text-sm lg:text-base no-underline cursor-pointer ${project?.btnColor}`}
+              >
                 <Download size={16} className="md:w-4.5 md:h-4.5 lg:w-5 lg:h-5" /> DESCARGAR DEMO
-              </button>
+              </a>
             </div>
 
-            {/* IMAGENES (Aisladas para rendimiento) */}
             <div className="w-full lg:flex-1 flex flex-col items-center justify-center pointer-events-auto">
-               {/* Usamos key para forzar reinicio al cambiar proyecto */}
                <ImageStack key={activeProjectKey} images={project?.gameImages} title={project?.title} />
             </div>
 
@@ -390,6 +460,7 @@ const ProjectViewer = memo(({ activeProjectKey }) => {
 
 const App = () => {
   const [activeProject, setActiveProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // ESTADO DEL MODAL
   const footerRef = useRef(null); 
 
   useEffect(() => {
@@ -416,7 +487,7 @@ const App = () => {
       if (activeProject !== key) {
         footerRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 500); 
+    }, 350); 
   };
 
   const isAnyActive = activeProject !== null;
@@ -424,13 +495,16 @@ const App = () => {
   return (
     <div className="min-h-screen w-full font-sans bg-gray-50 text-gray-900 overflow-x-hidden">
       
+      {/* EL MODAL VIVE AQUÍ, FUERA DE TODO LO DEMÁS */}
+      <ComingSoonModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
       {/* HERO SECTION */}
       <section className="relative bg-gradient-to-br from-indigo-50 via-white to-blue-50 pt-10 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-24 px-3 md:px-4 overflow-hidden">
         <FloatingStars />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-6 md:mb-8 lg:mb-12">
             <div className="inline-flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-yellow-400 text-yellow-900 px-2 md:px-2.5 lg:px-3 py-0.5 md:py-1 rounded-full font-bold text-[9px] md:text-[10px] lg:text-xs uppercase tracking-wider mb-2 md:mb-3 lg:mb-4 border-2 border-black shadow-[2px_2px_0px_black] md:shadow-[3px_3px_0px_black] lg:shadow-[4px_4px_0px_black] animate-bounce">
-              <Trophy size={9} className="md:w-2.5 md:h-2.5 lg:w-3 lg:h-3" /> 1° Puesto Game Jam UNJU
+              <Trophy size={9} className="md:w-2.5 md:h-2.5 lg:w-3 lg:h-3" /> 1° Puesto Game Jam UNJU - 2025
             </div>
             <h1 className="font-pixel text-2xl md:text-3xl lg:text-5xl xl:text-6xl text-gray-900 mb-1.5 md:mb-2 lg:mb-3 drop-shadow-sm px-2">
               DESESTIMA<span className="text-indigo-600">2</span>
@@ -508,9 +582,26 @@ const App = () => {
         </div>
       </section>
 
-      <ProjectViewer activeProjectKey={activeProject} />
+      {/* Pasamos la función para abrir el modal al visor */}
+      <ProjectViewer activeProjectKey={activeProject} onOpenModal={() => setIsModalOpen(true)} />
 
       <footer ref={footerRef} className="bg-black text-white py-6 md:py-8 border-t border-gray-900 text-center">
+        
+        {/* REDES SOCIALES EN FOOTER */}
+        <div className="flex justify-center items-center gap-6 mb-4">
+           <a 
+             href="https://www.instagram.com/desestimadoss" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             className="group flex flex-col items-center gap-2 text-gray-400 hover:text-pink-500 transition-colors"
+           >
+             <div className="p-2 rounded-full bg-gray-900 group-hover:bg-gray-800 transition-colors border border-gray-800 group-hover:border-pink-500/50">
+               <Instagram size={20} />
+             </div>
+             <span className="text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity -mt-1">Instagram</span>
+           </a>
+        </div>
+
         <p className="font-pixel text-[8px] md:text-xs text-gray-500 px-4">© 2024 DESESTIMA2 • JUJUY, ARGENTINA</p>
       </footer>
 
@@ -534,6 +625,15 @@ const App = () => {
         
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
+        }
+        
+        /* Animación simple para el modal */
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.2s ease-out forwards;
         }
       `}</style>
     </div>
