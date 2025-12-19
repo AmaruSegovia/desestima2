@@ -1,7 +1,7 @@
-import React, { useState, useRef, useMemo, useEffect, memo } from 'react'; // <--- AÑADÍ 'memo'
+import React, { useState, useRef, useMemo, useEffect, memo } from 'react';
 import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play } from 'lucide-react';
 
-// --- IMPORTS DE ASSETS ---
+// --- IMPORTS DE ASSETS (Mismos imports que tenías) ---
 import candelaImg from './assets/candela.png';
 import amaruImg from './assets/amaru.png';
 import neruImg from './assets/mila.png';
@@ -34,12 +34,10 @@ import blender from './assets/blender.png';
 import unity from './assets/unity.png';
 import processingLogo from './assets/processing.png'; 
 
-// --- DATA URI PARA LA NUBE ---
 const cloudSVG = `data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M17.5,19c-3.037,0-5.5-2.463-5.5-5.5c0-0.498,0.068-0.979,0.194-1.435C11.383,11.353,10.467,11,9.5,11c-2.485,0-4.5,2.015-4.5,4.5c0,2.485,2.015,4.5,4.5,4.5H17.5z M17.5,8c2.485,0,4.5,2.015,4.5,4.5c0,2.485-2.015,4.5-4.5,4.5h-5.771c-0.89-1.31-1.429-2.863-1.579-4.545C10.74,12.23,11,12.119,11,12C11,9.791,12.791,8,15,8c0.119,0,0.23,0.02,0.345,0.049C15.863,8.019,16.421,8,17.5,8z'/%3E%3C/svg%3E`;
 
-// --- EFECTOS VISUALES ---
+// --- EFECTOS VISUALES (MEMOIZADOS) ---
 
-// Usamos memo aquí para que la nieve no se recalcule si cambia algo ajeno
 const SnowEffect = memo(() => {
   const snowflakes = useMemo(() => [...Array(30)].map((_, i) => ({
     left: `${Math.random() * 100}%`,
@@ -70,7 +68,6 @@ const CloudEffect = memo(() => {
   );
 });
 
-// Fondo con patrón de puntos para MagIA
 const MagiaBackground = memo(() => (
   <div className="absolute inset-0 bg-[#1a0b2e]">
     <div className="absolute inset-0 opacity-20" style={{backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
@@ -90,7 +87,7 @@ const FloatingStars = memo(() => (
   </div>
 ));
 
-// --- DATOS DE CONFIGURACIÓN ---
+// --- DATOS ---
 const projectsData = {
   ciudad: {
     id: 'ciudad',
@@ -98,7 +95,7 @@ const projectsData = {
     subtitle: "Survival Horror / RPG",
     desc: "Olvidar no te librará de tus cadenas... Eres Aurora, atrapada en una dimensión alterna de Jujuy llena de niebla y monstruos.",
     cover: estrellita2Img,
-    gameImages: [estrellita2Img, aurora2, aurora3, aurora4,estrellita4Img, estrellita3Img, aurora1,aurora], 
+    gameImages: [estrellita2Img, aurora2, aurora3, aurora4, estrellita4Img, estrellita3Img, aurora1, aurora], 
     bgType: 'snow',
     btnColor: 'bg-red-800 hover:bg-red-700',
     accentColor: 'text-red-500',
@@ -145,7 +142,7 @@ const projectsData = {
   }
 };
 
-// --- COMPONENTES UI (OPTIMIZADOS CON MEMO) ---
+// --- COMPONENTES UI OPTIMIZADOS ---
 
 const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
   <div className="relative bg-white/90 backdrop-blur-md rounded-xl md:rounded-2xl overflow-hidden shadow-md border border-white/50 w-full group hover:-translate-y-1 transition-transform duration-300">
@@ -155,7 +152,6 @@ const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
     </div>
     <div className="flex justify-center -mt-8 md:-mt-10 relative z-10">
       <div className="p-1 bg-white rounded-xl md:rounded-2xl shadow-lg">
-        {/* OPTIMIZACIÓN: loading="lazy" */}
         <img src={image} alt={name} loading="lazy" decoding="async" className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-lg md:rounded-xl bg-gray-100" />
       </div>
     </div>
@@ -174,35 +170,25 @@ const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
 const TechCard = memo(({ name, logoUrl, colorClass }) => (
   <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl p-2 md:p-3 flex flex-col items-center justify-center gap-1.5 md:gap-2 hover:shadow-lg transition-all group min-h-[80px] md:min-h-[100px]">
     <div className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-50 rounded-md md:rounded-lg group-hover:bg-white`}>
-      {/* OPTIMIZACIÓN: loading="lazy" */}
       <img src={logoUrl} alt={name} loading="lazy" decoding="async" className="w-full h-full object-contain p-0.5 md:p-1" />
     </div>
     <span className="font-bold text-gray-800 text-[10px] md:text-xs text-center leading-tight">{name}</span>
   </div>
 ));
 
-const ProjectViewer = ({ activeProjectKey }) => {
-  const project = projectsData[activeProjectKey];
+// --- NUEVO COMPONENTE: IMAGE STACK ---
+// Este componente aísla TODA la lógica de renderizado del drag.
+// Cuando arrastras, SOLO esto se renderiza de nuevo, no toda la página.
+const ImageStack = ({ images, title }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [dragStart, setDragStart] = useState(null);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const imageRef = useRef(null);
-  
-  useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [activeProjectKey]); 
-
-  const getBg = () => {
-    if (!project) return null;
-    if (project.bgType === 'snow') return <SnowEffect />;
-    if (project.bgType === 'clouds') return <CloudEffect />;
-    if (project.bgType === 'magia') return <MagiaBackground />;
-  };
 
   const nextImage = () => {
-    if (!project?.gameImages) return;
-    setCurrentImageIndex((prev) => (prev + 1) % project.gameImages.length);
+    if (!images) return;
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
   };
 
   const handleDragStart = (clientX, clientY) => {
@@ -215,37 +201,136 @@ const ProjectViewer = ({ activeProjectKey }) => {
     const deltaX = clientX - dragStart.x;
     const deltaY = clientY - dragStart.y;
 
-    if (Math.abs(deltaY) > Math.abs(deltaX)) {
-        return; 
-    }
+    if (Math.abs(deltaY) > Math.abs(deltaX)) return; // Bloqueo de scroll
 
     setDragOffset({ x: deltaX, y: 0 });
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
-    
     const threshold = 80;
     if (Math.abs(dragOffset.x) > threshold) {
       nextImage();
     }
-    
     setIsDragging(false);
     setDragStart(null);
     setDragOffset({ x: 0, y: 0 });
   };
 
   return (
+    <div className="relative w-full max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:max-w-md">
+      {/* Indicadores */}
+      {images && images.length > 1 && (
+        <div className="flex gap-0.5 md:gap-1 mb-2 md:mb-3 px-2">
+          {images.map((_, i) => (
+            <div key={i} className="h-0.5 md:h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+              <div className={`h-full bg-white transition-all duration-300 ${i === currentImageIndex ? 'w-full' : 'w-0'}`}></div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Stack de imágenes */}
+      <div className="relative h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
+        {images?.map((img, i) => {
+          const isActive = i === currentImageIndex;
+          const isNext = i === (currentImageIndex + 1) % images.length;
+          
+          if (!isActive && !isNext) return null;
+          
+          const rotation = isDragging && isActive ? dragOffset.x * 0.03 : 0;
+          const scale = isActive ? 1 : 0.95;
+          const opacity = isActive ? 1 : 0.5;
+          const zIndex = isActive ? 20 : 10;
+          
+          return (
+            <div
+              key={i}
+              ref={isActive ? imageRef : null}
+              className="absolute inset-0 touch-pan-y select-none"
+              style={{
+                transform: isActive 
+                  ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})`
+                  : `scale(${scale})`,
+                opacity: opacity,
+                zIndex: zIndex,
+                transition: isDragging ? 'none' : 'all 0.3s ease-out',
+                cursor: isActive ? 'grab' : 'default',
+                willChange: isDragging ? 'transform' : 'auto' // ACELERACIÓN DE HARDWARE
+              }}
+              onMouseDown={(e) => isActive && handleDragStart(e.clientX, e.clientY)}
+              onMouseMove={(e) => isDragging && handleDragMove(e.clientX, e.clientY)}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={(e) => isActive && handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
+              onTouchMove={(e) => isDragging && handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
+              onTouchEnd={handleDragEnd}
+            >
+              <div className="relative bg-white p-1.5 md:p-2 lg:p-3 pb-6 md:pb-8 lg:pb-10 shadow-[6px_6px_0px_rgba(0,0,0,0.5)] md:shadow-[8px_8px_0px_rgba(0,0,0,0.5)] lg:shadow-[10px_10px_0px_rgba(0,0,0,0.5)] transform rotate-2 border-2 border-black h-full">
+                <div className="bg-black w-full h-full relative overflow-hidden border-2 border-black">
+                  <img 
+                      src={img} 
+                      alt={`${title} ${i + 1}`} 
+                      loading="lazy" 
+                      decoding="async"
+                      className="w-full h-full object-cover" 
+                  />
+                </div>
+                <div className="absolute bottom-1 md:bottom-1.5 lg:bottom-2 left-0 w-full text-center font-pixel text-black text-[7px] md:text-[8px] lg:text-xs font-bold uppercase tracking-wider px-2 pointer-events-none">
+                  {title} - {currentImageIndex + 1}/{images?.length || 1}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Instrucciones */}
+      {images && images.length > 1 && (
+        <div className="text-center mt-2 md:mt-3 text-white/60 text-[10px] md:text-xs font-mono">
+          ↔ Desliza izquierda/derecha para ver más
+        </div>
+      )}
+      
+      {/* Botones Desktop */}
+      {images && images.length > 1 && (
+          <div className="flex justify-center gap-1.5 md:gap-2 mt-2 md:mt-3">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentImageIndex(i)}
+                className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${
+                  i === currentImageIndex ? 'bg-white w-4 md:w-6' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+    </div>
+  );
+};
+
+const ProjectViewer = memo(({ activeProjectKey }) => {
+  const project = projectsData[activeProjectKey];
+
+  const getBg = () => {
+    if (!project) return null;
+    if (project.bgType === 'snow') return <SnowEffect />;
+    if (project.bgType === 'clouds') return <CloudEffect />;
+    if (project.bgType === 'magia') return <MagiaBackground />;
+  };
+
+  return (
     <div className={`transition-all duration-700 ease-in-out overflow-hidden relative ${activeProjectKey ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'}`}>
       <div className="relative border-t-4 border-black min-h-[700px] bg-gray-900">
+        {/* El fondo ahora es estático aunque muevas las fotos */}
         {getBg()}
         
-        {/* Contenedor principal */}
         <div className="relative z-10 max-w-6xl mx-auto py-5 md:py-8 lg:py-12 xl:py-20 px-3 md:px-4 pointer-events-none flex flex-col justify-between h-full">
           
           <div className="flex flex-col-reverse lg:flex-row gap-5 md:gap-6 lg:gap-16 items-center lg:items-start">
             
-            {/* TEXTO / INFO */}
+            {/* TEXTO (Estático) */}
             <div className="flex-1 space-y-3 md:space-y-4 lg:space-y-6 w-full text-gray-200 pointer-events-auto">
               <div className="inline-block border-b-4 border-current pb-1.5 md:pb-2 mb-2 px-2 md:px-4">
                 <h3 className="text-lg md:text-2xl lg:text-3xl xl:text-5xl font-serif font-black drop-shadow-md uppercase leading-tight">{project?.title}</h3>
@@ -254,13 +339,10 @@ const ProjectViewer = ({ activeProjectKey }) => {
               
               <div className="bg-black/80 backdrop-blur-md border border-white/10 p-3 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-2xl">
                 <p className="text-xs md:text-sm lg:text-base xl:text-lg font-medium leading-relaxed">{project?.desc}</p>
-                
-                {/* STACK TECNOLÓGICO */}
                 <div className="mt-3 md:mt-4 lg:mt-6 border-t border-white/20 pt-2 md:pt-3 lg:pt-4 flex gap-1.5 md:gap-2 lg:gap-3 flex-wrap">
                   {project?.techStack.map(t => (
                     <div key={t.name} className="flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-black/40 backdrop-blur-sm px-1.5 md:px-2 lg:px-3 py-1 md:py-1 lg:py-1.5 rounded-md md:rounded-lg border border-white/10 shadow-sm">
                       <div className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-md p-0.5 flex items-center justify-center bg-white">
-                        {/* OPTIMIZACIÓN: lazy load en iconos pequeños también */}
                         <img src={t.icon} className="w-full h-full object-contain" alt="" loading="lazy" decoding="async"/>
                       </div>
                       <span className="text-gray-200 text-[9px] md:text-[10px] lg:text-xs font-bold font-mono">{t.name}</span>
@@ -269,7 +351,6 @@ const ProjectViewer = ({ activeProjectKey }) => {
                 </div>
               </div>
 
-              {/* SECCIÓN DE GALERÍA (RENDERIZADO) */}
               {project?.gallery && project.gallery.length > 0 && (
                 <div className="bg-black/50 p-2.5 md:p-3 lg:p-4 rounded-lg md:rounded-xl border border-white/10 overflow-x-auto">
                    <h4 className="text-[10px] md:text-xs font-bold uppercase mb-1.5 md:mb-2 flex items-center gap-2">Galería</h4>
@@ -277,7 +358,6 @@ const ProjectViewer = ({ activeProjectKey }) => {
                      {project.gallery.map((media, i) => (
                         <div key={i} className="flex-shrink-0 w-24 h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 bg-black rounded overflow-hidden border border-white/30 relative group cursor-pointer hover:scale-105 transition-transform">
                            {media.type === 'image' ? (
-                             // OPTIMIZACIÓN: Galería con lazy loading
                              <img src={media.url} className="w-full h-full object-cover" alt="Gallery" loading="lazy" decoding="async"/>
                            ) : (
                              <div className="w-full h-full flex items-center justify-center bg-gray-800">
@@ -295,98 +375,10 @@ const ProjectViewer = ({ activeProjectKey }) => {
               </button>
             </div>
 
-            {/* VISUALES (Swipe Cards estilo Tinder) */}
+            {/* IMAGENES (Aisladas para rendimiento) */}
             <div className="w-full lg:flex-1 flex flex-col items-center justify-center pointer-events-auto">
-              <div className="relative w-full max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:max-w-md">
-                {/* Indicadores de progreso superiores */}
-                {project?.gameImages && project.gameImages.length > 1 && (
-                  <div className="flex gap-0.5 md:gap-1 mb-2 md:mb-3 px-2">
-                    {project.gameImages.map((_, i) => (
-                      <div key={i} className="h-0.5 md:h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
-                        <div className={`h-full bg-white transition-all duration-300 ${i === currentImageIndex ? 'w-full' : 'w-0'}`}></div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Stack de imágenes */}
-                <div className="relative h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
-                  {project?.gameImages?.map((img, i) => {
-                    const isActive = i === currentImageIndex;
-                    const isNext = i === (currentImageIndex + 1) % project.gameImages.length;
-                    
-                    if (!isActive && !isNext) return null;
-                    
-                    const rotation = isDragging && isActive ? dragOffset.x * 0.03 : 0;
-                    const scale = isActive ? 1 : 0.95;
-                    const opacity = isActive ? 1 : 0.5;
-                    const zIndex = isActive ? 20 : 10;
-                    
-                    return (
-                      <div
-                        key={i}
-                        ref={isActive ? imageRef : null}
-                        className="absolute inset-0 touch-pan-y select-none"
-                        style={{
-                          transform: isActive 
-                            ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})`
-                            : `scale(${scale})`,
-                          opacity: opacity,
-                          zIndex: zIndex,
-                          transition: isDragging ? 'none' : 'all 0.3s ease-out',
-                          cursor: isActive ? 'grab' : 'default'
-                        }}
-                        onMouseDown={(e) => isActive && handleDragStart(e.clientX, e.clientY)}
-                        onMouseMove={(e) => isDragging && handleDragMove(e.clientX, e.clientY)}
-                        onMouseUp={handleDragEnd}
-                        onMouseLeave={handleDragEnd}
-                        onTouchStart={(e) => isActive && handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
-                        onTouchMove={(e) => isDragging && handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
-                        onTouchEnd={handleDragEnd}
-                      >
-                        <div className="relative bg-white p-1.5 md:p-2 lg:p-3 pb-6 md:pb-8 lg:pb-10 shadow-[6px_6px_0px_rgba(0,0,0,0.5)] md:shadow-[8px_8px_0px_rgba(0,0,0,0.5)] lg:shadow-[10px_10px_0px_rgba(0,0,0,0.5)] transform rotate-2 border-2 border-black h-full">
-                          <div className="bg-black w-full h-full relative overflow-hidden border-2 border-black">
-                            {/* OPTIMIZACIÓN: Estas son las imágenes más pesadas. Lazy loading es crucial aquí */}
-                            <img 
-                                src={img} 
-                                alt={`${project.title} ${i + 1}`} 
-                                loading="lazy" 
-                                decoding="async"
-                                className="w-full h-full object-cover" 
-                            />
-                          </div>
-                          
-                          <div className="absolute bottom-1 md:bottom-1.5 lg:bottom-2 left-0 w-full text-center font-pixel text-black text-[7px] md:text-[8px] lg:text-xs font-bold uppercase tracking-wider px-2 pointer-events-none">
-                            {project?.title} - {currentImageIndex + 1}/{project?.gameImages?.length || 1}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Instrucciones de swipe */}
-                {project?.gameImages && project.gameImages.length > 1 && (
-                  <div className="text-center mt-2 md:mt-3 text-white/60 text-[10px] md:text-xs font-mono">
-                    ↔ Desliza izquierda/derecha para ver más
-                  </div>
-                )}
-
-                {/* Controles de navegación (opcional, para desktop) */}
-                {project?.gameImages && project.gameImages.length > 1 && (
-                  <div className="flex justify-center gap-1.5 md:gap-2 mt-2 md:mt-3">
-                    {project.gameImages.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrentImageIndex(i)}
-                        className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${
-                          i === currentImageIndex ? 'bg-white w-4 md:w-6' : 'bg-white/50'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+               {/* Usamos key para forzar reinicio al cambiar proyecto */}
+               <ImageStack key={activeProjectKey} images={project?.gameImages} title={project?.title} />
             </div>
 
           </div>
@@ -394,7 +386,7 @@ const ProjectViewer = ({ activeProjectKey }) => {
       </div>
     </div>
   );
-};
+});
 
 const App = () => {
   const [activeProject, setActiveProject] = useState(null);
@@ -480,7 +472,6 @@ const App = () => {
             {Object.values(projectsData).map((p) => {
               const isActive = activeProject === p.id;
               
-              // Lógica de grises
               const containerClass = `
                 group cursor-pointer rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-500 relative bg-gray-800
                 ${isActive ? 'ring-2 md:ring-4 ring-indigo-500 scale-105 z-10 border-indigo-400 grayscale-0' : 'border-gray-700 hover:border-gray-500'}
@@ -494,7 +485,6 @@ const App = () => {
                   className={containerClass}
                 >
                   <div className="aspect-video relative overflow-hidden">
-                    {/* OPTIMIZACIÓN: lazy load en las portadas */}
                     <img 
                         src={p.cover} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
@@ -529,7 +519,6 @@ const App = () => {
         @keyframes fall { to { transform: translateY(150vh); } }
         .font-pixel { font-family: 'Press Start 2P', cursive; }
         
-        /* Animación Nubes */
         .clouds-animation {
           background-image: var(--cloud-url);
           background-size: 100px;
@@ -543,7 +532,6 @@ const App = () => {
         
         .pixel-art { image-rendering: pixelated; }
         
-        /* Ocultar scrollbar pero mantener funcionalidad */
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
