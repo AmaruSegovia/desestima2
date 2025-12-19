@@ -10,6 +10,11 @@ import estrellitaImg from './assets/estrellita_owo.png';
 import portadaRufino from './assets/portada.png'; 
 import magiaCover from './assets/magia.png'; 
 import aurora from './assets/aurora.png';
+import magia1 from './assets/magia1.png';
+import magia2 from './assets/magia2.png';
+import magia3 from './assets/magia3.png';
+import magia4 from './assets/magia4.png'; 
+import magia5 from './assets/magia5.png';
 
 // --- NUEVO IMPORT DEL ICONO (Asegúrate de tener el archivo en la carpeta assets) ---
 import iconoImg from './assets/icono.png'; 
@@ -121,7 +126,7 @@ const projectsData = {
     subtitle: "Roguelike Shooter",
     desc: "Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este bullet-hell. ¡Toca la pantalla para disparar!",
     cover: magiaCover,
-    gameImages: [magiaCover], 
+    gameImages: [magiaCover, magia1, magia2, magia3, magia4, magia5], 
     bgType: 'magia',
     btnColor: 'bg-indigo-600 hover:bg-indigo-500',
     accentColor: 'text-indigo-400',
@@ -398,7 +403,7 @@ const App = () => {
       if (activeProject !== key) {
         footerRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 200); 
+    }, 600); 
   };
 
   const isAnyActive = activeProject !== null;
