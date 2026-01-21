@@ -1,69 +1,104 @@
-import React, { useState, useEffect, useRef, useMemo, memo } from 'react';
-import { Download, Brain, Monitor, Layers, ChevronDown, Sparkles, Trophy, Brush, Code, Play, Instagram, X, PlayCircle, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo, memo } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import {
+  Download,
+  Brain,
+  Monitor,
+  Layers,
+  ChevronDown,
+  Sparkles,
+  Trophy,
+  Brush,
+  Code,
+  Play,
+  Instagram,
+  X,
+  PlayCircle,
+  Image as ImageIcon,
+  Gamepad2,
+} from "lucide-react";
+import InvestmentSimulator from "./InvestmentSimulator";
+import ThemeRoulette from "./ThemeRoulette";
+import ElevatorPitch from "./ElevatorPitch";
+import MVPGallery from "./MVPGallery";
 
 // --- IMPORTS DE ASSETS (Tus imágenes) ---
-import candelaImg from './assets/candela.png';
-import amaruImg from './assets/amaru.png';
-import neruImg from './assets/mila.png';
-import cristianImg from './assets/cristian.png';
-import estrellitaImg from './assets/estrellita_owo.png'; // Nota: Usé la variable genérica para simplificar el ejemplo, asegúrate de que sea la correcta
-import estrellita1Img from './assets/estrellita_owo.png'; 
-import estrellita2Img from './assets/auroraportada.jpg';
-import estrellita3Img from './assets/estrellita_owo_1.png';
-import estrellita4Img from './assets/estrellita_owo_2.gif';
-import portadaRufino from './assets/portada.png'; 
-import magiaCover from './assets/splash.png'; 
-import aurora from './assets/aurora.png';
-import aurora1 from './assets/esbirro.gif';
-import aurora2 from './assets/aurora2.gif';
-import aurora3 from './assets/aurora3.gif';
-import aurora4 from './assets/aurora4.jpeg';
-import iconoImg from './assets/icono.png'; 
-import magia1 from './assets/magia1.png';
-import magia2 from './assets/magia2.png';
-import magia3 from './assets/magia3.png';
-import magia4 from './assets/magia4.png';
-import magia5 from './assets/magia5.png';
-import magia6 from './assets/magia6.gif';
-import magia7 from './assets/magia7.gif';
-import magia8 from './assets/magia8.gif';
-import rufino from './assets/rufino.gif';
-import rufino1 from './assets/rufino1.png';
-import rufino2 from './assets/rufino2.gif';
-import jefeFinal from './assets/jefefinal.png'; 
-import torretaImg from './assets/torreta.png'; 
-import balaImg from './assets/bala.png'; 
-import jugadorImg from './assets/jugador.png'; 
+import candelaImg from "./assets/candela.png";
+import amaruImg from "./assets/amaru.png";
+import neruImg from "./assets/mila.png";
+import cristianImg from "./assets/cristian.png";
+import estrellitaImg from "./assets/estrellita_owo.png"; // Nota: Usé la variable genérica para simplificar el ejemplo, asegúrate de que sea la correcta
+import estrellita1Img from "./assets/estrellita_owo.png";
+import estrellita2Img from "./assets/auroraportada.jpg";
+import estrellita3Img from "./assets/estrellita_owo_1.png";
+import estrellita4Img from "./assets/estrellita_owo_2.gif";
+import portadaRufino from "./assets/portada.png";
+import magiaCover from "./assets/splash.png";
+import aurora from "./assets/aurora.png";
+import aurora1 from "./assets/esbirro.gif";
+import aurora2 from "./assets/aurora2.gif";
+import aurora3 from "./assets/aurora3.gif";
+import aurora4 from "./assets/aurora4.jpeg";
+import iconoImg from "./assets/icono.png";
+import magia1 from "./assets/magia1.png";
+import magia2 from "./assets/magia2.png";
+import magia3 from "./assets/magia3.png";
+import magia4 from "./assets/magia4.png";
+import magia5 from "./assets/magia5.png";
+import magia6 from "./assets/magia6.gif";
+import magia7 from "./assets/magia7.gif";
+import magia8 from "./assets/magia8.gif";
+import rufino from "./assets/rufino.gif";
+import rufino1 from "./assets/rufino1.png";
+import rufino2 from "./assets/rufino2.gif";
+import jefeFinal from "./assets/jefefinal.png";
+import torretaImg from "./assets/torreta.png";
+import balaImg from "./assets/bala.png";
+import jugadorImg from "./assets/jugador.png";
 
 // Iconos Tech
-import clipstudio from './assets/clipstudio.png';
-import unreal from './assets/unreal.png';
-import git from './assets/git.png';
-import aseprite from './assets/aseprite.png';
-import blender from './assets/blender.png';
-import unity from './assets/unity.png';
-import processingLogo from './assets/processing.png'; 
+import clipstudio from "./assets/clipstudio.png";
+import unreal from "./assets/unreal.png";
+import git from "./assets/git.png";
+import aseprite from "./assets/aseprite.png";
+import blender from "./assets/blender.png";
+import unity from "./assets/unity.png";
+import processingLogo from "./assets/processing.png";
 
 const cloudSVG = `data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M17.5,19c-3.037,0-5.5-2.463-5.5-5.5c0-0.498,0.068-0.979,0.194-1.435C11.383,11.353,10.467,11,9.5,11c-2.485,0-4.5,2.015-4.5,4.5c0,2.485,2.015,4.5,4.5,4.5H17.5z M17.5,8c2.485,0,4.5,2.015,4.5,4.5c0,2.485-2.015,4.5-4.5,4.5h-5.771c-0.89-1.31-1.429-2.863-1.579-4.545C10.74,12.23,11,12.119,11,12C11,9.791,12.791,8,15,8c0.119,0,0.23,0.02,0.345,0.049C15.863,8.019,16.421,8,17.5,8z'/%3E%3C/svg%3E`;
 
 // --- EFECTOS VISUALES (MEMOIZADOS) ---
 
 const SnowEffect = memo(() => {
-  const snowflakes = useMemo(() => [...Array(30)].map((_, i) => ({
-    left: `${Math.random() * 100}%`,
-    animationDelay: `${Math.random() * 5}s`,
-    animationDuration: `${Math.random() * 3 + 2}s`,
-    opacity: Math.random() * 0.8 + 0.2,
-    size: Math.random() * 4 + 2,
-  })), []);
+  const snowflakes = useMemo(
+    () =>
+      [...Array(30)].map((_, i) => ({
+        left: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 5}s`,
+        animationDuration: `${Math.random() * 3 + 2}s`,
+        opacity: Math.random() * 0.8 + 0.2,
+        size: Math.random() * 4 + 2,
+      })),
+    []
+  );
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gray-900">
-       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-10"></div>
-       {snowflakes.map((flake, i) => (
-         <div key={i} className="snowflake bg-white rounded-full absolute" 
-              style={{left: flake.left, animationDelay: flake.animationDelay, animationDuration: flake.animationDuration, opacity: flake.opacity, width: flake.size, height: flake.size}} />
-       ))}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-10"></div>
+      {snowflakes.map((flake, i) => (
+        <div
+          key={i}
+          className="snowflake bg-white rounded-full absolute"
+          style={{
+            left: flake.left,
+            animationDelay: flake.animationDelay,
+            animationDuration: flake.animationDuration,
+            opacity: flake.opacity,
+            width: flake.size,
+            height: flake.size,
+          }}
+        />
+      ))}
     </div>
   );
 });
@@ -71,26 +106,39 @@ const SnowEffect = memo(() => {
 const CloudEffect = memo(() => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden bg-[#4a7a94]">
-       <div className="clouds-animation absolute inset-0 opacity-40" 
-            style={{ '--cloud-url': `url("${cloudSVG}")` }}></div>
-       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+      <div
+        className="clouds-animation absolute inset-0 opacity-40"
+        style={{ "--cloud-url": `url("${cloudSVG}")` }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
     </div>
   );
 });
 
 const MagiaBackground = memo(() => (
   <div className="absolute inset-0 bg-[#1a0b2e]">
-    <div className="absolute inset-0 opacity-20" style={{backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)', backgroundSize: '30px 30px'}}></div>
+    <div
+      className="absolute inset-0 opacity-20"
+      style={{
+        backgroundImage: "radial-gradient(#4f46e5 1px, transparent 1px)",
+        backgroundSize: "30px 30px",
+      }}
+    ></div>
   </div>
 ));
 
 const FloatingStars = memo(() => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {[...Array(12)].map((_, i) => (
-      <div key={i} className="absolute animate-pulse" style={{
-        left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`,
-        animationDelay: `${Math.random() * 3}s`
-      }}>
+      <div
+        key={i}
+        className="absolute animate-pulse"
+        style={{
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 3}s`,
+        }}
+      >
         <Sparkles size={10} className="text-yellow-200 opacity-40" />
       </div>
     ))}
@@ -102,30 +150,46 @@ const ComingSoonModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={onClose}>
-      <div className="bg-gray-900 border-2 border-indigo-500/50 rounded-2xl p-6 max-w-sm w-full relative shadow-2xl transform transition-all scale-100" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gray-900 border-2 border-indigo-500/50 rounded-2xl p-6 max-w-sm w-full relative shadow-2xl transform transition-all scale-100"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
+        >
           <X size={20} />
         </button>
-        
+
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 mb-4">
             <Code size={24} />
           </div>
-          <h3 className="font-pixel text-yellow-400 text-xs md:text-sm mb-2 uppercase tracking-wide">Work in Progress</h3>
+          <h3 className="font-pixel text-yellow-400 text-xs md:text-sm mb-2 uppercase tracking-wide">
+            Work in Progress
+          </h3>
           <p className="text-gray-300 text-sm mb-6 leading-relaxed">
             ¡Lo sentimos! Todavía estamos puliendo este proyecto.
-            <br/>
-            <span className="text-white/60 text-xs mt-2 block">Pero puedes seguirnos para enterarte cuando salga:</span>
+            <br />
+            <span className="text-white/60 text-xs mt-2 block">
+              Pero puedes seguirnos para enterarte cuando salga:
+            </span>
           </p>
-          
-          <a 
-            href="https://www.instagram.com/desestimadoss" 
-            target="_blank" 
+
+          <a
+            href="https://www.instagram.com/desestimadoss"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl transition-all hover:scale-105 shadow-lg group"
           >
-            <Instagram size={18} className="group-hover:rotate-12 transition-transform"/>
+            <Instagram
+              size={18}
+              className="group-hover:rotate-12 transition-transform"
+            />
             @desestimadoss
           </a>
         </div>
@@ -137,61 +201,70 @@ const ComingSoonModal = ({ isOpen, onClose }) => {
 // --- DATOS ---
 const projectsData = {
   ciudad: {
-    id: 'ciudad',
+    id: "ciudad",
     title: "CIUDAD DEL OLVIDO",
     subtitle: "Survival Horror / RPG",
     desc: "¿Que es lo que queda en un mundo que se desvanece? Explora una ciudad abandonada, toma fotos y descubre los secretos que hay debajo de la nieve.",
     cover: estrellita1Img,
-    gameImages: [estrellita2Img, aurora2, aurora3, aurora4, estrellita4Img, estrellita3Img, aurora1, aurora], 
-    bgType: 'snow',
-    btnColor: 'bg-red-800 hover:bg-red-700',
-    accentColor: 'text-red-500',
-    demoLink: "", 
-    techStack: [
-      { name: 'Unreal 5', icon: unreal },
-      { name: 'Blender', icon: blender },
-      { name: 'Clip Studio', icon: clipstudio },
-      { name: 'Git', icon: git }
+    gameImages: [
+      estrellita2Img,
+      aurora2,
+      aurora3,
+      aurora4,
+      estrellita4Img,
+      estrellita3Img,
+      aurora1,
+      aurora,
     ],
-    gallery: []
+    bgType: "snow",
+    btnColor: "bg-red-800 hover:bg-red-700",
+    accentColor: "text-red-500",
+    demoLink: "",
+    techStack: [
+      { name: "Unreal 5", icon: unreal },
+      { name: "Blender", icon: blender },
+      { name: "Clip Studio", icon: clipstudio },
+      { name: "Git", icon: git },
+    ],
+    gallery: [],
   },
   rufino: {
-    id: 'rufino',
+    id: "rufino",
     title: "RUFINO VS ALIENS",
     subtitle: "Tower Defense",
-    desc:"¡Los aliens quieren capturar todas las ovejas de Rufino! Defiendete con tu perro bizco y obtiene nuevos poderes al derrotar a las leyendas. Recuerda mantener las ovejas bajo techo.",
+    desc: "¡Los aliens quieren capturar todas las ovejas de Rufino! Defiendete con tu perro bizco y obtiene nuevos poderes al derrotar a las leyendas. Recuerda mantener las ovejas bajo techo.",
     cover: portadaRufino,
-    gameImages: [portadaRufino, rufino, rufino1,rufino2], 
-    bgType: 'clouds',
-    btnColor: 'bg-yellow-500 text-black hover:bg-yellow-400',
-    accentColor: 'text-yellow-300',
+    gameImages: [portadaRufino, rufino, rufino1, rufino2],
+    bgType: "clouds",
+    btnColor: "bg-yellow-500 text-black hover:bg-yellow-400",
+    accentColor: "text-yellow-300",
     demoLink: "https://miiiiin.itch.io/desestipapus",
     techStack: [
-      { name: 'Unity', icon: unity },
-      { name: 'AseSprite', icon: aseprite },
-      { name: 'Clip Studio', icon: clipstudio },
-      { name: 'Git', icon: git }
+      { name: "Unity", icon: unity },
+      { name: "AseSprite", icon: aseprite },
+      { name: "Clip Studio", icon: clipstudio },
+      { name: "Git", icon: git },
     ],
-    gallery: []
+    gallery: [],
   },
   magia: {
-    id: 'magia',
+    id: "magia",
     title: "MagIA",
     subtitle: "Roguelike 2D",
-    desc:"Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este roguelike intenso. ¿Podras contra todos los robots o vas a dejar que la IA te domine?",
+    desc: "Magia vs Inteligencia Artificial. Limpia mazmorras procedurales en este roguelike intenso. ¿Podras contra todos los robots o vas a dejar que la IA te domine?",
     cover: magiaCover,
-    gameImages: [magiaCover,magia7,magia4, magia5, magia6,magia3], 
-    bgType: 'magia',
-    btnColor: 'bg-indigo-600 hover:bg-indigo-500',
-    accentColor: 'text-indigo-400',
+    gameImages: [magiaCover, magia7, magia4, magia5, magia6, magia3],
+    bgType: "magia",
+    btnColor: "bg-indigo-600 hover:bg-indigo-500",
+    accentColor: "text-indigo-400",
     demoLink: "https://marufelis.itch.io/mag-ia",
     techStack: [
-      { name: 'Processing', icon: processingLogo },
-      { name: 'AseSprite', icon: aseprite },
-      { name: 'Git', icon: git }
+      { name: "Processing", icon: processingLogo },
+      { name: "AseSprite", icon: aseprite },
+      { name: "Git", icon: git },
     ],
-    gallery: []
-  }
+    gallery: [],
+  },
 };
 
 // --- COMPONENTES UI OPTIMIZADOS ---
@@ -200,20 +273,32 @@ const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
   <div className="relative bg-white/90 backdrop-blur-md rounded-xl md:rounded-2xl overflow-hidden shadow-md border border-white/50 w-full group hover:-translate-y-1 transition-transform duration-300">
     <div className={`h-16 md:h-20 ${color} relative`}>
       <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-black/20 text-white text-[9px] md:text-[10px] font-mono px-1.5 md:px-2 py-0.5 md:py-1 rounded">LVL {lvl}</div>
+      <div className="absolute top-1.5 md:top-2 right-1.5 md:right-2 bg-black/20 text-white text-[9px] md:text-[10px] font-mono px-1.5 md:px-2 py-0.5 md:py-1 rounded">
+        LVL {lvl}
+      </div>
     </div>
     <div className="flex justify-center -mt-8 md:-mt-10 relative z-10">
       <div className="p-1 bg-white rounded-xl md:rounded-2xl shadow-lg">
-        <img src={image} alt={name} loading="lazy" decoding="async" className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-lg md:rounded-xl bg-gray-100" />
+        <img
+          src={image}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+          className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-cover rounded-lg md:rounded-xl bg-gray-100"
+        />
       </div>
     </div>
     <div className="text-center p-3 md:p-4">
-      <h3 className="font-bold text-gray-800 text-sm md:text-base lg:text-lg mb-1">{name}</h3>
+      <h3 className="font-bold text-gray-800 text-sm md:text-base lg:text-lg mb-1">
+        {name}
+      </h3>
       <div className="inline-flex items-center gap-1 text-[9px] md:text-[10px] font-bold uppercase text-gray-500 bg-gray-100 px-1.5 md:px-2 py-0.5 rounded-full mb-2 md:mb-3">
         {icon} {role}
       </div>
       <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
-        <div className={`h-full ${color} w-[85%] group-hover:w-full transition-all duration-1000`}></div>
+        <div
+          className={`h-full ${color} w-[85%] group-hover:w-full transition-all duration-1000`}
+        ></div>
       </div>
     </div>
   </div>
@@ -221,10 +306,20 @@ const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
 
 const TechCard = memo(({ name, logoUrl, colorClass }) => (
   <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl p-2 md:p-3 flex flex-col items-center justify-center gap-1.5 md:gap-2 hover:shadow-lg transition-all group min-h-[80px] md:min-h-[100px]">
-    <div className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-50 rounded-md md:rounded-lg group-hover:bg-white`}>
-      <img src={logoUrl} alt={name} loading="lazy" decoding="async" className="w-full h-full object-contain p-0.5 md:p-1" />
+    <div
+      className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-50 rounded-md md:rounded-lg group-hover:bg-white`}
+    >
+      <img
+        src={logoUrl}
+        alt={name}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-contain p-0.5 md:p-1"
+      />
     </div>
-    <span className="font-bold text-gray-800 text-[10px] md:text-xs text-center leading-tight">{name}</span>
+    <span className="font-bold text-gray-800 text-[10px] md:text-xs text-center leading-tight">
+      {name}
+    </span>
   </div>
 ));
 
@@ -250,7 +345,7 @@ const ImageStack = ({ images, title }) => {
     const deltaX = clientX - dragStart.x;
     const deltaY = clientY - dragStart.y;
 
-    if (Math.abs(deltaY) > Math.abs(deltaX)) return; 
+    if (Math.abs(deltaY) > Math.abs(deltaX)) return;
 
     setDragOffset({ x: deltaX, y: 0 });
   };
@@ -271,8 +366,15 @@ const ImageStack = ({ images, title }) => {
       {images && images.length > 1 && (
         <div className="flex gap-0.5 md:gap-1 mb-2 md:mb-3 px-2">
           {images.map((_, i) => (
-            <div key={i} className="h-0.5 md:h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
-              <div className={`h-full bg-white transition-all duration-300 ${i === currentImageIndex ? 'w-full' : 'w-0'}`}></div>
+            <div
+              key={i}
+              className="h-0.5 md:h-1 flex-1 bg-white/30 rounded-full overflow-hidden"
+            >
+              <div
+                className={`h-full bg-white transition-all duration-300 ${
+                  i === currentImageIndex ? "w-full" : "w-0"
+                }`}
+              ></div>
             </div>
           ))}
         </div>
@@ -282,45 +384,57 @@ const ImageStack = ({ images, title }) => {
         {images?.map((img, i) => {
           const isActive = i === currentImageIndex;
           const isNext = i === (currentImageIndex + 1) % images.length;
-          
+
           if (!isActive && !isNext) return null;
-          
+
           const rotation = isDragging && isActive ? dragOffset.x * 0.03 : 0;
           const scale = isActive ? 1 : 0.95;
           const opacity = isActive ? 1 : 0.5;
           const zIndex = isActive ? 20 : 10;
-          
+
           return (
             <div
               key={i}
               ref={isActive ? imageRef : null}
               className="absolute inset-0 touch-pan-y select-none"
               style={{
-                transform: isActive 
-                  ? `translate(${isDragging ? dragOffset.x : 0}px, 0px) rotate(${rotation}deg) scale(${scale})`
+                transform: isActive
+                  ? `translate(${
+                      isDragging ? dragOffset.x : 0
+                    }px, 0px) rotate(${rotation}deg) scale(${scale})`
                   : `scale(${scale})`,
                 opacity: opacity,
                 zIndex: zIndex,
-                transition: isDragging ? 'none' : 'all 0.3s ease-out',
-                cursor: isActive ? 'grab' : 'default',
-                willChange: isDragging ? 'transform' : 'auto'
+                transition: isDragging ? "none" : "all 0.3s ease-out",
+                cursor: isActive ? "grab" : "default",
+                willChange: isDragging ? "transform" : "auto",
               }}
-              onMouseDown={(e) => isActive && handleDragStart(e.clientX, e.clientY)}
-              onMouseMove={(e) => isDragging && handleDragMove(e.clientX, e.clientY)}
+              onMouseDown={(e) =>
+                isActive && handleDragStart(e.clientX, e.clientY)
+              }
+              onMouseMove={(e) =>
+                isDragging && handleDragMove(e.clientX, e.clientY)
+              }
               onMouseUp={handleDragEnd}
               onMouseLeave={handleDragEnd}
-              onTouchStart={(e) => isActive && handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
-              onTouchMove={(e) => isDragging && handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
+              onTouchStart={(e) =>
+                isActive &&
+                handleDragStart(e.touches[0].clientX, e.touches[0].clientY)
+              }
+              onTouchMove={(e) =>
+                isDragging &&
+                handleDragMove(e.touches[0].clientX, e.touches[0].clientY)
+              }
               onTouchEnd={handleDragEnd}
             >
               <div className="relative bg-white p-1.5 md:p-2 lg:p-3 pb-6 md:pb-8 lg:pb-10 shadow-[6px_6px_0px_rgba(0,0,0,0.5)] md:shadow-[8px_8px_0px_rgba(0,0,0,0.5)] lg:shadow-[10px_10px_0px_rgba(0,0,0,0.5)] transform rotate-2 border-2 border-black h-full">
                 <div className="bg-black w-full h-full relative overflow-hidden border-2 border-black">
-                  <img 
-                      src={img} 
-                      alt={`${title} ${i + 1}`} 
-                      loading="lazy" 
-                      decoding="async"
-                      className="w-full h-full object-cover" 
+                  <img
+                    src={img}
+                    alt={`${title} ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="absolute bottom-1 md:bottom-1.5 lg:bottom-2 left-0 w-full text-center font-pixel text-black text-[7px] md:text-[8px] lg:text-xs font-bold uppercase tracking-wider px-2 pointer-events-none">
@@ -337,20 +451,20 @@ const ImageStack = ({ images, title }) => {
           ↔ Desliza izquierda/derecha para ver más
         </div>
       )}
-      
+
       {images && images.length > 1 && (
-          <div className="flex justify-center gap-1.5 md:gap-2 mt-2 md:mt-3">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentImageIndex(i)}
-                className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${
-                  i === currentImageIndex ? 'bg-white w-4 md:w-6' : 'bg-white/50'
-                }`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="flex justify-center gap-1.5 md:gap-2 mt-2 md:mt-3">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentImageIndex(i)}
+              className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${
+                i === currentImageIndex ? "bg-white w-4 md:w-6" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -360,42 +474,63 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
 
   const getBg = () => {
     if (!project) return null;
-    if (project.bgType === 'snow') return <SnowEffect />;
-    if (project.bgType === 'clouds') return <CloudEffect />;
-    if (project.bgType === 'magia') return <MagiaBackground />;
+    if (project.bgType === "snow") return <SnowEffect />;
+    if (project.bgType === "clouds") return <CloudEffect />;
+    if (project.bgType === "magia") return <MagiaBackground />;
   };
 
   const handleDownloadClick = (e) => {
     if (!project?.demoLink) {
-      e.preventDefault(); 
+      e.preventDefault();
       onOpenModal();
     }
   };
 
   return (
-    <div className={`transition-all duration-700 ease-in-out overflow-hidden relative ${activeProjectKey ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+    <div
+      className={`transition-all duration-700 ease-in-out overflow-hidden relative ${
+        activeProjectKey ? "max-h-[4000px] opacity-100" : "max-h-0 opacity-0"
+      }`}
+    >
       <div className="relative border-t-4 border-black min-h-[700px] bg-gray-900">
         {getBg()}
-        
+
         <div className="relative z-10 max-w-6xl mx-auto py-5 md:py-8 lg:py-12 xl:py-20 px-3 md:px-4 pointer-events-none flex flex-col justify-between h-full">
-          
           <div className="flex flex-col-reverse lg:flex-row gap-5 md:gap-6 lg:gap-16 items-center lg:items-start">
-            
             <div className="flex-1 space-y-3 md:space-y-4 lg:space-y-6 w-full text-gray-200 pointer-events-auto">
               <div className="inline-block border-b-4 border-current pb-1.5 md:pb-2 mb-2 px-2 md:px-4">
-                <h3 className="text-lg md:text-2xl lg:text-3xl xl:text-5xl font-serif font-black drop-shadow-md uppercase leading-tight">{project?.title}</h3>
-                <p className={`font-mono text-[10px] md:text-xs lg:text-sm font-bold mt-0.5 md:mt-1 ${project?.accentColor}`}>{project?.subtitle}</p>
+                <h3 className="text-lg md:text-2xl lg:text-3xl xl:text-5xl font-serif font-black drop-shadow-md uppercase leading-tight">
+                  {project?.title}
+                </h3>
+                <p
+                  className={`font-mono text-[10px] md:text-xs lg:text-sm font-bold mt-0.5 md:mt-1 ${project?.accentColor}`}
+                >
+                  {project?.subtitle}
+                </p>
               </div>
-              
+
               <div className="bg-black/80 backdrop-blur-md border border-white/10 p-3 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-2xl">
-                <p className="text-xs md:text-sm lg:text-base xl:text-lg font-medium leading-relaxed">{project?.desc}</p>
+                <p className="text-xs md:text-sm lg:text-base xl:text-lg font-medium leading-relaxed">
+                  {project?.desc}
+                </p>
                 <div className="mt-3 md:mt-4 lg:mt-6 border-t border-white/20 pt-2 md:pt-3 lg:pt-4 flex gap-1.5 md:gap-2 lg:gap-3 flex-wrap">
-                  {project?.techStack.map(t => (
-                    <div key={t.name} className="flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-black/40 backdrop-blur-sm px-1.5 md:px-2 lg:px-3 py-1 md:py-1 lg:py-1.5 rounded-md md:rounded-lg border border-white/10 shadow-sm">
+                  {project?.techStack.map((t) => (
+                    <div
+                      key={t.name}
+                      className="flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-black/40 backdrop-blur-sm px-1.5 md:px-2 lg:px-3 py-1 md:py-1 lg:py-1.5 rounded-md md:rounded-lg border border-white/10 shadow-sm"
+                    >
                       <div className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-md p-0.5 flex items-center justify-center bg-white">
-                        <img src={t.icon} className="w-full h-full object-contain" alt="" loading="lazy" decoding="async"/>
+                        <img
+                          src={t.icon}
+                          className="w-full h-full object-contain"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
                       </div>
-                      <span className="text-gray-200 text-[9px] md:text-[10px] lg:text-xs font-bold font-mono">{t.name}</span>
+                      <span className="text-gray-200 text-[9px] md:text-[10px] lg:text-xs font-bold font-mono">
+                        {t.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -403,38 +538,59 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
 
               {project?.gallery && project.gallery.length > 0 && (
                 <div className="bg-black/50 p-2.5 md:p-3 lg:p-4 rounded-lg md:rounded-xl border border-white/10 overflow-x-auto">
-                   <h4 className="text-[10px] md:text-xs font-bold uppercase mb-1.5 md:mb-2 flex items-center gap-2">Galería</h4>
-                   <div className="flex gap-2 md:gap-3 lg:gap-4">
-                     {project.gallery.map((media, i) => (
-                        <div key={i} className="flex-shrink-0 w-24 h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 bg-black rounded overflow-hidden border border-white/30 relative group cursor-pointer hover:scale-105 transition-transform">
-                           {media.type === 'image' ? (
-                             <img src={media.url} className="w-full h-full object-cover" alt="Gallery" loading="lazy" decoding="async"/>
-                           ) : (
-                             <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                                <PlayCircle size={16} className="text-white md:w-5 md:h-5"/>
-                             </div>
-                           )}
-                        </div>
-                     ))}
-                   </div>
+                  <h4 className="text-[10px] md:text-xs font-bold uppercase mb-1.5 md:mb-2 flex items-center gap-2">
+                    Galería
+                  </h4>
+                  <div className="flex gap-2 md:gap-3 lg:gap-4">
+                    {project.gallery.map((media, i) => (
+                      <div
+                        key={i}
+                        className="flex-shrink-0 w-24 h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 bg-black rounded overflow-hidden border border-white/30 relative group cursor-pointer hover:scale-105 transition-transform"
+                      >
+                        {media.type === "image" ? (
+                          <img
+                            src={media.url}
+                            className="w-full h-full object-cover"
+                            alt="Gallery"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                            <PlayCircle
+                              size={16}
+                              className="text-white md:w-5 md:h-5"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-              
-              <a 
-                href={project?.demoLink || "#"} 
+
+              <a
+                href={project?.demoLink || "#"}
                 onClick={handleDownloadClick}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className={`flex items-center gap-1.5 md:gap-2 px-5 md:px-6 lg:px-8 py-2.5 md:py-3 lg:py-4 rounded-lg md:rounded-xl font-black shadow-xl hover:scale-105 transition-all text-white w-full md:w-auto justify-center text-xs md:text-sm lg:text-base no-underline cursor-pointer ${project?.btnColor}`}
               >
-                <Download size={16} className="md:w-4.5 md:h-4.5 lg:w-5 lg:h-5" /> DESCARGAR DEMO
+                <Download
+                  size={16}
+                  className="md:w-4.5 md:h-4.5 lg:w-5 lg:h-5"
+                />{" "}
+                DESCARGAR DEMO
               </a>
             </div>
 
             <div className="w-full lg:flex-1 flex flex-col items-center justify-center pointer-events-auto">
-               <ImageStack key={activeProjectKey} images={project?.gameImages} title={project?.title} />
+              <ImageStack
+                key={activeProjectKey}
+                images={project?.gameImages}
+                title={project?.title}
+              />
             </div>
-
           </div>
         </div>
       </div>
@@ -442,13 +598,15 @@ const ProjectViewer = memo(({ activeProjectKey, onOpenModal }) => {
   );
 });
 
-const App = () => {
+const HomePage = () => {
   const [activeProject, setActiveProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const detailsRef = useRef(null); // NUEVA REFERENCIA PARA EL CONTENEDOR DE DETALLES
 
   useEffect(() => {
-    const metaThemeColor = document.querySelector("meta[name=theme-color]") || document.createElement('meta');
+    const metaThemeColor =
+      document.querySelector("meta[name=theme-color]") ||
+      document.createElement("meta");
     metaThemeColor.name = "theme-color";
     metaThemeColor.content = "#ffffff";
     document.head.appendChild(metaThemeColor);
@@ -457,27 +615,28 @@ const App = () => {
 
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
     }
     link.href = iconoImg;
   }, []);
 
   const toggleProject = (key) => {
     const isOpening = activeProject !== key;
-    setActiveProject(prev => prev === key ? null : key);
-    
+    setActiveProject((prev) => (prev === key ? null : key));
+
     // Scrollear UN POCO más arriba (no al footer, sino al contenedor de detalles - 100px)
     if (isOpening) {
       setTimeout(() => {
         if (detailsRef.current) {
           const yOffset = +12; // Ajuste para dejar espacio arriba
           const element = detailsRef.current;
-          const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          const y =
+            element.getBoundingClientRect().top + window.scrollY + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
-      }, 350); 
+      }, 350);
     }
   };
 
@@ -485,8 +644,10 @@ const App = () => {
 
   return (
     <div className="min-h-screen w-full font-sans bg-gray-50 text-gray-900 overflow-x-hidden">
-      
-      <ComingSoonModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ComingSoonModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       {/* HERO SECTION */}
       <section className="relative bg-gradient-to-br from-indigo-50 via-white to-blue-50 pt-10 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-24 px-3 md:px-4 overflow-hidden">
@@ -494,74 +655,175 @@ const App = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-6 md:mb-8 lg:mb-12">
             <div className="inline-flex items-center gap-1 md:gap-1.5 lg:gap-2 bg-yellow-400 text-yellow-900 px-2 md:px-2.5 lg:px-3 py-0.5 md:py-1 rounded-full font-bold text-[9px] md:text-[10px] lg:text-xs uppercase tracking-wider mb-2 md:mb-3 lg:mb-4 border-2 border-black shadow-[2px_2px_0px_black] md:shadow-[3px_3px_0px_black] lg:shadow-[4px_4px_0px_black] animate-bounce">
-              <Trophy size={9} className="md:w-2.5 md:h-2.5 lg:w-3 lg:h-3" /> 1° Puesto Game Jam UNJU - 2025
+              <Trophy size={9} className="md:w-2.5 md:h-2.5 lg:w-3 lg:h-3" /> 1°
+              Puesto Game Jam UNJU - 2025
             </div>
             <h1 className="font-pixel text-2xl md:text-3xl lg:text-5xl xl:text-6xl text-gray-900 mb-1.5 md:mb-2 lg:mb-3 drop-shadow-sm px-2">
               DESESTIMA<span className="text-indigo-600">2</span>
             </h1>
-            <p className="text-gray-500 max-w-xl mx-auto text-xs md:text-sm lg:text-base px-4">Creamos experiencias inmersivas con código y pasión.</p>
+            <p className="text-gray-500 max-w-xl mx-auto text-xs md:text-sm lg:text-base px-4">
+              Creamos experiencias inmersivas con código y pasión.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 lg:gap-4 mb-8 md:mb-12 lg:mb-16 px-1 md:px-2">
-            <MemberCard name="Amaru Segovia" lvl="22" role="Dev IA" icon={<Brain size={11}/>} color="bg-purple-500" image={amaruImg} />
-            <MemberCard name="Candela Carrasco" lvl="24" role="UI/UX Art" icon={<Brush size={11}/>} color="bg-pink-500" image={candelaImg} />
-            <MemberCard name="Milagros Sosa" lvl="24" role="3D & Anim" icon={<Monitor size={11}/>} color="bg-blue-500" image={neruImg} />
-            <MemberCard name="Cristian Arraya" lvl="20" role="Dev Mecánicas" icon={<Code size={11}/>} color="bg-green-500" image={cristianImg} />
+            <MemberCard
+              name="Amaru Segovia"
+              lvl="22"
+              role="Dev IA"
+              icon={<Brain size={11} />}
+              color="bg-purple-500"
+              image={amaruImg}
+            />
+            <MemberCard
+              name="Candela Carrasco"
+              lvl="24"
+              role="UI/UX Art"
+              icon={<Brush size={11} />}
+              color="bg-pink-500"
+              image={candelaImg}
+            />
+            <MemberCard
+              name="Milagros Sosa"
+              lvl="24"
+              role="3D & Anim"
+              icon={<Monitor size={11} />}
+              color="bg-blue-500"
+              image={neruImg}
+            />
+            <MemberCard
+              name="Cristian Arraya"
+              lvl="20"
+              role="Dev Mecánicas"
+              icon={<Code size={11} />}
+              color="bg-green-500"
+              image={cristianImg}
+            />
           </div>
-<div className="border-t border-gray-200 pt-12">
-  <div className="flex items-center justify-center gap-2 mb-6 text-gray-400 font-mono text-xs uppercase tracking-widest">
-    <Layers size={14} /> Stack Tecnológico General
-  </div>
-  {/* AQUÍ ESTÁ EL CAMBIO: Cambia grid-cols-2 por grid-cols-3 */}
-  <div className="grid grid-cols-3 md:grid-cols-6 gap-2 px-1"> 
-    <TechCard name="Unreal 5" logoUrl={unreal} colorClass="bg-black" />
-    <TechCard name="Unity 6" logoUrl={unity} colorClass="bg-gray-700" />
-    <TechCard name="Blender" logoUrl={blender} colorClass="bg-orange-500" />
-    <TechCard name="AseSprite" logoUrl={aseprite} colorClass="bg-blue-500" />
-    <TechCard name="Clip Studio" logoUrl={clipstudio} colorClass="bg-pink-500" />
-    <TechCard name="Git" logoUrl={git} colorClass="bg-orange-600" />
-  </div>
-</div>
+          <div className="border-t border-gray-200 pt-12">
+            <div className="flex items-center justify-center gap-2 mb-6 text-gray-400 font-mono text-xs uppercase tracking-widest">
+              <Layers size={14} /> Stack Tecnológico General
+            </div>
+            {/* AQUÍ ESTÁ EL CAMBIO: Cambia grid-cols-2 por grid-cols-3 */}
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 px-1">
+              <TechCard
+                name="Unreal 5"
+                logoUrl={unreal}
+                colorClass="bg-black"
+              />
+              <TechCard
+                name="Unity 6"
+                logoUrl={unity}
+                colorClass="bg-gray-700"
+              />
+              <TechCard
+                name="Blender"
+                logoUrl={blender}
+                colorClass="bg-orange-500"
+              />
+              <TechCard
+                name="AseSprite"
+                logoUrl={aseprite}
+                colorClass="bg-blue-500"
+              />
+              <TechCard
+                name="Clip Studio"
+                logoUrl={clipstudio}
+                colorClass="bg-pink-500"
+              />
+              <TechCard name="Git" logoUrl={git} colorClass="bg-orange-600" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BOTÓN SIMULADOR DE INVERSIÓN */}
+      <section className="bg-gradient-to-r from-indigo-100 via-purple-50 to-pink-100 py-8 md:py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-4 py-2 rounded-full text-indigo-600 text-xs font-bold uppercase tracking-wider mb-4">
+            <Gamepad2 size={14} />
+            Taller Game Jam 2025
+          </div>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3">
+            🎮 ¿Listo para tu primera Game Jam?
+          </h3>
+          <p className="text-gray-600 text-sm md:text-base mb-6 max-w-2xl mx-auto">
+            Completá 4 actividades interactivas para aprender a hacer juegos sin
+            frustrarte. Ruleta de temas, simulador de inversión y más.
+          </p>
+          <Link
+            to="/taller"
+            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 no-underline text-sm md:text-base"
+          >
+            <Sparkles size={18} />
+            Empezar Actividades
+          </Link>
         </div>
       </section>
 
       {/* SECCIÓN PROYECTOS */}
       <section className="bg-gray-900 text-white py-10 md:py-12 lg:py-16 px-3 md:px-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-        
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage:
+              "linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        ></div>
+
         <div className="max-w-6xl mx-auto relative z-10">
-          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-5 md:mb-6 lg:mb-8 text-center md:text-left px-2">Nuestros Proyectos</h2>
-          
+          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-5 md:mb-6 lg:mb-8 text-center md:text-left px-2">
+            Nuestros Proyectos
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
             {Object.values(projectsData).map((p) => {
               const isActive = activeProject === p.id;
-              
+
               const containerClass = `
                 group cursor-pointer rounded-lg md:rounded-xl overflow-hidden border-2 transition-all duration-500 relative bg-gray-800
-                ${isActive ? 'ring-2 md:ring-4 ring-indigo-500 scale-105 z-10 border-indigo-400 grayscale-0' : 'border-gray-700 hover:border-gray-500'}
-                ${isAnyActive && !isActive ? 'grayscale opacity-60 scale-95 hover:grayscale-0 hover:opacity-100 hover:scale-100' : ''}
+                ${
+                  isActive
+                    ? "ring-2 md:ring-4 ring-indigo-500 scale-105 z-10 border-indigo-400 grayscale-0"
+                    : "border-gray-700 hover:border-gray-500"
+                }
+                ${
+                  isAnyActive && !isActive
+                    ? "grayscale opacity-60 scale-95 hover:grayscale-0 hover:opacity-100 hover:scale-100"
+                    : ""
+                }
               `;
 
               return (
-                <div 
+                <div
                   key={p.id}
                   onClick={() => toggleProject(p.id)}
                   className={containerClass}
                 >
                   <div className="aspect-video relative overflow-hidden">
-                    <img 
-                        src={p.cover} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                        alt={p.title} 
-                        loading="lazy"
-                        decoding="async"
+                    <img
+                      src={p.cover}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      alt={p.title}
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                     <div className="absolute bottom-2 md:bottom-3 lg:bottom-4 left-2 md:left-3 lg:left-4 right-2 md:right-3 lg:right-4">
-                      <h3 className="font-bold text-sm md:text-base lg:text-lg leading-tight mb-0.5 md:mb-1 text-white drop-shadow-md">{p.title}</h3>
+                      <h3 className="font-bold text-sm md:text-base lg:text-lg leading-tight mb-0.5 md:mb-1 text-white drop-shadow-md">
+                        {p.title}
+                      </h3>
                       <div className="flex justify-between items-center">
-                        <span className="text-[8px] md:text-[9px] lg:text-[10px] font-mono bg-white/20 backdrop-blur-md px-1 md:px-1.5 lg:px-2 py-0.5 rounded text-white">{p.subtitle}</span>
-                        {isActive && <ChevronDown size={16} className="text-white animate-bounce md:w-4.5 md:h-4.5 lg:w-5 lg:h-5"/>}
+                        <span className="text-[8px] md:text-[9px] lg:text-[10px] font-mono bg-white/20 backdrop-blur-md px-1 md:px-1.5 lg:px-2 py-0.5 rounded text-white">
+                          {p.subtitle}
+                        </span>
+                        {isActive && (
+                          <ChevronDown
+                            size={16}
+                            className="text-white animate-bounce md:w-4.5 md:h-4.5 lg:w-5 lg:h-5"
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -575,7 +837,10 @@ const App = () => {
       {/* REFERENCIA PARA EL SCROLL (Invisible) */}
       <div ref={detailsRef} />
 
-      <ProjectViewer activeProjectKey={activeProject} onOpenModal={() => setIsModalOpen(true)} />
+      <ProjectViewer
+        activeProjectKey={activeProject}
+        onOpenModal={() => setIsModalOpen(true)}
+      />
 
       <footer className="bg-black text-white py-8 border-t border-gray-900 text-center">
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-4">
@@ -583,9 +848,9 @@ const App = () => {
             © 2025 DESESTIMA2 • JUJUY, ARGENTINA
           </p>
           <span className="hidden md:block text-gray-700">|</span>
-          <a 
-            href="https://www.instagram.com/desestimadoss" 
-            target="_blank" 
+          <a
+            href="https://www.instagram.com/desestimadoss"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-gray-500 hover:text-pink-500 transition-colors group"
           >
@@ -598,10 +863,18 @@ const App = () => {
       </footer>
 
       <style jsx>{`
-        .snowflake { animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(150vh); } }
-        .font-pixel { font-family: 'Press Start 2P', cursive; }
-        
+        .snowflake {
+          animation: fall linear infinite;
+        }
+        @keyframes fall {
+          to {
+            transform: translateY(150vh);
+          }
+        }
+        .font-pixel {
+          font-family: "Press Start 2P", cursive;
+        }
+
         .clouds-animation {
           background-image: var(--cloud-url);
           background-size: 100px;
@@ -609,25 +882,48 @@ const App = () => {
           animation: cloudsMove 60s linear infinite;
         }
         @keyframes cloudsMove {
-          from { background-position: 0 0; }
-          to { background-position: 1000px 500px; }
+          from {
+            background-position: 0 0;
+          }
+          to {
+            background-position: 1000px 500px;
+          }
         }
-        
-        .pixel-art { image-rendering: pixelated; }
-        
+
+        .pixel-art {
+          image-rendering: pixelated;
+        }
+
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
-        
+
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
         .animate-fade-in {
           animation: fadeIn 0.2s ease-out forwards;
         }
       `}</style>
     </div>
+  );
+};
+
+// Componente App con rutas
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/taller" element={<ThemeRoulette />} />
+      <Route path="/simulador-inversion" element={<InvestmentSimulator />} />
+      <Route path="/elevator-pitch" element={<ElevatorPitch />} />
+      <Route path="/galeria-mvp" element={<MVPGallery />} />
+    </Routes>
   );
 };
 
