@@ -501,6 +501,7 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
 
       setSelectedTheme(theme);
       setIsSpinning(false);
+      window.dispatchEvent(new CustomEvent("workshop-confetti"));
       onSpinComplete(theme);
     }, 4000);
   };
@@ -613,43 +614,167 @@ const matchWholeWord = (text, word) => {
   return regex.test(text);
 };
 
-// Componente del Scope Meter
-const ScopeMeter = ({ text }) => {
-  const analyzeScope = (input) => {
-    const lowerInput = input.toLowerCase();
-    let score = 0;
-    let foundWords = [];
+const analyzeScope = (input, theme = null) => {
+  const lowerInput = input.toLowerCase();
+  let score = 0;
+  let foundWords = [];
+  let themeDetected = false;
 
-    dangerWords.high.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) {
-        score += 16;
-        foundWords.push({ word, severity: "high" });
-      }
-    });
+  dangerWords.high.forEach((word) => {
+    if (matchWholeWord(lowerInput, word)) {
+      score += 16;
+      foundWords.push({ word, severity: "high" });
+    }
+  });
 
-    dangerWords.medium.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) {
-        score += 8;
-        foundWords.push({ word, severity: "medium" });
-      }
-    });
+  dangerWords.medium.forEach((word) => {
+    if (matchWholeWord(lowerInput, word)) {
+      score += 8;
+      foundWords.push({ word, severity: "medium" });
+    }
+  });
 
-    dangerWords.low.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) {
-        score += 2;
-        foundWords.push({ word, severity: "low" });
-      }
-    });
+  dangerWords.low.forEach((word) => {
+    if (matchWholeWord(lowerInput, word)) {
+      score += 2;
+      foundWords.push({ word, severity: "low" });
+    }
+  });
 
-    // Bonus por longitud excesiva
-    if (input.length > 300) score += 10;
-    if (input.length > 500) score += 15;
+  // Bonus por longitud excesiva
+  if (input.length > 300) score += 10;
+  if (input.length > 500) score += 15;
 
-    return { score: Math.min(score, 100), foundWords };
+  // Penalización por cantidad de palabras: 1 punto cada 5 palabras
+  const wordCount = input
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w.length > 0).length;
+  score += Math.floor(wordCount / 5);
+
+  // Detección de tema
+  if (theme && lowerInput.includes(theme.toLowerCase())) {
+    themeDetected = true;
+  }
+
+  return { score: Math.min(score, 100), foundWords, themeDetected };
+};
+
+const ScopeCoach = ({ score }) => {
+  const getCoachState = () => {
+    if (score === 0)
+      return {
+        emoji: "😄",
+        msg: "¿Qué vamos a romper hoy?",
+        color: "text-green-300",
+      };
+    if (score < 7)
+      return {
+        emoji: "🙂",
+        msg: "Todo bajo control. Esto es una jam, no la pelicula del señor de los anillos",
+        color: "text-green-400",
+      };
+    if (score < 14)
+      return {
+        emoji: "🤔",
+        msg: "Mmm, ya empezamos con los 'detallitos' pero sigo creyendo en vos...",
+        color: "text-green-400",
+      };
+    if (score < 21)
+      return {
+        emoji: "😅",
+        msg: "¿De verdad hace falta esa mecánica?",
+        color: "text-yellow-400",
+      };
+    if (score < 28)
+      return {
+        emoji: "🧐",
+        msg: "Esto huele a tres meses de laburo y deuda técnica incluida.",
+        color: "text-yellow-500",
+      };
+    if (score < 35)
+      return {
+        emoji: "😐",
+        msg: "No te lo quiero decir pero... esto ya no entra en un fin de semana.",
+        color: "text-orange-400",
+      };
+    if (score < 42)
+      return {
+        emoji: "😬",
+        msg: "Acordate: cada idea nueva es un bug que todavía no conocés.",
+        color: "text-orange-500",
+      };
+    if (score < 49)
+      return {
+        emoji: "😟",
+        msg: "La ram de la compu se esta por pegar un corchazo.",
+        color: "text-red-400",
+      };
+    if (score < 56)
+      return {
+        emoji: "😨",
+        msg: "Llamen al 911 de los programadores.",
+        color: "text-red-500",
+      };
+    if (score < 64)
+      return {
+        emoji: "😱",
+        msg: "¡PARÁ! ¡PARÁ UN POCO! Nadie pidió un sistema así en una jam.",
+        color: "text-red-600",
+      };
+    if (score < 73)
+      return {
+        emoji: "🥵",
+        msg: "Estoy viendo commits a las 5 AM que dicen 'fix del fix del fix finalfinal'",
+        color: "text-red-700",
+      };
+    if (score < 82)
+      return {
+        emoji: "😵‍💫",
+        msg: "Veo bugs... veo bugs heredados por generaciones.",
+        color: "text-purple-400",
+      };
+    if (score < 91)
+      return {
+        emoji: "🤕",
+        msg: "Mi estabilidad emocional depende de que borres una mecánica. Solo una.",
+        color: "text-purple-500",
+      };
+    if (score < 100)
+      return {
+        emoji: "☣️",
+        msg: "RIESGO CRÍTICO: Ni con todaas las IAs juntas haces esto.",
+        color: "text-purple-600",
+      };
+    return {
+      emoji: "💀",
+      msg: "[COACH HA DEJADO LA EXISTENCIA] No fallaste la jam. La jam falló en contenerte.",
+      color: "text-gray-400",
+    };
   };
 
-  const { score, foundWords } = analyzeScope(text);
-  const isPassable = score < 40;
+  const state = getCoachState();
+
+  return (
+    <div className="flex flex-col items-center justify-center p-3 bg-gray-800/50 border border-gray-700 rounded-xl transition-all duration-300">
+      <div className="text-4xl mb-1 animate-bounce">{state.emoji}</div>
+      <div
+        className={`text-[10px] uppercase font-black text-center ${state.color} leading-tight`}
+      >
+        Coach de Scope dice:
+      </div>
+      <div className="text-white text-xs text-center font-medium italic">
+        "{state.msg}"
+      </div>
+    </div>
+  );
+};
+
+// Componente del Scope Meter
+const ScopeMeter = ({ text, theme }) => {
+  const { score, themeDetected } = analyzeScope(text, theme);
+  const writingPhase = localStorage.getItem("writingPhase") || "bad";
+  const isPassable = writingPhase === "good" ? score < 40 : score >= 40;
 
   const getStatus = () => {
     if (score < 20)
@@ -677,10 +802,108 @@ const ScopeMeter = ({ text }) => {
 
   return (
     <div className="space-y-3">
+      {/* Achievements Listener Secret logic */}
+      {(() => {
+        if (typeof window === "undefined") return null;
+
+        // Logro: Monstruo de la Ambición
+        if (
+          writingPhase === "bad" &&
+          score >= 100 &&
+          !localStorage.getItem("achievement_monster")
+        ) {
+          localStorage.setItem("achievement_monster", "true");
+          window.dispatchEvent(
+            new CustomEvent("workshop-achievement", {
+              detail: {
+                icon: "👹",
+                title: "Monstruo de la Ambición",
+                desc: "Tu mala idea es legendaria.",
+              },
+            })
+          );
+        }
+
+        // Logro nuevo: Coach Killer
+        if (score >= 105 && !localStorage.getItem("achievement_killer")) {
+          localStorage.setItem("achievement_killer", "true");
+          window.dispatchEvent(
+            new CustomEvent("workshop-achievement", {
+              detail: {
+                icon: "💀",
+                title: "Asesino de Coaches",
+                desc: "Mataste al Coach de tanto scope.",
+              },
+            })
+          );
+        }
+
+        // Logro: Maestro de la Síntesis
+        if (
+          writingPhase === "good" &&
+          score < 25 &&
+          score > 0 &&
+          !localStorage.getItem("achievement_synthesis")
+        ) {
+          localStorage.setItem("achievement_synthesis", "true");
+          window.dispatchEvent(
+            new CustomEvent("workshop-achievement", {
+              detail: {
+                icon: "🎯",
+                title: "Maestro de la Síntesis",
+                desc: "Scope perfecto para una Jam.",
+              },
+            })
+          );
+        }
+
+        // Logro nuevo: Idea Machine (Escribir tu idea)
+        if (
+          writingPhase === "good" &&
+          text.length > 30 &&
+          !localStorage.getItem("achievement_ideamachine")
+        ) {
+          localStorage.setItem("achievement_ideamachine", "true");
+          window.dispatchEvent(
+            new CustomEvent("workshop-achievement", {
+              detail: {
+                icon: "💡",
+                title: "Máquina de Ideas",
+                desc: "¡Esa idea tiene potencial real!",
+              },
+            })
+          );
+          window.dispatchEvent(new CustomEvent("workshop-confetti"));
+        }
+
+        // Logro nuevo: Theme Visionary (🔮)
+        if (
+          themeDetected &&
+          !localStorage.getItem("achievement_theme_visionary")
+        ) {
+          localStorage.setItem("achievement_theme_visionary", "true");
+          window.dispatchEvent(
+            new CustomEvent("workshop-achievement", {
+              detail: {
+                icon: "🔮",
+                title: "Visionario Táctico",
+                desc: "¡Usaste el tema de la ruleta magistralmente!",
+              },
+            })
+          );
+        }
+
+        return null;
+      })()}
+
       {/* Barra de ambición */}
       <div className="bg-gray-800 border-2 border-gray-600 p-3 rounded-lg">
         <div className="flex items-center justify-between mb-2 text-xs">
-          <span className="text-gray-400 font-medium">MEDIDOR DE AMBICIÓN</span>
+          <span className="text-gray-400 font-medium tracking-tight">
+            {writingPhase === "bad"
+              ? "🔥 MEDIDOR DE AMBICIÓN (¡SUBILO!)"
+              : "⚖️ MEDIDOR DE AMBICIÓN"}
+          </span>
           <span className={`font-bold ${status.color}`}>{status.label}</span>
         </div>
 
@@ -689,8 +912,6 @@ const ScopeMeter = ({ text }) => {
             className={`absolute inset-y-0 left-0 transition-all duration-500 ${status.bg}`}
             style={{ width: `${score}%` }}
           />
-
-          {/* Marcador de límite */}
           <div
             className="absolute top-0 bottom-0 w-0.5 bg-white/50"
             style={{ left: "40%" }}
@@ -704,30 +925,40 @@ const ScopeMeter = ({ text }) => {
         </div>
       </div>
 
-      {/* Palabras detectadas */}
-      {foundWords.length > 0 && (
-        <div className="bg-red-900/30 border border-red-600/50 p-3 rounded-lg">
-          <div className="text-red-400 text-xs font-bold mb-2">
-            ⚠️ Palabras peligrosas detectadas:
+      {/* Coach y Feedback */}
+      <div className="grid grid-cols-2 gap-3 items-stretch">
+        <ScopeCoach score={score} />
+
+        <div
+          className={`p-3 rounded-xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+            themeDetected
+              ? "bg-green-900/30 border-green-600/50"
+              : "bg-gray-800/30 border-gray-700"
+          }`}
+        >
+          <div
+            className={`text-xl mb-1 ${
+              themeDetected ? "grayscale-0" : "grayscale opacity-30"
+            }`}
+          >
+            ✨
           </div>
-          <div className="flex flex-wrap gap-1">
-            {foundWords.slice(0, 6).map((item, i) => (
-              <span
-                key={i}
-                className={`text-xs px-2 py-0.5 rounded ${
-                  item.severity === "high"
-                    ? "bg-red-800 text-red-200"
-                    : item.severity === "medium"
-                    ? "bg-orange-800 text-orange-200"
-                    : "bg-yellow-800 text-yellow-200"
-                }`}
-              >
-                {item.word}
-              </span>
-            ))}
+          <div
+            className={`text-[10px] font-bold uppercase ${
+              themeDetected ? "text-green-400" : "text-gray-500"
+            }`}
+          >
+            Tema Detectado
+          </div>
+          <div
+            className={`text-xs ${
+              themeDetected ? "text-white font-bold" : "text-gray-600"
+            }`}
+          >
+            "{theme}"
           </div>
         </div>
-      )}
+      </div>
 
       {/* Resultado */}
       {text.length > 10 && (
@@ -742,14 +973,18 @@ const ScopeMeter = ({ text }) => {
             <div className="flex items-center gap-2 text-green-400">
               <CheckCircle size={18} />
               <span className="text-sm font-medium">
-                ¡Podés continuar! Tu idea es alcanzable.
+                {writingPhase === "bad"
+                  ? "¡Excelente! Esta idea es una pesadilla de desarrollo."
+                  : "¡Perfecto! Tu idea es alcanzable."}
               </span>
             </div>
           ) : (
             <div className="flex items-center gap-2 text-red-400">
               <AlertTriangle size={18} />
               <span className="text-sm font-medium">
-                Muy ambicioso. Simplificá tu idea.
+                {writingPhase === "bad"
+                  ? "¡Falta ambición! Hacelo más IMPOSIBLE."
+                  : "Muy ambicioso. Simplificá tu idea."}
               </span>
             </div>
           )}
@@ -766,10 +1001,16 @@ const ThemeRoulette = () => {
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [ideaText, setIdeaText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
+  const [writingPhase, setWritingPhase] = useState("bad"); // 'bad' | 'good'
+  const [timeLeft, setTimeLeft] = useState(180); // 3 mins iniciales para mala idea
   const [timerActive, setTimerActive] = useState(false);
   const [currentTip, setCurrentTip] = useState(tips[0]);
   const textareaRef = useRef(null);
+
+  // Sync phase with localStorage for ScopeMeter
+  useEffect(() => {
+    localStorage.setItem("writingPhase", writingPhase);
+  }, [writingPhase]);
 
   // Timer countdown
   useEffect(() => {
@@ -796,6 +1037,8 @@ const ThemeRoulette = () => {
 
   const startWriting = () => {
     setPhase("writing");
+    setWritingPhase("bad");
+    setTimeLeft(180); // 3 minutos para la mala idea
     setTimerActive(true);
     setTimeout(() => textareaRef.current?.focus(), 100);
   };
@@ -807,32 +1050,40 @@ const ThemeRoulette = () => {
     setTimeLeft(600);
     setTimerActive(false);
   };
-
   const analyzeAndProceed = () => {
-    const lowerInput = ideaText.toLowerCase();
-    let score = 0;
+    const { score, themeDetected } = analyzeScope(ideaText, selectedTheme);
 
-    dangerWords.high.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) score += 16;
-    });
-    dangerWords.medium.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) score += 8;
-    });
-    dangerWords.low.forEach((word) => {
-      if (matchWholeWord(lowerInput, word)) score += 2;
-    });
+    if (writingPhase === "good" && !themeDetected) return;
 
-    // Guardar datos en localStorage
+    // Obtener datos actuales
     const workshopData = JSON.parse(
       localStorage.getItem("workshopData") || "{}"
     );
-    workshopData.theme = selectedTheme;
-    workshopData.idea = ideaText;
-    workshopData.scopeScore = Math.min(score, 100);
-    localStorage.setItem("workshopData", JSON.stringify(workshopData));
 
-    if (score < 40) {
-      navigate("/simulador-inversion");
+    if (writingPhase === "bad") {
+      if (score >= 40) {
+        // Guardar mala idea
+        workshopData.badIdea = ideaText;
+        workshopData.badIdeaScore = Math.min(score * 1.5, 200); // Inflamos un poco para mas drama
+        localStorage.setItem("workshopData", JSON.stringify(workshopData));
+
+        // Pasar a la buena idea con efecto
+        window.dispatchEvent(new CustomEvent("workshop-confetti"));
+        setWritingPhase("good");
+        setIdeaText("");
+        setTimeLeft(600); // 10 minutos para la buena
+      }
+    } else {
+      if (score < 40) {
+        // Guardar buena idea
+        workshopData.theme = selectedTheme;
+        workshopData.idea = ideaText;
+        workshopData.scopeScore = Math.min(score, 100);
+        localStorage.setItem("workshopData", JSON.stringify(workshopData));
+
+        window.dispatchEvent(new CustomEvent("workshop-confetti"));
+        navigate("/simulador-inversion");
+      }
     }
   };
 
@@ -842,25 +1093,42 @@ const ThemeRoulette = () => {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
+  const { score, themeDetected } = analyzeScope(ideaText, selectedTheme);
+
   const canProceed =
     ideaText.length > 20 &&
-    (() => {
-      const lowerInput = ideaText.toLowerCase();
-      let score = 0;
-      dangerWords.high.forEach((word) => {
-        if (matchWholeWord(lowerInput, word)) score += 16;
-      });
-      dangerWords.medium.forEach((word) => {
-        if (matchWholeWord(lowerInput, word)) score += 8;
-      });
-      dangerWords.low.forEach((word) => {
-        if (matchWholeWord(lowerInput, word)) score += 2;
-      });
-      return score < 40;
-    })();
+    (writingPhase === "bad" ? score >= 40 : score < 40 && themeDetected);
+
+  // Screen shake effect for high scope
+  const shakeClass =
+    writingPhase === "bad" && score > 70 ? "animate-shake" : "";
+  const bgIntensity = score / 100;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div
+      className={`min-h-screen bg-gray-900 text-white transition-colors duration-500`}
+    >
+      {/* Glow de fondo dinámico */}
+      <div
+        className="fixed inset-0 pointer-events-none transition-opacity duration-1000"
+        style={{
+          background: `radial-gradient(circle at center, rgba(239, 68, 68, ${
+            bgIntensity * 0.15
+          }) 0%, transparent 70%)`,
+          opacity: score > 40 ? 1 : 0,
+        }}
+      />
+
+      <style>{`
+        @keyframes shake {
+          0%, 100% { transform: translate(0, 0); }
+          10%, 30%, 50%, 70%, 90% { transform: translate(-2px, -2px); }
+          20%, 40%, 60%, 80% { transform: translate(2px, 2px); }
+        }
+        .animate-shake {
+          animation: shake 0.5s infinite;
+        }
+      `}</style>
       {/* Fondo */}
       <div
         className="fixed inset-0 opacity-5 pointer-events-none"
@@ -883,7 +1151,7 @@ const ThemeRoulette = () => {
 
           <div className="text-purple-300 flex items-center gap-1.5 text-sm font-medium">
             <Sparkles size={16} />
-            Paso 1 de 4
+            Paso 1 de 3
           </div>
 
           {phase === "writing" && (
@@ -941,8 +1209,15 @@ const ThemeRoulette = () => {
               <h2 className="text-xl md:text-3xl font-bold text-yellow-400 mb-2">
                 "{selectedTheme}"
               </h2>
+              <h1 className="text-xl sm:text-2xl font-bold mb-2">
+                {writingPhase === "bad"
+                  ? "🧠 Fase 1: El Monstruo de la Ambición"
+                  : "✨ Fase 2: Tu Idea MVP"}
+              </h1>
               <p className="text-gray-400 text-sm md:text-base">
-                Describí tu idea de juego en 10 minutos
+                {writingPhase === "bad"
+                  ? "Escribí la idea más imposible y gigante que se te ocurra."
+                  : "Ahora simplificalo al máximo. ¿Qué es lo mínimo que necesitás?"}
               </p>
             </div>
 
@@ -954,7 +1229,11 @@ const ThemeRoulette = () => {
                   ref={textareaRef}
                   value={ideaText}
                   onChange={(e) => setIdeaText(e.target.value)}
-                  placeholder="Mi juego es un... donde el jugador... La mecánica principal es..."
+                  placeholder={
+                    writingPhase === "bad"
+                      ? "Ej: Un MMO open-world con realismo extremo, 1000 jugadores y blockchain..."
+                      : "Ej: Un plataformero de 1 nivel donde el personaje cambia de color..."
+                  }
                   className="w-full h-40 md:h-56 p-3 md:p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white text-sm md:text-base placeholder-gray-500 focus:border-purple-500 focus:outline-none resize-none"
                   disabled={timeLeft <= 0}
                 />
@@ -967,58 +1246,47 @@ const ThemeRoulette = () => {
               {/* Columna derecha: Ayuda con preguntas clave */}
               <div className="bg-purple-900/30 border border-purple-600/50 p-3 md:p-4 rounded-lg">
                 <h3 className="text-purple-300 font-bold text-sm md:text-base mb-3 flex items-center gap-2">
-                  💡 Preguntas para guiarte:
+                  <Lightbulb size={18} />
+                  {writingPhase === "bad"
+                    ? "Cómo hacerla MÁS imposible:"
+                    : "Preguntas para guiarte:"}
                 </h3>
                 <ul className="space-y-2 text-gray-300 text-xs md:text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-400">▸</span>
-                    <span>
-                      ¿Qué <strong className="text-white">género</strong> es?
-                      (plataformas, puzzle, shooter...)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-400">▸</span>
-                    <span>
-                      ¿Cuál es la{" "}
-                      <strong className="text-white">mecánica principal</strong>
-                      ? (saltar, disparar, esquivar...)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-400">▸</span>
-                    <span>
-                      ¿Cómo se relaciona con el{" "}
-                      <strong className="text-white">tema</strong>?
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-400">▸</span>
-                    <span>
-                      ¿Qué lo hace{" "}
-                      <strong className="text-white">divertido</strong>?
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-400">▸</span>
-                    <span>
-                      ¿Cuál es el{" "}
-                      <strong className="text-white">objetivo</strong> del
-                      jugador?
-                    </span>
-                  </li>
+                  {(writingPhase === "bad"
+                    ? [
+                        "¿Tiene multijugador masivo?",
+                        "¿Es mundo abierto infinito?",
+                        "¿Tiene gráficos fotorrealistas?",
+                        "¿Usa IA compleja o red neuronal?",
+                        "¿Tiene mil niveles y cinemáticas?",
+                      ]
+                    : [
+                        "¿Cuál es la mecánica principal?",
+                        "¿Cómo se gana o se pierde?",
+                        "¿Cómo se controla el personaje?",
+                        "¿Qué es lo más simple que podés hacer?",
+                        "¿Se puede terminar en una tarde?",
+                      ]
+                  ).map((q, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-purple-400 mt-1">•</span>
+                      <span>{q}</span>
+                    </li>
+                  ))}
                 </ul>
                 <div className="mt-3 pt-3 border-t border-purple-600/30">
-                  <p className="text-purple-200 text-xs italic">
-                    Tip: Una buena idea se puede explicar en 2-3 oraciones.
+                  <p className="text-purple-200 text-xs italic text-center">
+                    {writingPhase === "bad"
+                      ? "Tip: ¡No te guardes nada, queremos el caos!"
+                      : "Tip: Una buena idea se puede explicar en 2-3 oraciones."}
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Scope Meter */}
-            <div className="mt-4">
-              <ScopeMeter text={ideaText} />
+            <div className={`mt-4 ${shakeClass}`}>
+              <ScopeMeter text={ideaText} theme={selectedTheme} />
             </div>
 
             {/* Tip dinámico */}
@@ -1049,18 +1317,24 @@ const ThemeRoulette = () => {
                 disabled={!canProceed}
                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 font-bold rounded-lg border-2 transition-all ${
                   canProceed
-                    ? "bg-green-600 border-green-400 text-white hover:bg-green-500 active:scale-95"
+                    ? "bg-purple-600 border-purple-400 text-white hover:bg-purple-500 active:scale-95 shadow-lg shadow-purple-900/20"
                     : "bg-gray-700 border-gray-600 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                Continuar
+                {writingPhase === "bad"
+                  ? "Subir Mala Idea"
+                  : "Continuar Taller"}
                 <ArrowRight size={16} />
               </button>
             </div>
 
             {!canProceed && ideaText.length > 20 && (
-              <p className="text-center text-red-400 text-xs mt-2">
-                ⚠️ Simplificá tu idea para poder continuar
+              <p className="text-center text-red-400 text-xs mt-2 font-bold animate-pulse">
+                {writingPhase === "bad"
+                  ? "⚠️ ¡Necesitamos más ambición! Alcanza el estado Imposible."
+                  : !themeDetected
+                  ? `⚠️ ¡Eh! Tenés que usar la palabra "${selectedTheme}" en tu idea.`
+                  : "⚠️ Simplificá tu idea para poder continuar."}
               </p>
             )}
           </>

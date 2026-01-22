@@ -21,7 +21,40 @@ const WorkshopSummary = () => {
     // Cargar datos del localStorage
     const savedData = localStorage.getItem("workshopData");
     if (savedData) {
-      setData(JSON.parse(savedData));
+      const parsed = JSON.parse(savedData);
+      setData(parsed);
+
+      // Disparar confeti final
+      window.dispatchEvent(new CustomEvent("workshop-confetti"));
+
+      // Disparar logros finales si corresponde
+      const achievements = [
+        {
+          id: "budget",
+          cond: parsed.totalSpent < 70000 * 0.7,
+          icon: "💰",
+          title: "Billetera de Hierro",
+          desc: "Ahorraste más del 30% del presupuesto.",
+        },
+        {
+          id: "theme",
+          cond: parsed.themeDetected,
+          icon: "🔮",
+          title: "Visionario del Tema",
+          desc: "Cumpliste el destino de la ruleta.",
+        },
+      ];
+
+      achievements.forEach((ach, index) => {
+        if (ach.cond && !localStorage.getItem(`achievement_${ach.id}`)) {
+          localStorage.setItem(`achievement_${ach.id}`, "true");
+          setTimeout(() => {
+            window.dispatchEvent(
+              new CustomEvent("workshop-achievement", { detail: ach })
+            );
+          }, 1000 + index * 4500);
+        }
+      });
     }
   }, []);
 
@@ -60,10 +93,6 @@ const WorkshopSummary = () => {
     if (data.scopeScore > 60) score -= 25;
     else if (data.scopeScore > 40) score -= 10;
 
-    // Bonus por pitch claro
-    if (data.pitchScore >= 80) score += 10;
-    else if (data.pitchScore < 60) score -= 10;
-
     return Math.max(0, Math.min(100, score));
   };
 
@@ -83,6 +112,54 @@ const WorkshopSummary = () => {
     return "Necesitás simplificar más. ¡Menos es más!";
   };
 
+  const getBadIdeaMessage = (score) => {
+    if (score >= 120)
+      return "Nivel: Delirios de Grandeza. Ubisoft te está llamando para que dirijas su Next-Gen MMO.";
+    if (score >= 100)
+      return "Eres bueno pensando ideas ambiciosas. ¿Seguro que no trabajás en un AAA?";
+    if (score >= 81)
+      return "Sos un maestro del Scope Creep. Esa idea no la terminás ni en tres vidas.";
+    if (score >= 61)
+      return "Esa idea era realmente mala. Directo al cementerio de proyectos olvidados.";
+    return "¡Eso es ser ambicioso! Tu editor de niveles y el multijugador online ya están en camino (mentira).";
+  };
+
+  const getBadges = () => {
+    const badges = [];
+    if (data.scopeScore < 25)
+      badges.push({
+        icon: "🎯",
+        title: "Maestro de la Síntesis",
+        desc: "Scope perfecto para una Jam.",
+      });
+    if (data.badIdeaScore > 140)
+      badges.push({
+        icon: "👹",
+        title: "Monstruo de la Ambición",
+        desc: "Tu mala idea fue legendaria.",
+      });
+    if (data.totalSpent < BUDGET * 0.7)
+      badges.push({
+        icon: "💰",
+        title: "Billetera de Hierro",
+        desc: "Ahorraste más del 30%.",
+      });
+    if (data.totalSpent >= BUDGET)
+      badges.push({
+        icon: "🎢",
+        title: "Viviendo al Límite",
+        desc: "Gastaste hasta el último centavo.",
+      });
+    badges.push({
+      icon: "✨",
+      title: "Visionario del Tema",
+      desc: "Usaste el tema correctamente.",
+    });
+    return badges;
+  };
+
+  const badges = getBadges();
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Fondo */}
@@ -99,15 +176,15 @@ const WorkshopSummary = () => {
       <header className="sticky top-0 z-40 bg-gray-900/95 border-b-2 border-yellow-600 backdrop-blur-sm">
         <div className="max-w-lg mx-auto px-3 py-2.5 flex items-center justify-between">
           <Link
-            to="/elevator-pitch"
-            className="text-gray-400 hover:text-white transition-colors no-underline text-sm"
+            to="/simulador-inversion"
+            className="text-gray-400 hover:text-white transition-colors no-underline text-sm flex items-center gap-1"
           >
             ← Volver
           </Link>
 
           <div className="text-yellow-300 flex items-center gap-1.5 text-sm font-medium">
             <Trophy size={16} />
-            Resumen Final
+            Paso 3 de 3
           </div>
 
           <div />
@@ -128,6 +205,32 @@ const WorkshopSummary = () => {
           <p className="text-gray-300 text-sm">{getScoreMessage(finalScore)}</p>
         </div>
 
+        {/* Sección: Medallas */}
+        <div className="mb-6">
+          <h3 className="text-yellow-500 font-black text-xs uppercase tracking-widest mb-3 text-center">
+            🏆 Medallas Obtenidas
+          </h3>
+          <div className="grid grid-cols-2 gap-2">
+            {badges.map((badge, i) => (
+              <div
+                key={i}
+                className="bg-gray-800/50 border border-gray-700 p-2 rounded-xl flex items-center gap-2 animate-fade-in"
+                style={{ animationDelay: `${i * 150}ms` }}
+              >
+                <div className="text-2xl">{badge.icon}</div>
+                <div>
+                  <div className="text-[10px] font-black text-yellow-500 leading-tight uppercase">
+                    {badge.title}
+                  </div>
+                  <div className="text-[9px] text-gray-400 leading-tight">
+                    {badge.desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Sección: Tema */}
         <div className="bg-gray-800 border-2 border-purple-600 rounded-xl p-4 mb-4">
           <div className="flex items-center gap-2 mb-2">
@@ -136,6 +239,43 @@ const WorkshopSummary = () => {
           </div>
           <p className="text-2xl font-bold text-white">"{data.theme}"</p>
         </div>
+
+        {/* Sección: Mala Idea (Monstruo de la Ambición) */}
+        {data.badIdea && (
+          <div className="bg-red-900/20 border-2 border-red-900 rounded-xl p-4 mb-4 relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 text-red-900/20 group-hover:scale-110 transition-transform duration-700">
+              <AlertTriangle size={120} />
+            </div>
+
+            <div className="relative z-10 flex items-center gap-2 mb-2">
+              <AlertTriangle size={18} className="text-red-500" />
+              <h3 className="font-bold text-red-400">
+                El Monstruo de la Ambición
+              </h3>
+              <span className="ml-auto text-[10px] bg-red-900 text-red-200 px-2 py-0.5 rounded font-bold uppercase">
+                Evitado
+              </span>
+            </div>
+
+            <p className="relative z-10 text-gray-400 text-sm leading-relaxed italic mb-3">
+              "{data.badIdea}"
+            </p>
+
+            <div className="relative z-10 p-3 bg-red-900/40 rounded-lg border border-red-700/50">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs font-bold text-red-200 uppercase tracking-wider">
+                  Nivel de locura
+                </span>
+                <span className="text-sm font-black text-red-400">
+                  {data.badIdeaScore}%
+                </span>
+              </div>
+              <p className="text-xs text-red-200 leading-tight">
+                {getBadIdeaMessage(data.badIdeaScore)}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Sección: Idea */}
         <div className="bg-gray-800 border-2 border-indigo-600 rounded-xl p-4 mb-4">
@@ -240,28 +380,6 @@ const WorkshopSummary = () => {
               <CheckCircle size={12} /> Dentro del presupuesto
             </div>
           )}
-        </div>
-
-        {/* Sección: Pitch */}
-        <div className="bg-gray-800 border-2 border-blue-600 rounded-xl p-4 mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <Target size={18} className="text-blue-400" />
-            <h3 className="font-bold text-blue-300">Tu Pitch</h3>
-            <span
-              className={`ml-auto text-xs px-2 py-0.5 rounded ${
-                data.pitchScore >= 80
-                  ? "bg-green-800 text-green-200"
-                  : data.pitchScore >= 60
-                  ? "bg-yellow-800 text-yellow-200"
-                  : "bg-red-800 text-red-200"
-              }`}
-            >
-              Claridad: {data.pitchScore}%
-            </span>
-          </div>
-          <p className="text-gray-300 text-sm leading-relaxed italic">
-            "{data.pitch}"
-          </p>
         </div>
 
         {/* Consejo final */}

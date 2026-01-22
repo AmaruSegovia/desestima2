@@ -11,6 +11,17 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import minecraftMvp from "./assets/minecraft1.png";
+import minecraftFinal from "./assets/minecraft2.webp";
+import meatBoyMvp from "./assets/supermeatboy1.png";
+import meatBoyFinal from "./assets/supermeatboy2.webp";
+import hollowKnightMvp from "./assets/hollowknight1.png";
+import hollowKnightFinal from "./assets/hollowknight2.jpg";
+import stardewValleyMvp from "./assets/stardewvalley1.png";
+import stardewValleyFinal from "./assets/stardewvalley2.webp";
+import celesteMvp from "./assets/celeste1.jpg";
+import celesteFinal from "./assets/celeste2.jpg";
+
 // Datos de juegos famosos con sus MVPs
 const mvpExamples = [
   {
@@ -32,8 +43,8 @@ const mvpExamples = [
     ],
     lesson:
       "Notch hizo el primer prototipo en una semana. Solo podías caminar y romper bloques. ¡Y fue suficiente para saber que era divertido!",
-    mvpImage: "🟫",
-    finalImage: "🏰",
+    mvpImage: minecraftMvp,
+    finalImage: minecraftFinal,
   },
   {
     id: 2,
@@ -54,8 +65,8 @@ const mvpExamples = [
     ],
     lesson:
       "El prototipo era literalmente un cuadrado rojo. No tenía animaciones ni efectos. Solo el salto perfecto.",
-    mvpImage: "🟥",
-    finalImage: "🥩",
+    mvpImage: meatBoyMvp,
+    finalImage: meatBoyFinal,
   },
   {
     id: 3,
@@ -72,8 +83,8 @@ const mvpExamples = [
     ],
     lesson:
       "Empezó en una Jam de 72 horas. El primer prototipo tenía UN solo enemigo y UN solo ataque.",
-    mvpImage: "⚔️",
-    finalImage: "🦋",
+    mvpImage: hollowKnightMvp,
+    finalImage: hollowKnightFinal,
   },
   {
     id: 4,
@@ -90,8 +101,8 @@ const mvpExamples = [
     ],
     lesson:
       'ConcernedApe (1 persona) empezó solo con "plantar y cosechar". Todo lo demás vino después.',
-    mvpImage: "🌱",
-    finalImage: "🏡",
+    mvpImage: stardewValleyMvp,
+    finalImage: stardewValleyFinal,
   },
   {
     id: 5,
@@ -107,8 +118,8 @@ const mvpExamples = [
     ],
     lesson:
       "El prototipo de PICO-8 solo tenía salto y dash. ¡Y ya era increíblemente divertido!",
-    mvpImage: "🔴",
-    finalImage: "🍓",
+    mvpImage: celesteMvp,
+    finalImage: celesteFinal,
   },
 ];
 
@@ -154,15 +165,15 @@ const MVPGallery = () => {
       <header className="sticky top-0 z-40 bg-gray-900/95 border-b-2 border-yellow-600 backdrop-blur-sm">
         <div className="max-w-lg mx-auto px-3 py-2.5 flex items-center justify-between">
           <Link
-            to="/elevator-pitch"
-            className="text-gray-400 hover:text-white transition-colors no-underline text-sm"
+            to="/resumen"
+            className="text-gray-400 hover:text-white transition-colors no-underline text-sm flex items-center gap-1"
           >
             ← Volver
           </Link>
 
           <div className="text-yellow-300 flex items-center gap-1.5 text-sm font-medium">
             <Star size={16} />
-            Paso 4 de 4
+            Galería de Inspiración
           </div>
 
           <div className="text-gray-400 text-sm">
@@ -214,27 +225,37 @@ const MVPGallery = () => {
               </button>
             </div>
 
-            {/* Comparación visual */}
-            <div className="flex items-center justify-center gap-4 py-6">
-              <div
-                className={`text-6xl transition-all duration-300 ${
-                  !showFinal ? "scale-110" : "scale-75 opacity-50"
+            {/* Comparación visual con relación 16:9 */}
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-900 border border-gray-700 mb-4 group">
+              {/* Imagen MVP */}
+              <img
+                src={currentGame.mvpImage}
+                alt={`${currentGame.name} MVP`}
+                className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ${
+                  !showFinal ? "opacity-100 scale-100" : "opacity-0 scale-110"
                 }`}
-              >
-                {currentGame.mvpImage}
-              </div>
-              <ArrowRight
-                className={`text-gray-500 transition-all ${
-                  showFinal ? "text-green-400" : ""
-                }`}
-                size={24}
               />
-              <div
-                className={`text-6xl transition-all duration-300 ${
-                  showFinal ? "scale-110" : "scale-75 opacity-50"
+
+              {/* Imagen Final */}
+              <img
+                src={currentGame.finalImage}
+                alt={`${currentGame.name} Final`}
+                className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ${
+                  showFinal ? "opacity-100 scale-100" : "opacity-0 scale-110"
                 }`}
-              >
-                {currentGame.finalImage}
+              />
+
+              {/* Badge indicativo que flota sobre la imagen */}
+              <div className="absolute top-2 left-2 z-10">
+                <span
+                  className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                    showFinal
+                      ? "bg-green-600 text-white"
+                      : "bg-blue-600 text-white"
+                  }`}
+                >
+                  {showFinal ? "Versión Final" : "Prototipo MVP"}
+                </span>
               </div>
             </div>
 

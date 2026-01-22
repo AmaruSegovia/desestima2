@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import InvestmentSimulator from "./InvestmentSimulator";
 import ThemeRoulette from "./ThemeRoulette";
-import ElevatorPitch from "./ElevatorPitch";
 import MVPGallery from "./MVPGallery";
 import WorkshopSummary from "./WorkshopSummary";
 
@@ -915,17 +914,133 @@ const HomePage = () => {
   );
 };
 
-// Componente App con rutas
-const App = () => {
+const AchievementToast = ({ achievement, onComplete }) => {
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 4000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/taller" element={<ThemeRoulette />} />
-      <Route path="/simulador-inversion" element={<InvestmentSimulator />} />
-      <Route path="/elevator-pitch" element={<ElevatorPitch />} />
-      <Route path="/resumen" element={<WorkshopSummary />} />
-      <Route path="/galeria-mvp" element={<MVPGallery />} />
-    </Routes>
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[999] animate-bounce-in pointer-events-none">
+      <div className="bg-gray-800 border-2 border-yellow-500 rounded-2xl p-4 shadow-2xl shadow-yellow-500/40 flex items-center gap-4 min-w-[300px] backdrop-blur-md bg-opacity-95">
+        <div className="text-4xl filter drop-shadow-md">{achievement.icon}</div>
+        <div className="flex-1">
+          <div className="text-[10px] font-black text-yellow-500 uppercase tracking-widest leading-tight mb-0.5">
+            ¡Logro Desbloqueado!
+          </div>
+          <div className="text-base font-bold text-white leading-tight">
+            {achievement.title}
+          </div>
+          <div className="text-xs text-gray-300 leading-tight mt-1 opacity-80">
+            {achievement.desc}
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @keyframes bounceIn {
+          0% { transform: translate(-50%, -100%) scale(0.5); opacity: 0; }
+          70% { transform: translate(-50%, 20px) scale(1.1); opacity: 1; }
+          100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        }
+        .animate-bounce-in {
+          animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const Confetti = ({ onComplete }) => {
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 4000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[998] overflow-hidden">
+      {[...Array(60)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-2.5 h-2.5 rounded-sm animate-confetti"
+          style={{
+            backgroundColor: [
+              "#f59e0b",
+              "#8b5cf6",
+              "#ec4899",
+              "#10b981",
+              "#3b82f6",
+              "#ef4444",
+            ][Math.floor(Math.random() * 6)],
+            left: `${Math.random() * 100}%`,
+            top: `-20px`,
+            animationDelay: `${Math.random() * 3}s`,
+            animationDuration: `${2.5 + Math.random() * 2}s`,
+            opacity: 0.8,
+            transform: `rotate(${Math.random() * 360}deg)`,
+          }}
+        />
+      ))}
+      <style>{`
+        @keyframes confetti {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          20% { opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .animate-confetti {
+          animation: confetti linear forwards;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Componente App con rutas y sistema de logros
+const App = () => {
+  const [toasts, setToasts] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    const handleAchievement = (e) => {
+      console.log("Achievement trigger:", e.detail);
+      setToasts((prev) => [...prev, e.detail]);
+    };
+    const handleConfetti = () => {
+      console.log("Confetti trigger");
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000);
+    };
+
+    window.addEventListener("workshop-achievement", handleAchievement);
+    window.addEventListener("workshop-confetti", handleConfetti);
+
+    return () => {
+      window.removeEventListener("workshop-achievement", handleAchievement);
+      window.removeEventListener("workshop-confetti", handleConfetti);
+    };
+  }, []);
+
+  const removeFirstToast = () => {
+    setToasts((prev) => prev.slice(1));
+  };
+
+  return (
+    <>
+      {toasts.length > 0 && (
+        <AchievementToast
+          key={toasts[0].title}
+          achievement={toasts[0]}
+          onComplete={removeFirstToast}
+        />
+      )}
+      {showConfetti && <Confetti onComplete={() => setShowConfetti(false)} />}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/taller" element={<ThemeRoulette />} />
+        <Route path="/simulador-inversion" element={<InvestmentSimulator />} />
+        <Route path="/resumen" element={<WorkshopSummary />} />
+        <Route path="/galeria-mvp" element={<MVPGallery />} />
+      </Routes>
+    </>
   );
 };
 

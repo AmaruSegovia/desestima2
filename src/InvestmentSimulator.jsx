@@ -304,7 +304,7 @@ const ResultModal = ({ isOpen, success, spent, onClose, onRetry }) => {
             </button>
             {success ? (
               <Link
-                to="/elevator-pitch"
+                to="/resumen"
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 border-2 border-green-400 text-sm text-white font-bold hover:bg-green-500 active:translate-y-0.5 transition-all no-underline"
               >
                 Continuar
@@ -394,7 +394,7 @@ const InvestmentSimulator = () => {
 
           <div className="text-indigo-300 flex items-center gap-1.5 text-sm font-medium">
             <Gamepad2 size={16} />
-            Paso 2 de 4
+            Paso 2 de 3
           </div>
 
           <div
