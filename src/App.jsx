@@ -21,6 +21,7 @@ import InvestmentSimulator from "./InvestmentSimulator";
 import ThemeRoulette from "./ThemeRoulette";
 import ElevatorPitch from "./ElevatorPitch";
 import MVPGallery from "./MVPGallery";
+import WorkshopSummary from "./WorkshopSummary";
 
 // --- IMPORTS DE ASSETS (Tus imágenes) ---
 import candelaImg from "./assets/candela.png";
@@ -922,6 +923,7 @@ const App = () => {
       <Route path="/taller" element={<ThemeRoulette />} />
       <Route path="/simulador-inversion" element={<InvestmentSimulator />} />
       <Route path="/elevator-pitch" element={<ElevatorPitch />} />
+      <Route path="/resumen" element={<WorkshopSummary />} />
       <Route path="/galeria-mvp" element={<MVPGallery />} />
     </Routes>
   );

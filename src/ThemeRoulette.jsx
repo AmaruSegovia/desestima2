@@ -26,81 +26,339 @@ const themes = [
   "Exploración",
 ];
 
-// Palabras clave que indican ambición excesiva
+// Palabras clave que indican ambición excesiva (español argentino)
 const dangerWords = {
   high: [
+    // Multijugador y online
     "multijugador",
     "online",
     "multiplayer",
     "coop",
     "cooperativo",
+    "en linea",
+    "en línea",
+    "pvp",
+    "versus",
+    "competitivo online",
+    "servers",
+    "servidor",
+    "servidores",
+    // Mundo abierto
     "open world",
     "mundo abierto",
     "sandbox",
+    "exploración libre",
+    "mapa gigante",
+    "mapa enorme",
+    "mapa grande",
+    "mundo enorme",
+    "mundo gigante",
+    "mundo grande",
+    // Géneros complejos
     "mmorpg",
     "rpg",
     "rol",
-    "realista",
+    "jrpg",
+    "action rpg",
+    "souls-like",
+    "soulslike",
+    "roguelike",
+    "metroidvania",
+    "battle royale",
+    // 3D y gráficos complejos
     "3d",
+    "realista",
     "fotorrealista",
+    "ray tracing",
+    "graficos realistas",
+    "gráficos realistas",
+    "hiperrealista",
+    "ultra realista",
+    // Historia y narrativa
     "historia compleja",
     "narrativa profunda",
+    "historia profunda",
+    "lore extenso",
+    "varios finales",
+    "múltiples finales",
+    "multiples finales",
+    "finales alternativos",
+    "finales diferentes",
+    "muchos finales",
+    "distintos finales",
+    "ramificaciones",
+    "arbol de decisiones",
+    "árbol de decisiones",
+    "decisiones que importan",
+    "elecciones morales",
+    "historia ramificada",
+    "narrativa no lineal",
+    // Cantidades grandes
     "cientos",
     "miles",
     "100",
     "50",
     "muchos niveles",
+    "muchas misiones",
+    "muchos personajes",
+    "muchos enemigos",
+    "montón de",
+    "un montón",
+    "bocha de",
+    "banda de",
+    "mil",
+    "infinitos",
+    "infinito",
+    "ilimitado",
+    "ilimitados",
+    // Cinemáticas y multimedia
     "cinematicas",
     "cinemáticas",
     "cutscenes",
+    "escenas cinematográficas",
     "voice acting",
     "voces",
     "doblaje",
+    "actuación de voz",
+    "locutor",
+    "banda sonora orquestal",
+    "orquesta",
+    "música original completa",
+    // IA y física avanzada
     "inteligencia artificial avanzada",
     "ia compleja",
+    "ia avanzada",
     "física realista",
     "simulación",
+    "simulador",
+    "sistema de física",
+    // Crafting y sistemas complejos
     "crafting complejo",
     "crafteo avanzado",
+    "sistema de crafteo",
+    "arbol de habilidades",
+    "árbol de habilidades",
+    "skill tree",
+    "clases de personaje",
+    "builds",
+    "especialización",
+    "especializaciones",
+    // Otros términos peligrosos
+    "mod support",
+    "soporte de mods",
+    "editor de niveles",
+    "level editor",
+    "procedural",
+    "generación procedural",
+    "generacion procedural",
+    "destrucción de escenarios",
+    "todo destructible",
+    "física destructible",
   ],
   medium: [
+    // Inventario y sistemas
     "inventario",
     "inventory",
+    "sistema de items",
+    "equipamiento",
+    "armas diferentes",
+    "muchas armas",
+    "arsenal",
+    "armería",
+    // Diálogos
     "diálogos",
     "dialogo",
+    "dialogos",
     "conversaciones",
+    "sistema de diálogos",
+    "npc con dialogos",
+    "charlar con npcs",
+    // Guardado
     "sistema de guardado",
     "save system",
+    "guardar partida",
+    "checkpoints múltiples",
+    "autoguardado complejo",
+    // Power ups y mejoras
     "power ups",
     "powerups",
     "mejoras",
+    "upgrades",
+    "subir de nivel",
+    "experiencia",
+    "xp",
+    "puntos de experiencia",
+    "nivel del personaje",
+    // Jefes y enemigos
     "jefe final",
     "boss",
     "bosses",
+    "jefes",
+    "mini boss",
+    "miniboss",
     "enemigos diferentes",
     "tipos de enemigos",
+    "variedad de enemigos",
+    "enemigos únicos",
+    "ia de enemigos",
+    // Niveles y mundos
     "niveles",
     "levels",
     "mundos",
+    "zonas",
+    "áreas",
+    "biomas",
+    "niveles secretos",
+    "mundo secreto",
+    "areas ocultas",
+    "áreas ocultas",
+    // Personajes
     "personajes",
     "characters",
+    "personajes jugables",
+    "personajes desbloqueables",
+    "skins",
+    "customización",
+    "personalización del personaje",
+    // Animaciones
     "animaciones",
     "animations",
+    "animaciones complejas",
+    "mocap",
     "partículas",
     "efectos especiales",
+    "vfx",
+    "efectos visuales",
+    // Tutorial
     "tutorial",
     "guía",
+    "tutorial interactivo",
+    "sistema de ayuda",
+    // Misiones
+    "misiones",
+    "quests",
+    "misiones secundarias",
+    "side quests",
+    "objetivos opcionales",
+    "coleccionables",
+    // Clima y tiempo
+    "clima dinámico",
+    "ciclo dia noche",
+    "ciclo día noche",
+    "día y noche",
+    "estaciones",
+    "clima cambiante",
+    // Economía
+    "economía",
+    "tienda",
+    "comprar y vender",
+    "dinero",
+    "monedas",
+    "sistema económico",
   ],
   low: [
+    // Puntuación básica
     "puntuación",
     "score",
     "puntos",
+    "high score",
+    "puntaje",
+    "récord",
+    "record",
+    "mejor puntuación",
+    "mejor puntaje",
+    "combo",
+    "multiplicador",
+    "streak",
+    "racha",
+    "bonus",
+    "puntos extra",
+    // Menús y UI básica
     "menú",
     "menu",
+    "menú principal",
+    "pantalla de inicio",
+    "main menu",
+    "botón de play",
+    "opciones",
+    "settings",
+    "configuración",
+    "pantalla de carga",
+    "loading screen",
+    "splash screen",
+    // Audio básico
     "sonidos",
     "música",
+    "efectos de sonido",
+    "sfx",
+    "soundtrack",
+    "música de fondo",
+    "sonido ambiente",
+    "audio",
+    // Pausa
     "pausa",
     "pause",
+    "pantalla de pausa",
+    "pausar el juego",
+    // Finales básicos
+    "créditos",
+    "creditos",
+    "pantalla de fin",
+    "game over",
+    "you win",
+    "victoria",
+    "derrota",
+    "win screen",
+    "lose screen",
+    // Controles
+    "controles",
+    "teclado",
+    "mouse",
+    "gamepad",
+    "joystick",
+    "touch",
+    "controles táctiles",
+    "rebindear",
+    "remapear",
+    // Básicos de gameplay
+    "vidas",
+    "corazones",
+    "health bar",
+    "barra de vida",
+    "hp",
+    "respawn",
+    "checkpoint",
+    "reiniciar",
+    "restart",
+    "timer",
+    "tiempo límite",
+    "cuenta regresiva",
+    "countdown",
+    // Visual básico
+    "cámara",
+    "camara",
+    "zoom",
+    "scroll",
+    "parallax",
+    "fondo",
+    "background",
+    "sprites",
+    "pixel art",
+    "pixelart",
+    // Otros básicos
+    "enemigo",
+    "obstáculo",
+    "plataforma",
+    "moneda",
+    "item",
+    "colisión",
+    "hitbox",
+    "trigger",
+    "spawn",
+    "spawner",
+    "random",
+    "aleatorio",
+    "procedural simple",
   ],
 };
 
@@ -398,7 +656,7 @@ const ThemeRoulette = () => {
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [ideaText, setIdeaText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutos
   const [timerActive, setTimerActive] = useState(false);
   const [currentTip, setCurrentTip] = useState(tips[0]);
   const textareaRef = useRef(null);
@@ -436,7 +694,7 @@ const ThemeRoulette = () => {
     setPhase("roulette");
     setSelectedTheme(null);
     setIdeaText("");
-    setTimeLeft(120);
+    setTimeLeft(300);
     setTimerActive(false);
   };
 
@@ -450,6 +708,18 @@ const ThemeRoulette = () => {
     dangerWords.medium.forEach((word) => {
       if (lowerInput.includes(word)) score += 15;
     });
+    dangerWords.low.forEach((word) => {
+      if (lowerInput.includes(word)) score += 5;
+    });
+
+    // Guardar datos en localStorage
+    const workshopData = JSON.parse(
+      localStorage.getItem("workshopData") || "{}"
+    );
+    workshopData.theme = selectedTheme;
+    workshopData.idea = ideaText;
+    workshopData.scopeScore = Math.min(score, 100);
+    localStorage.setItem("workshopData", JSON.stringify(workshopData));
 
     if (score < 40) {
       navigate("/simulador-inversion");
@@ -557,7 +827,7 @@ const ThemeRoulette = () => {
                 "{selectedTheme}"
               </h2>
               <p className="text-gray-400 text-sm">
-                Describí tu idea de juego en 2 minutos
+                Describí tu idea de juego en 5 minutos
               </p>
             </div>
 

@@ -179,7 +179,15 @@ const ElevatorPitch = () => {
   };
 
   const handleContinue = () => {
-    navigate("/galeria-mvp");
+    // Guardar datos en localStorage
+    const workshopData = JSON.parse(
+      localStorage.getItem("workshopData") || "{}"
+    );
+    workshopData.pitch = pitchText;
+    workshopData.pitchScore = analysis.score;
+    localStorage.setItem("workshopData", JSON.stringify(workshopData));
+
+    navigate("/resumen");
   };
 
   const getScoreColor = (score) => {

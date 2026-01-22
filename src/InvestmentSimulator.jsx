@@ -349,6 +349,18 @@ const InvestmentSimulator = () => {
   };
 
   const handleInvest = () => {
+    // Guardar datos en localStorage
+    const workshopData = JSON.parse(
+      localStorage.getItem("workshopData") || "{}"
+    );
+    workshopData.totalSpent = totalSpent;
+    workshopData.isOverBudget = isOverBudget;
+    workshopData.selectedFeatures = selectedOptions.map((id) => {
+      const option = allOptions.find((o) => o.id === id);
+      return option?.name || "";
+    });
+    localStorage.setItem("workshopData", JSON.stringify(workshopData));
+
     setShowResult(true);
   };
 
