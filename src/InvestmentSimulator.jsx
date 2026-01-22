@@ -408,8 +408,8 @@ const InvestmentSimulator = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative px-3 py-5 text-center">
-        <div className="max-w-lg mx-auto">
+      <section className="relative px-3 md:px-6 py-5 md:py-8 text-center">
+        <div className="max-w-lg md:max-w-4xl mx-auto">
           <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Simulador de Inversión
           </h1>
@@ -474,26 +474,31 @@ const InvestmentSimulator = () => {
       </section>
 
       {/* Categorías de opciones */}
-      <section className="px-3 pb-28">
-        <div className="max-w-lg mx-auto space-y-3">
-          <div className="text-gray-500 text-xs mb-2 font-medium">
+      <section className="px-3 md:px-6 pb-28">
+        <div className="max-w-lg md:max-w-4xl mx-auto">
+          <div className="text-gray-500 text-xs md:text-sm mb-2 md:mb-4 font-medium">
             Elegí tus features ({selectedOptions.length} seleccionadas)
           </div>
 
-          {categories.map((category, index) => (
-            <CategorySection
-              key={category.id}
-              category={category}
-              selectedOptions={selectedOptions}
-              onToggle={toggleOption}
-              defaultExpanded={index < 2}
-            />
-          ))}
+          {/* Grid 2 columnas en PC */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            {categories.map((category, index) => (
+              <CategorySection
+                key={category.id}
+                category={category}
+                selectedOptions={selectedOptions}
+                onToggle={toggleOption}
+                defaultExpanded={index < 4}
+              />
+            ))}
+          </div>
 
-          {/* Advertencia */}
-          <div className="bg-orange-900/30 border border-orange-600/50 p-3 rounded-lg">
-            <p className="text-orange-300 text-xs font-bold mb-1">⚠️ Cuidado</p>
-            <p className="text-gray-300 text-xs leading-relaxed">
+          {/* Advertencia - ancho completo */}
+          <div className="mt-4 bg-orange-900/30 border border-orange-600/50 p-3 md:p-4 rounded-lg">
+            <p className="text-orange-300 text-xs md:text-sm font-bold mb-1">
+              ⚠️ Cuidado
+            </p>
+            <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
               Las opciones en rojo son muy costosas. ¡En una Game Jam es mejor
               evitarlas!
             </p>

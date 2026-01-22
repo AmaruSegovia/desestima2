@@ -410,12 +410,12 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 md:gap-6">
       {/* Indicador */}
-      <div className="text-yellow-400 text-2xl">▼</div>
+      <div className="text-yellow-400 text-2xl md:text-3xl">▼</div>
 
-      {/* Ruleta */}
-      <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
+      {/* Ruleta - Tamaños responsive */}
+      <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
         <div
           className="w-full h-full rounded-full border-4 border-yellow-400 overflow-hidden transition-transform duration-[4000ms] ease-out"
           style={{
@@ -439,25 +439,29 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
             )`,
           }}
         >
-          {/* Textos en la ruleta */}
+          {/* Textos en la ruleta - posicionados al 65% del radio */}
           {themes.map((theme, i) => {
             const angle = (i * 360) / themes.length + 180 / themes.length;
             return (
               <div
                 key={theme}
-                className="absolute w-full h-full flex items-center justify-center"
+                className="absolute inset-0 flex items-center justify-center"
                 style={{
                   transform: `rotate(${angle}deg)`,
                 }}
               >
                 <span
-                  className="absolute text-white text-[7px] sm:text-[9px] md:text-[11px] font-bold whitespace-nowrap"
+                  className="absolute text-white font-bold whitespace-nowrap text-[6px] sm:text-[7px] md:text-[8px] lg:text-[10px]"
                   style={{
-                    transform: `translateY(-80px) rotate(90deg)`,
-                    textShadow: "1px 1px 2px black",
+                    top: "8%",
+                    transform: "rotate(90deg)",
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                    maxWidth: "60px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
-                  {theme.length > 12 ? theme.slice(0, 10) + "..." : theme}
+                  {theme.length > 13 ? theme.slice(0, 11) + "..." : theme}
                 </span>
               </div>
             );
@@ -466,8 +470,8 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
 
         {/* Centro de la ruleta */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center">
-            <Sparkles className="text-yellow-400" size={24} />
+          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center">
+            <Sparkles className="text-yellow-400 w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
       </div>
@@ -477,7 +481,7 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
         onClick={spin}
         disabled={isSpinning}
         className={`
-          flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg
+          flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 font-bold text-sm md:text-base rounded-lg
           border-2 transition-all
           ${
             isSpinning
@@ -493,8 +497,10 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
       {/* Tema seleccionado */}
       {selectedTheme && (
         <div className="text-center animate-pulse">
-          <div className="text-gray-400 text-xs mb-1">Tu tema es:</div>
-          <div className="text-2xl sm:text-3xl font-bold text-yellow-400">
+          <div className="text-gray-400 text-xs md:text-sm mb-1">
+            Tu tema es:
+          </div>
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400">
             "{selectedTheme}"
           </div>
         </div>
@@ -786,8 +792,8 @@ const ThemeRoulette = () => {
         </div>
       </header>
 
-      {/* Contenido principal */}
-      <main className="max-w-lg mx-auto px-3 py-6">
+      {/* Contenido principal - más ancho en PC */}
+      <main className="max-w-lg md:max-w-3xl lg:max-w-4xl mx-auto px-3 md:px-6 py-6">
         {phase === "roulette" ? (
           <>
             {/* Fase de ruleta */}
@@ -820,35 +826,93 @@ const ThemeRoulette = () => {
           </>
         ) : (
           <>
-            {/* Fase de escritura */}
-            <div className="text-center mb-4">
-              <div className="text-gray-400 text-xs mb-1">Tu tema es:</div>
-              <h2 className="text-xl font-bold text-yellow-400 mb-2">
+            {/* Fase de escritura - Layout más amplio para PC */}
+            <div className="text-center mb-4 md:mb-6">
+              <div className="text-gray-400 text-xs md:text-sm mb-1">
+                Tu tema es:
+              </div>
+              <h2 className="text-xl md:text-3xl font-bold text-yellow-400 mb-2">
                 "{selectedTheme}"
               </h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-sm md:text-base">
                 Describí tu idea de juego en 5 minutos
               </p>
             </div>
 
-            {/* Textarea */}
-            <div className="mb-4">
-              <textarea
-                ref={textareaRef}
-                value={ideaText}
-                onChange={(e) => setIdeaText(e.target.value)}
-                placeholder="Mi juego es un... donde el jugador... La mecánica principal es..."
-                className="w-full h-32 sm:h-40 p-3 bg-gray-800 border-2 border-gray-600 rounded-lg text-white text-sm placeholder-gray-500 focus:border-purple-500 focus:outline-none resize-none"
-                disabled={timeLeft <= 0}
-              />
-              <div className="flex justify-between mt-1 text-xs text-gray-500">
-                <span>{ideaText.length} caracteres</span>
-                <span>Mínimo 20 caracteres</span>
+            {/* Grid para PC: Textarea + Ayuda lado a lado */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* Columna izquierda: Textarea */}
+              <div>
+                <textarea
+                  ref={textareaRef}
+                  value={ideaText}
+                  onChange={(e) => setIdeaText(e.target.value)}
+                  placeholder="Mi juego es un... donde el jugador... La mecánica principal es..."
+                  className="w-full h-40 md:h-56 p-3 md:p-4 bg-gray-800 border-2 border-gray-600 rounded-lg text-white text-sm md:text-base placeholder-gray-500 focus:border-purple-500 focus:outline-none resize-none"
+                  disabled={timeLeft <= 0}
+                />
+                <div className="flex justify-between mt-1 text-xs text-gray-500">
+                  <span>{ideaText.length} caracteres</span>
+                  <span>Mínimo 20 caracteres</span>
+                </div>
+              </div>
+
+              {/* Columna derecha: Ayuda con preguntas clave */}
+              <div className="bg-purple-900/30 border border-purple-600/50 p-3 md:p-4 rounded-lg">
+                <h3 className="text-purple-300 font-bold text-sm md:text-base mb-3 flex items-center gap-2">
+                  💡 Preguntas para guiarte:
+                </h3>
+                <ul className="space-y-2 text-gray-300 text-xs md:text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400">▸</span>
+                    <span>
+                      ¿Qué <strong className="text-white">género</strong> es?
+                      (plataformas, puzzle, shooter...)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400">▸</span>
+                    <span>
+                      ¿Cuál es la{" "}
+                      <strong className="text-white">mecánica principal</strong>
+                      ? (saltar, disparar, esquivar...)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400">▸</span>
+                    <span>
+                      ¿Cómo se relaciona con el{" "}
+                      <strong className="text-white">tema</strong>?
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400">▸</span>
+                    <span>
+                      ¿Qué lo hace{" "}
+                      <strong className="text-white">divertido</strong>?
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-400">▸</span>
+                    <span>
+                      ¿Cuál es el{" "}
+                      <strong className="text-white">objetivo</strong> del
+                      jugador?
+                    </span>
+                  </li>
+                </ul>
+                <div className="mt-3 pt-3 border-t border-purple-600/30">
+                  <p className="text-purple-200 text-xs italic">
+                    Tip: Una buena idea se puede explicar en 2-3 oraciones.
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Scope Meter */}
-            <ScopeMeter text={ideaText} />
+            <div className="mt-4">
+              <ScopeMeter text={ideaText} />
+            </div>
 
             {/* Tip dinámico */}
             <div className="mt-4 bg-indigo-900/30 border border-indigo-600/50 p-3 rounded-lg">
@@ -857,7 +921,7 @@ const ThemeRoulette = () => {
                   size={16}
                   className="text-yellow-400 mt-0.5 flex-shrink-0"
                 />
-                <p className="text-gray-300 text-xs leading-relaxed">
+                <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
                   {currentTip}
                 </p>
               </div>
