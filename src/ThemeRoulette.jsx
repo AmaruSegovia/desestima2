@@ -842,7 +842,7 @@ const ScopeCoach = ({ score }) => {
     if (score < 14)
       return {
         emoji: "🤔",
-        msg: "Mmm, ya empezamos con los 'detallitos' pero sigo creyendo en vos...",
+        msg: "Mmm... todavía sigo creyendo en vos...",
         color: "text-green-400",
       };
     if (score < 21)
@@ -854,37 +854,37 @@ const ScopeCoach = ({ score }) => {
     if (score < 28)
       return {
         emoji: "🧐",
-        msg: "Esto huele a tres meses de laburo y deuda técnica incluida.",
+        msg: "No te lo quiero decir pero... esto ya no entra en un fin de semana.",
         color: "text-yellow-500",
       };
     if (score < 35)
       return {
         emoji: "😐",
-        msg: "No te lo quiero decir pero... esto ya no entra en un fin de semana.",
+        msg: "Acordate: cada idea nueva es un bug que todavía no conocés.",
         color: "text-orange-400",
       };
     if (score < 42)
       return {
         emoji: "😬",
-        msg: "Acordate: cada idea nueva es un bug que todavía no conocés.",
+        msg: "La PC esta pidiendo 2 modulos de RAM de 32GB extras",
         color: "text-orange-500",
       };
     if (score < 49)
       return {
         emoji: "😟",
-        msg: "La ram de la compu se esta por pegar un corchazo.",
+        msg: "Esto huele a tres meses de laburo y deuda técnica incluida.",
         color: "text-red-400",
       };
     if (score < 56)
       return {
         emoji: "😨",
-        msg: "Llamen al 911 de los programadores.",
+        msg: "¿Vas a programar con las manos y los pies al mismo tiempo?",
         color: "text-red-500",
       };
     if (score < 64)
       return {
         emoji: "😱",
-        msg: "¡PARÁ! ¡PARÁ UN POCO! Nadie pidió un sistema así en una jam.",
+        msg: "¡PARÁ! ¡PARÁ UN POCO! Nadie pidió un juego así en una jam.",
         color: "text-red-600",
       };
     if (score < 73)
@@ -908,7 +908,7 @@ const ScopeCoach = ({ score }) => {
     if (score < 100)
       return {
         emoji: "☣️",
-        msg: "RIESGO CRÍTICO: Ni con todaas las IAs juntas haces esto.",
+        msg: "RIESGO CRÍTICO: Ni con todas las IAs trabajando en simultaneo haces esto en una semana",
         color: "text-purple-600",
       };
     return {
