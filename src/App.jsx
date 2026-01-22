@@ -27,7 +27,6 @@ import candelaImg from "./assets/candela.png";
 import amaruImg from "./assets/amaru.png";
 import neruImg from "./assets/mila.png";
 import cristianImg from "./assets/cristian.png";
-import estrellitaImg from "./assets/estrellita_owo.png"; // Nota: Usé la variable genérica para simplificar el ejemplo, asegúrate de que sea la correcta
 import estrellita1Img from "./assets/estrellita_owo.png";
 import estrellita2Img from "./assets/auroraportada.jpg";
 import estrellita3Img from "./assets/estrellita_owo_1.png";
@@ -40,21 +39,14 @@ import aurora2 from "./assets/aurora2.gif";
 import aurora3 from "./assets/aurora3.gif";
 import aurora4 from "./assets/aurora4.jpeg";
 import iconoImg from "./assets/icono.png";
-import magia1 from "./assets/magia1.png";
-import magia2 from "./assets/magia2.png";
 import magia3 from "./assets/magia3.png";
 import magia4 from "./assets/magia4.png";
 import magia5 from "./assets/magia5.png";
 import magia6 from "./assets/magia6.gif";
 import magia7 from "./assets/magia7.gif";
-import magia8 from "./assets/magia8.gif";
 import rufino from "./assets/rufino.gif";
 import rufino1 from "./assets/rufino1.png";
 import rufino2 from "./assets/rufino2.gif";
-import jefeFinal from "./assets/jefefinal.png";
-import torretaImg from "./assets/torreta.png";
-import balaImg from "./assets/bala.png";
-import jugadorImg from "./assets/jugador.png";
 
 // Iconos Tech
 import clipstudio from "./assets/clipstudio.png";
@@ -72,7 +64,7 @@ const cloudSVG = `data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/s
 const SnowEffect = memo(() => {
   const snowflakes = useMemo(
     () =>
-      [...Array(30)].map((_, i) => ({
+      [...Array(30)].map(() => ({
         left: `${Math.random() * 100}%`,
         animationDelay: `${Math.random() * 5}s`,
         animationDuration: `${Math.random() * 3 + 2}s`,
@@ -304,7 +296,7 @@ const MemberCard = memo(({ name, role, icon, color, image, lvl }) => (
   </div>
 ));
 
-const TechCard = memo(({ name, logoUrl, colorClass }) => (
+const TechCard = memo(({ name, logoUrl }) => (
   <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl p-2 md:p-3 flex flex-col items-center justify-center gap-1.5 md:gap-2 hover:shadow-lg transition-all group min-h-[80px] md:min-h-[100px]">
     <div
       className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-50 rounded-md md:rounded-lg group-hover:bg-white`}

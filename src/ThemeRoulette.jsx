@@ -26,6 +26,15 @@ const themes = [
   "Aleatorio",
 ];
 
+// Helper para normalizar texto (quitar tildes y diéresis)
+const normalizeText = (text) => {
+  if (!text) return "";
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
+
 // Palabras clave que indican ambición excesiva (español argentino)
 const dangerWords = {
   high: [
@@ -50,10 +59,16 @@ const dangerWords = {
     "en línea",
     "pvp",
     "versus",
+    "mmo",
     "competitivo online",
     "servers",
     "servidor",
     "servidores",
+    "crossplay",
+    "netcode",
+    "rollback netcode",
+    "servidores dedicados",
+    "matchmaking",
     // Mundo abierto
     "open world",
     "mundo abierto",
@@ -65,6 +80,10 @@ const dangerWords = {
     "mundo enorme",
     "mundo gigante",
     "mundo grande",
+    "universo infinito",
+    "galaxias",
+    "planetas explorables",
+    "ecosistema vivo",
     // Géneros complejos
     "mmorpg",
     "rpg",
@@ -76,6 +95,10 @@ const dangerWords = {
     "roguelike",
     "metroidvania",
     "battle royale",
+    "moba",
+    "rts",
+    "simulador realista",
+    "grand strategy",
     // 3D y gráficos complejos
     "3d",
     "realista",
@@ -85,6 +108,13 @@ const dangerWords = {
     "gráficos realistas",
     "hiperrealista",
     "ultra realista",
+    "nanite",
+    "lumen",
+    "re real",
+    "como la vida misma",
+    "graficazos",
+    "texturas 4k",
+    "8k",
     // Historia y narrativa
     "historia compleja",
     "narrativa profunda",
@@ -104,11 +134,13 @@ const dangerWords = {
     "elecciones morales",
     "historia ramificada",
     "narrativa no lineal",
+    "guion extendido",
     // Cantidades grandes
     "cientos",
     "miles",
     "100",
     "50",
+    "ilimitado",
     "muchos niveles",
     "muchas misiones",
     "muchos personajes",
@@ -149,6 +181,15 @@ const dangerWords = {
     "sistema de crafteo",
     "arbol de habilidades",
     "árbol de habilidades",
+    "sistema de niveles",
+    "procedimental",
+    "generación procedural",
+    // Plataformas y Online (Originales)
+    "tecnología propia",
+    "engine nuevo",
+    "esports",
+    "competitivo profesional",
+    "multiplataforma simúltaneo",
     "skill tree",
     "clases de personaje",
     "builds",
@@ -165,9 +206,7 @@ const dangerWords = {
     "destrucción de escenarios",
     "todo destructible",
     "física destructible",
-    // Más términos peligrosos
-    "mundo persistente",
-    "persistencia",
+    "destructible",
     "base de datos",
     "backend",
     "api",
@@ -221,10 +260,12 @@ const dangerWords = {
     "trading",
     "reconocimiento de voz",
     "reconocimiento facial",
+    "skins",
   ],
   medium: [
-    // Inventario y sistemas
+    // Sistemas
     "sistema de combate",
+    "tipos",
     "combos",
     "habilidades activas",
     "cooldowns",
@@ -266,15 +307,76 @@ const dangerWords = {
     "mejoras",
     "upgrades",
     "subir de nivel",
+    "crafteo",
+    "crafting",
+    "personalización",
+    "customización",
+    "skins",
+    "tienda",
+    "shopping",
+    "comprar cosas",
+    "mochila",
+    "loot",
+    "looteo",
+    "sistema de niveles",
     "experiencia",
     "xp",
-    "puntos de experiencia",
-    "nivel del personaje",
-    // Jefes y enemigos
+    "experiencia",
+    // Diálogos y personajes
+    "diálogos",
+    "conversaciones",
+    "npc",
+    "personajes secundarios",
+    "aliados",
+    "mascotas",
+    "pets",
+    "compañeros",
+    "clases de personaje",
+    "facciones",
+    "reputación",
+    "honor",
+    // Mundo y ambiente
+    "clima dinámico",
+    "ciclo dia noche",
+    "estaciones",
+    "destrucción",
+    "todo destructible",
+    "física",
+    "gravedad",
+    "vehículos",
+    "manejar",
+    "autos",
+    "volar",
+    "aviones",
+    "naves",
+    "monturas",
+    "caballos",
+    "niveles secretos",
+    "biomas",
+    "mazmorras",
+    "dungeons",
+    "bosques",
+    "ciudades gigantes",
+    "pueblos",
+    // Metas y UX
     "jefe final",
     "boss",
-    "bosses",
     "jefes",
+    "miniboss",
+    "quests",
+    "misiones secundarias",
+    "logros",
+    "achievements",
+    "trofeos",
+    "medallas",
+    "ranking",
+    "leaderboard",
+    "tabla de posiciones",
+    "tutorial interactivo",
+    "guía",
+    "ayuda",
+    "misiones opcionales",
+    // Otros Medium (Originales)
     "mini boss",
     "miniboss",
     "enemigos diferentes",
@@ -282,16 +384,12 @@ const dangerWords = {
     "variedad de enemigos",
     "enemigos únicos",
     "ia de enemigos",
-    // Niveles y mundos
     "niveles",
     "levels",
     "mundos",
     "zonas",
     "áreas",
     "biomas",
-    "niveles secretos",
-    "mundo secreto",
-    "areas ocultas",
     "áreas ocultas",
     // Personajes
     "personajes",
@@ -325,7 +423,6 @@ const dangerWords = {
     // Clima y tiempo
     "clima dinámico",
     "ciclo dia noche",
-    "ciclo día noche",
     "día y noche",
     "estaciones",
     "clima cambiante",
@@ -338,8 +435,67 @@ const dangerWords = {
     "sistema económico",
   ],
   low: [
-    // Puntuación básica
-    "loop de juego",
+    // Básico
+    "puntos",
+    "score",
+    "puntaje",
+    "vidas",
+    "health bar",
+    "barra de vida",
+    "corazones",
+    "reintentar",
+    "retry",
+    "game over",
+    "victoria",
+    "ganar",
+    "perder",
+    "pausa",
+    "menu",
+    "sonidos",
+    "musica",
+    "musiquita",
+    "sfx",
+    "pantalla",
+    "colores",
+    "sprites",
+    "animaciones",
+    "vfx",
+    "particulas",
+    "un nivel",
+    "un par de enemigos",
+    "simple",
+    // Coloquiales / No técnicos
+    "lindo",
+    "piola",
+    "copado",
+    "buenísimo",
+    "buenisimo",
+    "genial",
+    "divertido",
+    "entretener",
+    "pasar el rato",
+    "fácil",
+    "difícil",
+    "desafiante",
+    "mucho",
+    "todo",
+    "grande",
+    "mejor",
+    "peor",
+    "increíble",
+    "asombroso",
+    "que se mueva",
+    "que salte",
+    "que dispare",
+    "que pegue",
+    "boludeces",
+    "cositas",
+    "detalles",
+    "gráficos",
+    "dibujitos",
+    "muñequitos",
+    "skins",
+    // Otros Low (Originales)
     "mecánica principal",
     "mecánica simple",
     "reglas claras",
@@ -365,7 +521,6 @@ const dangerWords = {
     "puntos extra",
     // Menús y UI básica
     "menú",
-    "menu",
     "menú principal",
     "pantalla de inicio",
     "main menu",
@@ -405,6 +560,8 @@ const dangerWords = {
     "mouse",
     "gamepad",
     "joystick",
+    "gamepad",
+    "joypad",
     "touch",
     "controles táctiles",
     "rebindear",
@@ -425,7 +582,6 @@ const dangerWords = {
     "countdown",
     // Visual básico
     "cámara",
-    "camara",
     "zoom",
     "scroll",
     "parallax",
@@ -494,9 +650,9 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
     setTimeout(() => {
       const normalizedAngle = totalRotation % 360;
       const segmentAngle = 360 / themes.length;
-      const index = Math.floor(
-        ((360 - normalizedAngle + segmentAngle / 2) % 360) / segmentAngle
-      );
+      // Cálculo simplificado: el ángulo que queda arriba es (360 - rotación) % 360
+      const wheelAngleAtTop = (360 - normalizedAngle) % 360;
+      const index = Math.floor(wheelAngleAtTop / segmentAngle);
       const theme = themes[index % themes.length];
 
       setSelectedTheme(theme);
@@ -615,27 +771,36 @@ const matchWholeWord = (text, word) => {
 };
 
 const analyzeScope = (input, theme = null) => {
-  const lowerInput = input.toLowerCase();
+  if (!input || input.length < 5)
+    return { score: 0, foundWords: [], themeDetected: false };
+
+  // Normalizamos input para la comparación
+  const normalizedInput = normalizeText(input);
+  const normalizedTheme = normalizeText(theme);
+
   let score = 0;
   let foundWords = [];
   let themeDetected = false;
 
   dangerWords.high.forEach((word) => {
-    if (matchWholeWord(lowerInput, word)) {
+    const normalizedWord = normalizeText(word);
+    if (matchWholeWord(normalizedInput, normalizedWord)) {
       score += 16;
       foundWords.push({ word, severity: "high" });
     }
   });
 
   dangerWords.medium.forEach((word) => {
-    if (matchWholeWord(lowerInput, word)) {
+    const normalizedWord = normalizeText(word);
+    if (matchWholeWord(normalizedInput, normalizedWord)) {
       score += 8;
       foundWords.push({ word, severity: "medium" });
     }
   });
 
   dangerWords.low.forEach((word) => {
-    if (matchWholeWord(lowerInput, word)) {
+    const normalizedWord = normalizeText(word);
+    if (matchWholeWord(normalizedInput, normalizedWord)) {
       score += 2;
       foundWords.push({ word, severity: "low" });
     }
@@ -652,8 +817,8 @@ const analyzeScope = (input, theme = null) => {
     .filter((w) => w.length > 0).length;
   score += Math.floor(wordCount / 5);
 
-  // Detección de tema
-  if (theme && lowerInput.includes(theme.toLowerCase())) {
+  // Detección de tema (accent-insensitive)
+  if (theme && normalizedInput.includes(normalizedTheme)) {
     themeDetected = true;
   }
 
@@ -1051,9 +1216,7 @@ const ThemeRoulette = () => {
     setTimerActive(false);
   };
   const analyzeAndProceed = () => {
-    const { score, themeDetected } = analyzeScope(ideaText, selectedTheme);
-
-    if (writingPhase === "good" && !themeDetected) return;
+    const { score } = analyzeScope(ideaText, selectedTheme);
 
     // Obtener datos actuales
     const workshopData = JSON.parse(
@@ -1093,11 +1256,10 @@ const ThemeRoulette = () => {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const { score, themeDetected } = analyzeScope(ideaText, selectedTheme);
+  const { score } = analyzeScope(ideaText, selectedTheme);
 
   const canProceed =
-    ideaText.length > 20 &&
-    (writingPhase === "bad" ? score >= 40 : score < 40 && themeDetected);
+    ideaText.length > 20 && (writingPhase === "bad" ? score >= 40 : score < 40);
 
   // Screen shake effect for high scope
   const shakeClass =
@@ -1332,8 +1494,6 @@ const ThemeRoulette = () => {
               <p className="text-center text-red-400 text-xs mt-2 font-bold animate-pulse">
                 {writingPhase === "bad"
                   ? "⚠️ ¡Necesitamos más ambición! Alcanza el estado Imposible."
-                  : !themeDetected
-                  ? `⚠️ ¡Eh! Tenés que usar la palabra "${selectedTheme}" en tu idea.`
                   : "⚠️ Simplificá tu idea para poder continuar."}
               </p>
             )}

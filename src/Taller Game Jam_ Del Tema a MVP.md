@@ -17,27 +17,27 @@ Para un taller preparatorio de Game Jam, el objetivo no es la maestría sintáct
 
 El concepto de Producto Mínimo Viable (MVP), originado en la metodología Lean Startup, a menudo se malinterpreta en el desarrollo de juegos como "un juego incompleto". Para efectos de este taller, redefinimos el MVP basándonos en la analogía del transporte de Kniberg.  
 La enseñanza tradicional (Modelo Cascada) intentaría construir un "auto" enseñando primero a hacer una rueda, luego un eje, luego un chasis. Al final de 90 minutos, el estudiante tendría una rueda perfecta, pero ningún medio de transporte. El enfoque MVP propone construir primero una patineta (skateboard). No tiene motor, ni luces, ni frenos, pero cumple la función fundamental: transporte. En el contexto de una Game Jam, un MVP es un "ciclo de juego cerrado": Inicio \-\> Desafío \-\> Condición de Victoria/Derrota \-\> Reinicio.  
-El taller está diseñado para que, en el minuto 60, cada participante tenga su "patineta": un cuadrado que se mueve, recoge un objeto y gana. Todo lo demás (gráficos, sonido, partículas) se trata como iteraciones posteriores (el monopatín, la bicicleta, la moto). Esta distinción es crucial para evitar el *feature creep* (alcance desmedido), que es la causa principal de fracaso en las Game Jams.
+El taller está diseñado para que, en el minuto 60, cada participante tenga su "patineta": un cuadrado que se mueve, recoge un objeto y gana. Todo lo demás (gráficos, sonido, partículas) se trata como iteraciones posteriores (el monopatín, la bicicleta, la moto). Esta distinción es crucial para evitar el _feature creep_ (alcance desmedido), que es la causa principal de fracaso en las Game Jams.
 
 ### **2.3 Selección de la Herramienta: Análisis Comparativo**
 
 Basándonos en la investigación de activos disponibles en el ecosistema de Unity, evaluamos tres enfoques potenciales (correspondientes a las ideas de los Talleres 1, 2 y 3 mencionados implícitamente como opciones estándar):  
 **Opción A: Codificación C\# desde Cero ("Taller 1")**
 
-* *Ventaja:* Control total y comprensión profunda.  
-* *Desventaja:* Altísimo riesgo de fracaso en 90 minutos. Un solo error de sintaxis en el código de un estudiante puede detener la clase por 10 minutos.  
-* *Veredicto:* Inviable para principiantes absolutos en este marco de tiempo.
+- _Ventaja:_ Control total y comprensión profunda.
+- _Desventaja:_ Altísimo riesgo de fracaso en 90 minutos. Un solo error de sintaxis en el código de un estudiante puede detener la clase por 10 minutos.
+- _Veredicto:_ Inviable para principiantes absolutos en este marco de tiempo.
 
 **Opción B: Modificación de Microgames ("Taller 2")**
 
-* *Ventaja:* Gráficos AAA inmediatos (FPS, Karting, Platformer).  
-* *Desventaja:* Complejidad oculta. Los sistemas internos de los Microgames son avanzados. Los estudiantes aprenden a cambiar variables ("velocidad \= 10"), pero no entienden *por qué* el personaje se mueve. Es "caja negra".  
-* *Veredicto:* Bueno para la motivación visual, malo para el aprendizaje de la lógica fundamental necesaria para una Jam original.
+- _Ventaja:_ Gráficos AAA inmediatos (FPS, Karting, Platformer).
+- _Desventaja:_ Complejidad oculta. Los sistemas internos de los Microgames son avanzados. Los estudiantes aprenden a cambiar variables ("velocidad \= 10"), pero no entienden _por qué_ el personaje se mueve. Es "caja negra".
+- _Veredicto:_ Bueno para la motivación visual, malo para el aprendizaje de la lógica fundamental necesaria para una Jam original.
 
 **Opción C: Unity Playground ("Taller 3")**
 
-* *Ventaja:* Utiliza scripts de propósito único ("Move", "Jump", "Collect") que se arrastran y sueltan. Expone la lógica (Condiciones y Acciones) sin requerir código escrito. Permite crear mecánicas personalizadas combinando componentes.  
-* *Veredicto:* **Óptimo**. Equilibra la comprensión lógica con la velocidad de implementación. Permite iterar y "fallar rápido".
+- _Ventaja:_ Utiliza scripts de propósito único ("Move", "Jump", "Collect") que se arrastran y sueltan. Expone la lógica (Condiciones y Acciones) sin requerir código escrito. Permite crear mecánicas personalizadas combinando componentes.
+- _Veredicto:_ **Óptimo**. Equilibra la comprensión lógica con la velocidad de implementación. Permite iterar y "fallar rápido".
 
 ## **3\. Arquitectura del Taller: Pre-Producción y Logística**
 
@@ -48,9 +48,9 @@ El éxito de un taller virtual de 90 minutos se determina antes de que comience 
 Dado que la descarga e instalación de Unity puede tardar horas dependiendo del ancho de banda, se debe implementar un protocolo de comunicación estricto 72 horas antes del evento.  
 **Comunicado Previo Obligatorio:** Se debe enviar una guía paso a paso que instruya a los participantes a:
 
-1. Instalar **Unity Hub** y una versión **LTS (Long Term Support)** específica (e.g., 2022.3) para asegurar compatibilidad universal.  
-2. Crear un **Unity ID**.  
-3. Descargar e importar el paquete **Unity Playground** desde la Asset Store en un proyecto nuevo llamado "JamPractice".  
+1. Instalar **Unity Hub** y una versión **LTS (Long Term Support)** específica (e.g., 2022.3) para asegurar compatibilidad universal.
+2. Crear un **Unity ID**.
+3. Descargar e importar el paquete **Unity Playground** desde la Asset Store en un proyecto nuevo llamado "JamPractice".
 4. Confirmar la instalación mediante una captura de pantalla enviada a un canal de Discord o formulario de registro.
 
 Este "filtro de entrada" asegura que los 90 minutos se dediquen a la creación y no al soporte técnico de instalaciones.
@@ -58,7 +58,7 @@ Este "filtro de entrada" asegura que los 90 minutos se dediquen a la creación y
 ### **3.2 Configuración del Entorno Virtual**
 
 Para el facilitador, se recomienda una configuración de doble monitor. El monitor principal comparte la pantalla completa de Unity (no solo la ventana, para que se vean los menús emergentes y exploradores de archivos). El monitor secundario gestiona el chat, la lista de participantes y las notas del guion.  
-Se debe establecer un canal de comunicación paralelo (Discord o Slack) donde los "Mentores Flotantes" (si están disponibles) o el propio facilitador puedan pegar enlaces directos a activos, fragmentos de soluciones o paquetes de rescate ("Rescue Packages"). Los paquetes de rescate son archivos .unitypackage preparados previamente que contienen el proyecto en diferentes estados (ej. "Paso1\_Completo.unitypackage"). Si un estudiante se bloquea irremediablemente, descarga e importa el paquete para sincronizarse con la clase.
+Se debe establecer un canal de comunicación paralelo (Discord o Slack) donde los "Mentores Flotantes" (si están disponibles) o el propio facilitador puedan pegar enlaces directos a activos, fragmentos de soluciones o paquetes de rescate ("Rescue Packages"). Los paquetes de rescate son archivos .unitypackage preparados previamente que contienen el proyecto en diferentes estados (ej. "Paso1_Completo.unitypackage"). Si un estudiante se bloquea irremediablemente, descarga e importa el paquete para sincronizarse con la clase.
 
 ## **4\. Plan de Estudio Detallado: Cronograma Minuto a Minuto**
 
@@ -69,97 +69,97 @@ El taller se divide en cuatro módulos distintos: Activación, Teoría, Ejecuci�
 El objetivo de este módulo es romper la barrera del miedo y establecer una cultura de colaboración rápida.  
 **0:00 – 0:05 | Bienvenida y "Check-in" Técnico**
 
-* Mientras los participantes ingresan, el facilitador verifica que todos tengan Unity abierto.  
-* **Dinámica de Entrada: "Chat Waterfall" (Cascada de Chat):** El facilitador hace una pregunta simple (ej. "¿Cuál es tu videojuego favorito de la infancia?"). Pide a todos que escriban la respuesta pero *no* envíen hasta que él diga "YA". Esto genera una lluvia de respuestas simultáneas que energiza la sala virtual.
+- Mientras los participantes ingresan, el facilitador verifica que todos tengan Unity abierto.
+- **Dinámica de Entrada: "Chat Waterfall" (Cascada de Chat):** El facilitador hace una pregunta simple (ej. "¿Cuál es tu videojuego favorito de la infancia?"). Pide a todos que escriban la respuesta pero _no_ envíen hasta que él diga "YA". Esto genera una lluvia de respuestas simultáneas que energiza la sala virtual.
 
 **0:05 – 0:10 | Rompehielos: "Bad Ideas Only" (Solo Malas Ideas)**
 
-* *Concepto:* En lugar de pedir buenas ideas (lo cual genera ansiedad de rendimiento), se pide a los participantes que propongan mecánicas de juego terribles o frustrantes en el chat.  
-* *Ejemplos:* "Un juego de carreras donde el auto solo gira a la izquierda", "Un FPS donde las balas curan a los enemigos".  
-* *Justificación Pedagógica:* Esta técnica de **Brainstorming Inverso** reduce la presión social. Valida la creatividad sin juicio y a menudo revela, paradójicamente, mecánicas interesantes (el juego *Super Monkey Ball* es esencialmente una carrera con controles limitados). Prepara la mente para la iteración rápida de la Game Jam.
+- _Concepto:_ En lugar de pedir buenas ideas (lo cual genera ansiedad de rendimiento), se pide a los participantes que propongan mecánicas de juego terribles o frustrantes en el chat.
+- _Ejemplos:_ "Un juego de carreras donde el auto solo gira a la izquierda", "Un FPS donde las balas curan a los enemigos".
+- _Justificación Pedagógica:_ Esta técnica de **Brainstorming Inverso** reduce la presión social. Valida la creatividad sin juicio y a menudo revela, paradójicamente, mecánicas interesantes (el juego _Super Monkey Ball_ es esencialmente una carrera con controles limitados). Prepara la mente para la iteración rápida de la Game Jam.
 
 **0:10 – 0:15 | Dinámica de Conexión: "Two Truths and a Lie" (Edición Game Dev)**
 
-* *Concepto:* El facilitador presenta tres afirmaciones sobre el desarrollo de juegos o sobre sí mismo (ej. "Unity se usó para hacer Pokémon GO", "El primer prototipo de Minecraft se hizo en 6 días", "Nunca he introducido un bug en mi código"). Los estudiantes votan cuál es la mentira.  
-* *Justificación:* Humaniza al instructor, introduce trivia cultural del desarrollo y fomenta la participación activa mediante encuestas o chat.
+- _Concepto:_ El facilitador presenta tres afirmaciones sobre el desarrollo de juegos o sobre sí mismo (ej. "Unity se usó para hacer Pokémon GO", "El primer prototipo de Minecraft se hizo en 6 días", "Nunca he introducido un bug en mi código"). Los estudiantes votan cuál es la mentira.
+- _Justificación:_ Humaniza al instructor, introduce trivia cultural del desarrollo y fomenta la participación activa mediante encuestas o chat.
 
 ### **Módulo 2: Teoría de Alcance y Mentalidad MVP (0:15 – 0:25)**
 
 Antes de tocar Unity, debemos calibrar las expectativas.  
 **0:15 – 0:20 | La Analogía del Skateboard**
 
-* Se presenta visualmente la gráfica de Henrik Kniberg. Se explica que en la Game Jam no construirán un Ferrari. Construirán una patineta.  
-  * *Paso 1:* Tabla \+ Ruedas (MVP). Te lleva de A a B.  
-  * *Paso 2:* Manubrio (Patinete). Mejora el control.  
-  * *Paso 3:* Motor (Moto). Aumenta la velocidad.  
-* *Aplicación:* "Si al final de la Jam tu personaje es un cubo blanco que salta y llega a una meta, has tenido éxito. Si tienes un modelo 3D precioso que no se mueve, has fallado."
+- Se presenta visualmente la gráfica de Henrik Kniberg. Se explica que en la Game Jam no construirán un Ferrari. Construirán una patineta.
+  - _Paso 1:_ Tabla \+ Ruedas (MVP). Te lleva de A a B.
+  - _Paso 2:_ Manubrio (Patinete). Mejora el control.
+  - _Paso 3:_ Motor (Moto). Aumenta la velocidad.
+- _Aplicación:_ "Si al final de la Jam tu personaje es un cubo blanco que salta y llega a una meta, has tenido éxito. Si tienes un modelo 3D precioso que no se mueve, has fallado."
 
 **0:20 – 0:25 | Ejercicio Rápido: "El Corte de Características" (Feature Cut)**
 
-* *Dinámica:* El facilitador presenta una idea de juego ambiciosa (ej. "Un RPG de mundo abierto con crafteo, diálogo y combate naval").  
-* *Acción:* Los estudiantes tienen 2 minutos para eliminar el 80% de las características y dejar solo UNA mecánica central.  
-* *Discusión:* Se demuestra cómo el "combate naval" por sí solo es un juego completo (tipo *Battleship*), y cómo el "diálogo" es otro juego (Novela Visual). Esto enseña a priorizar el núcleo lúdico.
+- _Dinámica:_ El facilitador presenta una idea de juego ambiciosa (ej. "Un RPG de mundo abierto con crafteo, diálogo y combate naval").
+- _Acción:_ Los estudiantes tienen 2 minutos para eliminar el 80% de las características y dejar solo UNA mecánica central.
+- _Discusión:_ Se demuestra cómo el "combate naval" por sí solo es un juego completo (tipo _Battleship_), y cómo el "diálogo" es otro juego (Novela Visual). Esto enseña a priorizar el núcleo lúdico.
 
 ### **Módulo 3: Ejecución Técnica \- Construyendo el MVP (0:25 – 0:75)**
 
 Este es el núcleo del taller ("The Sprint"). Utilizaremos **Unity Playground** para construir un juego de acción 2D simple ("Space Scavenger"). El flujo es demostrativo y acumulativo.  
 **0:25 – 0:35 | Paso 1: El Actor (Física y Movimiento)**
 
-* *Acción:* Importar un sprite de nave espacial desde la carpeta Images de Playground.  
-* *Concepto:* **GameObject vs. Componente**. Explicar que el GameObject es el contenedor y los Componentes son el comportamiento.  
-* *Física:* Añadir Rigidbody2D. Dar Play. La nave cae.  
-  * *Insight:* Explicar la gravedad en el motor de física. Cambiar Gravity Scale a 0 para un juego "Top-Down".  
-* *Lógica:* Añadir el script Move (de Playground). Configurar controles a WASD.  
-* *Ajuste (Game Feel):* La nave se desliza demasiado. Aumentar el Linear Drag (fricción) en el Rigidbody para dar un control más preciso.
+- _Acción:_ Importar un sprite de nave espacial desde la carpeta Images de Playground.
+- _Concepto:_ **GameObject vs. Componente**. Explicar que el GameObject es el contenedor y los Componentes son el comportamiento.
+- _Física:_ Añadir Rigidbody2D. Dar Play. La nave cae.
+  - _Insight:_ Explicar la gravedad en el motor de física. Cambiar Gravity Scale a 0 para un juego "Top-Down".
+- _Lógica:_ Añadir el script Move (de Playground). Configurar controles a WASD.
+- _Ajuste (Game Feel):_ La nave se desliza demasiado. Aumentar el Linear Drag (fricción) en el Rigidbody para dar un control más preciso.
 
 **0:35 – 0:45 | Paso 2: El Conflicto (Enemigos e Interacción)**
 
-* *Acción:* Arrastrar un sprite de asteroide.  
-* *Comportamiento:* Añadir el script AutoRotate para darle vida visual.  
-* *Colisiones:* Añadir PolygonCollider2D a la nave y al asteroide. Explicar que sin "colliders", los objetos son fantasmas.  
-* *Lógica de Daño:*  
-  * En el Asteroide: Añadir script ModifyHealthAttribute (Valor: \-1).  
-  * En la Nave: Añadir script HealthSystemAttribute (Salud: 3).  
-* *Test:* Chocar la nave. Observar la consola o las variables en el inspector disminuir. Hemos creado combate sin código.
+- _Acción:_ Arrastrar un sprite de asteroide.
+- _Comportamiento:_ Añadir el script AutoRotate para darle vida visual.
+- _Colisiones:_ Añadir PolygonCollider2D a la nave y al asteroide. Explicar que sin "colliders", los objetos son fantasmas.
+- _Lógica de Daño:_
+  - En el Asteroide: Añadir script ModifyHealthAttribute (Valor: \-1).
+  - En la Nave: Añadir script HealthSystemAttribute (Salud: 3).
+- _Test:_ Chocar la nave. Observar la consola o las variables en el inspector disminuir. Hemos creado combate sin código.
 
 **0:45 – 0:55 | Paso 3: El Objetivo (Condición de Victoria y UI)**
 
-* *Acción:* Crear un objeto "Estrella" o "Gema".  
-* *Lógica:* Añadir script CollectableAttribute.  
-* *Interfaz de Usuario:* Arrastrar el prefab UserInterface desde la carpeta Prefabs de Playground.  
-  * *Insight Técnico:* Explicar que este prefab ya tiene la lógica interna para buscar al objeto etiquetado como "Player".  
-  * *Etiquetado:* **Paso Crítico.** Cambiar el Tag de la nave a "Player". Sin esto, la UI no funciona.  
-* *Condición de Victoria:* En el script de la UI, establecer "Score to Win" en 5\.  
-* *Test:* Recoger estrellas. Al llegar a 5, aparece la pantalla "You Win". El ciclo de juego está cerrado.
+- _Acción:_ Crear un objeto "Estrella" o "Gema".
+- _Lógica:_ Añadir script CollectableAttribute.
+- _Interfaz de Usuario:_ Arrastrar el prefab UserInterface desde la carpeta Prefabs de Playground.
+  - _Insight Técnico:_ Explicar que este prefab ya tiene la lógica interna para buscar al objeto etiquetado como "Player".
+  - _Etiquetado:_ **Paso Crítico.** Cambiar el Tag de la nave a "Player". Sin esto, la UI no funciona.
+- _Condición de Victoria:_ En el script de la UI, establecer "Score to Win" en 5\.
+- _Test:_ Recoger estrellas. Al llegar a 5, aparece la pantalla "You Win". El ciclo de juego está cerrado.
 
 **0:55 – 0:65 | Paso 4: Escalado y Diseño de Nivel**
 
-* *Concepto:* **Prefabs**. Explicar el peligro de duplicar objetos en la escena (si cambias uno, los otros no cambian).  
-* *Acción:* Arrastrar el Asteroide y la Estrella desde la Jerarquía a la carpeta de Proyecto para crear Prefabs originales.  
-* *Diseño:* Usar los Prefabs para pintar un nivel rápido. Crear un campo de asteroides y una ruta de monedas.  
-* *Iteración:* Ajustar la velocidad de la nave y la masa de los asteroides para mejorar la sensación de juego (*Game Feel*).
+- _Concepto:_ **Prefabs**. Explicar el peligro de duplicar objetos en la escena (si cambias uno, los otros no cambian).
+- _Acción:_ Arrastrar el Asteroide y la Estrella desde la Jerarquía a la carpeta de Proyecto para crear Prefabs originales.
+- _Diseño:_ Usar los Prefabs para pintar un nivel rápido. Crear un campo de asteroides y una ruta de monedas.
+- _Iteración:_ Ajustar la velocidad de la nave y la masa de los asteroides para mejorar la sensación de juego (_Game Feel_).
 
 **0:65 – 0:75 | Opcional / Avanzado: Disparo**
 
-* Si el grupo avanza rápido, añadir la mecánica de disparo.  
-* *Acción:* Añadir ObjectShooter a la nave. Asignar un prefab de "Laser" (con BulletAttribute).  
-* *Resultado:* La nave ahora puede destruir asteroides (si se añade DestroyForPointsAttribute a los asteroides).
+- Si el grupo avanza rápido, añadir la mecánica de disparo.
+- _Acción:_ Añadir ObjectShooter a la nave. Asignar un prefab de "Laser" (con BulletAttribute).
+- _Resultado:_ La nave ahora puede destruir asteroides (si se añade DestroyForPointsAttribute a los asteroides).
 
 ### **Módulo 4: Cierre, Exportación y Supervivencia (0:75 – 0:90)**
 
 **0:75 – 0:80 | La "Hora Dorada" y la Exportación**
 
-* Explicar la regla de la "Hora Dorada" : Dejar de desarrollar 1 hora antes del límite de la Jam para compilar y subir.  
-* *Acción:* Ir a File \> Build Settings. Seleccionar **WebGL**.  
-* *Justificación:* Los juegos de Jam que se juegan en el navegador tienen 10 veces más probabilidades de ser jugados y votados que los que requieren descarga.  
-* Iniciar la compilación (mientras compila, pasar a Q\&A).
+- Explicar la regla de la "Hora Dorada" : Dejar de desarrollar 1 hora antes del límite de la Jam para compilar y subir.
+- _Acción:_ Ir a File \> Build Settings. Seleccionar **WebGL**.
+- _Justificación:_ Los juegos de Jam que se juegan en el navegador tienen 10 veces más probabilidades de ser jugados y votados que los que requieren descarga.
+- Iniciar la compilación (mientras compila, pasar a Q\&A).
 
 **0:80 – 0:90 | Consejos de Supervivencia y Q\&A**
 
-* **Gestión del Sueño:** 4 horas de sueño \= código roto. Dormir es una ventaja competitiva.  
-* **Scope Cutting:** Si una mecánica no funciona en 1 hora, se corta.  
-* **Herramientas de Colaboración:** Mencionar brevemente GitHub/Plastic SCM para control de versiones y Trello para tareas.  
-* *Cierre:* Preguntas finales y compartir recursos (enlaces a Kenney assets, documentación de Playground).
+- **Gestión del Sueño:** 4 horas de sueño \= código roto. Dormir es una ventaja competitiva.
+- **Scope Cutting:** Si una mecánica no funciona en 1 hora, se corta.
+- **Herramientas de Colaboración:** Mencionar brevemente GitHub/Plastic SCM para control de versiones y Trello para tareas.
+- _Cierre:_ Preguntas finales y compartir recursos (enlaces a Kenney assets, documentación de Playground).
 
 ## **5\. Análisis Técnico: Por Qué Unity Playground**
 
@@ -181,13 +181,13 @@ Los paquetes "Starter Assets" (First Person / Third Person Controller) de Unity 
 
 Para mantener la sesión "divertida y educativa" como solicita el usuario, integramos elementos lúdicos en el propio proceso de aprendizaje:
 
-1. **El "Bug Hunt" (Caza de Bugs):** El facilitador introduce intencionalmente un error (ej. poner la gravedad de la nave en 1, haciendo que caiga al vacío). Pide al chat que identifique por qué la nave "se rompió". El primero en responder gana puntos ficticios ("puntos de experiencia"). Esto transforma la depuración, que suele ser frustrante, en un juego de detectives.  
+1. **El "Bug Hunt" (Caza de Bugs):** El facilitador introduce intencionalmente un error (ej. poner la gravedad de la nave en 1, haciendo que caiga al vacío). Pide al chat que identifique por qué la nave "se rompió". El primero en responder gana puntos ficticios ("puntos de experiencia"). Esto transforma la depuración, que suele ser frustrante, en un juego de detectives.
 2. **La Ruleta de Temas (Simulacro de Jam):** En los últimos 5 minutos, usar un generador de temas aleatorios (ej. "Tostadora", "Bajo el agua", "Solo un botón"). Pedir a los estudiantes que escriban en el chat cómo adaptarían el juego que acaban de crear (Space Scavenger) a ese tema. Ejemplo: Si el tema es "Bajo el agua", la fricción del Rigidbody aumenta y los asteroides son burbujas. Esto ejercita la flexibilidad mental necesaria para interpretar temas de Jam.
 
 ## **7\. Recomendaciones Estratégicas para el Facilitador**
 
-1. **Narrativa sobre Técnica:** No diga "Vamos a añadir un Rigidbody2D". Diga "Vamos a darle peso y existencia física a nuestra nave; para eso usamos el componente Rigidbody". Conecte siempre la función técnica con la fantasía del juego.  
-2. **Gestión del Fracaso:** Celebre los errores. Si Unity se bloquea o algo sale mal en la pantalla del instructor, úselo como momento de enseñanza: "Esto es el desarrollo de juegos. Guardad vuestro proyecto cada 5 minutos (Ctrl+S). Es la lección más importante de hoy".  
+1. **Narrativa sobre Técnica:** No diga "Vamos a añadir un Rigidbody2D". Diga "Vamos a darle peso y existencia física a nuestra nave; para eso usamos el componente Rigidbody". Conecte siempre la función técnica con la fantasía del juego.
+2. **Gestión del Fracaso:** Celebre los errores. Si Unity se bloquea o algo sale mal en la pantalla del instructor, úselo como momento de enseñanza: "Esto es el desarrollo de juegos. Guardad vuestro proyecto cada 5 minutos (Ctrl+S). Es la lección más importante de hoy".
 3. **El Kit de Emergencia:** Tenga listo un enlace a **Kenney.nl**. Los principiantes pierden horas buscando arte. Proporcione una carpeta de "Activos Seguros" para que no pierdan tiempo navegando en Google Images durante la Jam.
 
 ## **8\. Conclusión**
@@ -199,59 +199,59 @@ La integración de dinámicas de grupo como el "Feature Cut" y el "Bad Ideas Onl
 
 ## **Tabla 1: Comparativa de Herramientas para el Taller**
 
-| Herramienta | Curva de Aprendizaje | Tiempo de Setup | Flexibilidad | Veredicto para 90min |
-| :---- | :---- | :---- | :---- | :---- |
-| **C\# Scripting** | Muy Alta | Bajo | Infinita | **Riesgo Alto**. Demasiado propenso a errores de sintaxis. |
-| **Starter Assets (3D)** | Media/Alta | Medio | Alta | **Riesgo Medio**. El sistema de inputs es complejo de modificar. |
-| **Microgames (Modding)** | Muy Baja | Alto (Instalación) | Baja | **Riesgo Bajo**, pero bajo aprendizaje conceptual. |
-| **Unity Playground (2D)** | **Baja** | **Bajo** | **Media** | **Óptimo**. Balance perfecto entre facilidad y lógica real. |
+| Herramienta               | Curva de Aprendizaje | Tiempo de Setup    | Flexibilidad | Veredicto para 90min                                             |
+| :------------------------ | :------------------- | :----------------- | :----------- | :--------------------------------------------------------------- |
+| **C\# Scripting**         | Muy Alta             | Bajo               | Infinita     | **Riesgo Alto**. Demasiado propenso a errores de sintaxis.       |
+| **Starter Assets (3D)**   | Media/Alta           | Medio              | Alta         | **Riesgo Medio**. El sistema de inputs es complejo de modificar. |
+| **Microgames (Modding)**  | Muy Baja             | Alto (Instalación) | Baja         | **Riesgo Bajo**, pero bajo aprendizaje conceptual.               |
+| **Unity Playground (2D)** | **Baja**             | **Bajo**           | **Media**    | **Óptimo**. Balance perfecto entre facilidad y lógica real.      |
 
 ## **Tabla 2: Cronograma de Supervivencia para la Game Jam (Recurso para Estudiantes)**
 
-| Fase | Tiempo (48h Jam) | Actividad Clave | Enfoque Mental |
-| :---- | :---- | :---- | :---- |
-| **Viernes Noche** | 20:00 \- 24:00 | Brainstorming & Concepto | Divergencia. "Malas ideas bienvenidas". |
-| **Sábado Mañana** | 09:00 \- 13:00 | MVP "Patineta" | Funcionalidad pura. Cubos grises. |
-| **Sábado Tarde** | 14:00 \- 20:00 | Core Loop & Mecánicas | Implementación. "¿Es divertido?" |
-| **Domingo Mañana** | 09:00 \- 13:00 | Arte & Sonido (Juice) | Pulido. Reemplazar cubos por arte. |
-| **Domingo Tarde** | 14:00 \- 16:00 | **Hora Dorada (Freeze)** | No más funciones. Solo bugs y Builds. |
-| **Domingo Final** | 16:00 \- 17:00 | Subida a Itch.io | Marketing. Screenshots. Descansar. |
+| Fase               | Tiempo (48h Jam) | Actividad Clave          | Enfoque Mental                          |
+| :----------------- | :--------------- | :----------------------- | :-------------------------------------- |
+| **Viernes Noche**  | 20:00 \- 24:00   | Brainstorming & Concepto | Divergencia. "Malas ideas bienvenidas". |
+| **Sábado Mañana**  | 09:00 \- 13:00   | MVP "Patineta"           | Funcionalidad pura. Cubos grises.       |
+| **Sábado Tarde**   | 14:00 \- 20:00   | Core Loop & Mecánicas    | Implementación. "¿Es divertido?"        |
+| **Domingo Mañana** | 09:00 \- 13:00   | Arte & Sonido (Juice)    | Pulido. Reemplazar cubos por arte.      |
+| **Domingo Tarde**  | 14:00 \- 16:00   | **Hora Dorada (Freeze)** | No más funciones. Solo bugs y Builds.   |
+| **Domingo Final**  | 16:00 \- 17:00   | Subida a Itch.io         | Marketing. Screenshots. Descansar.      |
 
 ## **Tabla 3: Scripts Clave de Unity Playground a Enseñar**
 
-| Script / Componente | Función en el Juego | Concepto Pedagógico |
-| :---- | :---- | :---- |
-| Rigidbody2D | Da cuerpo físico (gravedad, masa). | Motor de Física, Simulación. |
-| Move | Mueve el objeto con flechas/WASD. | Input, Controladores. |
-| AutoRotate | Rota el objeto constantemente. | Transformaciones, Comportamiento Autónomo. |
-| ModifyHealthAttribute | Resta salud al chocar. | Lógica de Interacción, Datos. |
-| CollectableAttribute | Suma puntos y desaparece. | Sistemas de Recompensa, Triggers. |
+| Script / Componente    | Función en el Juego                  | Concepto Pedagógico                        |
+| :--------------------- | :----------------------------------- | :----------------------------------------- |
+| Rigidbody2D            | Da cuerpo físico (gravedad, masa).   | Motor de Física, Simulación.               |
+| Move                   | Mueve el objeto con flechas/WASD.    | Input, Controladores.                      |
+| AutoRotate             | Rota el objeto constantemente.       | Transformaciones, Comportamiento Autónomo. |
+| ModifyHealthAttribute  | Resta salud al chocar.               | Lógica de Interacción, Datos.              |
+| CollectableAttribute   | Suma puntos y desaparece.            | Sistemas de Recompensa, Triggers.          |
 | UserInterface (Prefab) | Muestra Salud/Puntos y Pantalla Win. | UI, Feedback al Jugador, Estados de Juego. |
 
 # **Apéndice B: Guion de Dinámicas Específicas**
 
 ### **Dinámica: "Subasta de Características" (The Feature Auction)**
 
-*Para enseñar el alcance (scoping).*
+_Para enseñar el alcance (scoping)._
 
-1. **Setup:** "Tenéis 100 dólares de presupuesto de desarrollo".  
-2. **Menú:**  
-   * Personaje que camina: $40  
-   * Salto doble: $20  
-   * Inventario: $50  
-   * Multijugador: $500  
-   * Condición de ganar (llegar a la meta): $30  
-   * Gráficos 4K: $80  
-3. **Ejecución:** Los estudiantes intentan "comprar" su juego. Se dan cuenta de que con $100 solo pueden comprar "Caminar" ($40) \+ "Ganar" ($30) \+ "Salto" ($20). Sobran $10.  
+1. **Setup:** "Tenéis 100 dólares de presupuesto de desarrollo".
+2. **Menú:**
+   - Personaje que camina: $40
+   - Salto doble: $20
+   - Inventario: $50
+   - Multijugador: $500
+   - Condición de ganar (llegar a la meta): $30
+   - Gráficos 4K: $80
+3. **Ejecución:** Los estudiantes intentan "comprar" su juego. Se dan cuenta de que con $100 solo pueden comprar "Caminar" ($40) \+ "Ganar" ($30) \+ "Salto" ($20). Sobran $10.
 4. **Lección:** No puedes permitirte el Inventario ni el Multijugador. El presupuesto es el tiempo. En una Jam, sois pobres en tiempo. Gastadlo en lo esencial.
 
 ### **Dinámica: "El Abogado del Diablo" (Invertir el Rol)**
 
-*Para testear ideas.*
+_Para testear ideas._
 
-1. Un estudiante presenta su idea de MVP en 30 segundos.  
-2. Otro estudiante (o el profesor) debe preguntar: "¿Qué es lo ÚNICO que hace este juego divertido?".  
-3. Si la respuesta requiere más de una frase, la idea es demasiado compleja para una Jam.  
+1. Un estudiante presenta su idea de MVP en 30 segundos.
+2. Otro estudiante (o el profesor) debe preguntar: "¿Qué es lo ÚNICO que hace este juego divertido?".
+3. Si la respuesta requiere más de una frase, la idea es demasiado compleja para una Jam.
 4. Esto entrena la capacidad de síntesis y foco ("El juego es divertido porque el salto es satisfactorio", no "porque tiene una historia compleja y 50 niveles").
 
 #### **Fuentes citadas**
