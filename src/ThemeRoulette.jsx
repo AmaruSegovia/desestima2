@@ -10,20 +10,20 @@ import {
   Sparkles,
 } from "lucide-react";
 
-// Temas reales de Game Jams (Ludum Dare, GMTK, etc.)
+// Temas reales de Game Jams (Ludum Dare, GMTK, etc.) - CORTOS
 const themes = [
-  "Polimorfismo", // Ludum Dare 56
-  "Invocación", // Ludum Dare 55
-  "Metamorfosis", // Ludum Dare 54
-  "Cultura", // Ludum Dare 53
-  "Roles invertidos", // GMTK 2023
-  "Gatos", // GMTK 2024
-  "Burbujas", // Clásico
-  "Educación", // Popular
-  "Construcción", // Ludum Dare 52
-  "Tiempo", // GMTK 2020
-  "Unido", // GMTK 2021
-  "Aleatorio", // GMTK 2022
+  "Polimorfismo",
+  "Invocación",
+  "Metamorfosis",
+  "Cultura",
+  "Roles Invert.",
+  "Gatos",
+  "Burbujas",
+  "Educación",
+  "Construcción",
+  "Tiempo",
+  "Unido",
+  "Aleatorio",
 ];
 
 // Palabras clave que indican ambición excesiva (español argentino)
@@ -451,17 +451,14 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
                 }}
               >
                 <span
-                  className="absolute text-white font-bold whitespace-nowrap text-[6px] sm:text-[7px] md:text-[8px] lg:text-[10px]"
+                  className="absolute text-white font-bold text-[8px] sm:text-[10px] md:text-[11px] lg:text-[13px]"
                   style={{
-                    top: "8%",
+                    top: "5%",
                     transform: "rotate(90deg)",
-                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
-                    maxWidth: "60px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.9)",
                   }}
                 >
-                  {theme.length > 13 ? theme.slice(0, 11) + "..." : theme}
+                  {theme}
                 </span>
               </div>
             );
@@ -662,7 +659,7 @@ const ThemeRoulette = () => {
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [ideaText, setIdeaText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutos
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
   const [timerActive, setTimerActive] = useState(false);
   const [currentTip, setCurrentTip] = useState(tips[0]);
   const textareaRef = useRef(null);
@@ -700,7 +697,7 @@ const ThemeRoulette = () => {
     setPhase("roulette");
     setSelectedTheme(null);
     setIdeaText("");
-    setTimeLeft(300);
+    setTimeLeft(600);
     setTimerActive(false);
   };
 
@@ -709,13 +706,13 @@ const ThemeRoulette = () => {
     let score = 0;
 
     dangerWords.high.forEach((word) => {
-      if (lowerInput.includes(word)) score += 20;
+      if (lowerInput.includes(word)) score += 16;
     });
     dangerWords.medium.forEach((word) => {
       if (lowerInput.includes(word)) score += 8;
     });
     dangerWords.low.forEach((word) => {
-      if (lowerInput.includes(word)) score += 3;
+      if (lowerInput.includes(word)) score += 2;
     });
 
     // Guardar datos en localStorage
@@ -744,10 +741,13 @@ const ThemeRoulette = () => {
       const lowerInput = ideaText.toLowerCase();
       let score = 0;
       dangerWords.high.forEach((word) => {
-        if (lowerInput.includes(word)) score += 30;
+        if (lowerInput.includes(word)) score += 16;
       });
       dangerWords.medium.forEach((word) => {
-        if (lowerInput.includes(word)) score += 15;
+        if (lowerInput.includes(word)) score += 8;
+      });
+      dangerWords.low.forEach((word) => {
+        if (lowerInput.includes(word)) score += 2;
       });
       return score < 40;
     })();
@@ -835,7 +835,7 @@ const ThemeRoulette = () => {
                 "{selectedTheme}"
               </h2>
               <p className="text-gray-400 text-sm md:text-base">
-                Describí tu idea de juego en 5 minutos
+                Describí tu idea de juego en 10 minutos
               </p>
             </div>
 
