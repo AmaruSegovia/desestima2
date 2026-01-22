@@ -1405,8 +1405,8 @@ const ThemeRoulette = () => {
                 </div>
               </div>
 
-              {/* Columna derecha: Ayuda con preguntas clave */}
-              <div className="bg-purple-900/30 border border-purple-600/50 p-3 md:p-4 rounded-lg">
+              {/* Columna derecha: Ayuda con preguntas clave - Oculto en móvil */}
+              <div className="hidden md:block bg-purple-900/30 border border-purple-600/50 p-3 md:p-4 rounded-lg">
                 <h3 className="text-purple-300 font-bold text-sm md:text-base mb-3 flex items-center gap-2">
                   <Lightbulb size={18} />
                   {writingPhase === "bad"
