@@ -30,6 +30,17 @@ const themes = [
 const dangerWords = {
   high: [
     // Multijugador y online
+    "gigantesco",
+    "masivo",
+    "épico",
+    "definitivo",
+    "next gen",
+    "nivel AAA",
+    "calidad AAA",
+    "como GTA",
+    "como Dark Souls",
+    "como Skyrim",
+    "tipo Elden Ring",
     "multijugador",
     "online",
     "multiplayer",
@@ -154,9 +165,64 @@ const dangerWords = {
     "destrucción de escenarios",
     "todo destructible",
     "física destructible",
+    // Más términos peligrosos
+    "mundo persistente",
+    "persistencia",
+    "base de datos",
+    "backend",
+    "api",
+    "networking",
+    "netcode",
+    "lag compensation",
+    "matchmaking",
+    "ranking",
+    "leaderboard",
+    "machine learning",
+    "neural network",
+    "vr game",
+    "realidad virtual",
+    "ar game",
+    "realidad aumentada",
+    "cross-platform",
+    "multiplataforma",
+    "steam",
+    "publicar en steam",
+    "early access",
+    "dlc",
+    "contenido descargable",
+    "seasons",
+    "temporadas",
+    "battle pass",
+    "pase de batalla",
+    "microtransacciones",
+    "tienda ingame",
+    "loot boxes",
+    "gacha",
+    "mundo compartido",
+    "co-op online",
+    "online persistente",
+    "servidor dedicado",
+    "anticheat",
+    "crossplay",
+    "latencia baja",
+    "sin lag",
   ],
   medium: [
     // Inventario y sistemas
+    "sistema de combate",
+    "combos",
+    "habilidades activas",
+    "cooldowns",
+    "dash",
+    "parry",
+    "esquivar",
+    "patrones de ataque",
+    "enemigos élite",
+    "oleadas",
+    "spawn dinámico",
+    "ia simple",
+    "ia básica",
+    "stamina",
     "inventario",
     "inventory",
     "sistema de items",
@@ -258,6 +324,16 @@ const dangerWords = {
   ],
   low: [
     // Puntuación básica
+    "loop de juego",
+    "mecánica principal",
+    "mecánica simple",
+    "reglas claras",
+    "objetivo claro",
+    "estilo minimalista",
+    "colores planos",
+    "silhuetas claras",
+    "sprites 2D",
+    "animaciones 2D",
     "puntuación",
     "score",
     "puntos",
@@ -359,6 +435,14 @@ const dangerWords = {
     "random",
     "aleatorio",
     "procedural simple",
+    "2D",
+    "2d",
+    "graficos 2d",
+    "graficos 2D",
+    "gráficos 2D",
+    "gráficas 2D",
+    "gráficos 2d",
+    "gráficas 2d",
   ],
 };
 
@@ -439,27 +523,30 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
             )`,
           }}
         >
-          {/* Textos en la ruleta - posicionados al 65% del radio */}
+          {/* Textos en la ruleta - posicionados desde el centro hacia afuera */}
           {themes.map((theme, i) => {
             const angle = (i * 360) / themes.length + 180 / themes.length;
             return (
               <div
                 key={theme}
-                className="absolute inset-0 flex items-center justify-center"
+                className="absolute w-full h-full"
                 style={{
                   transform: `rotate(${angle}deg)`,
+                  transformOrigin: "center",
                 }}
               >
-                <span
-                  className="absolute text-white font-bold text-[8px] sm:text-[10px] md:text-[11px] lg:text-[13px]"
+                <div
+                  className="absolute left-1/2 text-white font-semibold text-[7px] sm:text-[8px] md:text-[9px] lg:text-[11px]"
                   style={{
-                    top: "5%",
-                    transform: "rotate(90deg)",
-                    textShadow: "1px 1px 3px rgba(0,0,0,0.9)",
+                    top: "12%",
+                    transform: "translateX(-50%) rotate(90deg)",
+                    textShadow:
+                      "1px 1px 2px rgba(0,0,0,0.9), 0 0 3px rgba(0,0,0,0.6)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {theme}
-                </span>
+                </div>
               </div>
             );
           })}
@@ -506,6 +593,14 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
   );
 };
 
+// Función helper para detectar palabras completas (evita que 'miles' detecte 'mil')
+const matchWholeWord = (text, word) => {
+  // Escapar caracteres especiales de regex
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`\\b${escaped}\\b`, "i");
+  return regex.test(text);
+};
+
 // Componente del Scope Meter
 const ScopeMeter = ({ text }) => {
   const analyzeScope = (input) => {
@@ -514,22 +609,22 @@ const ScopeMeter = ({ text }) => {
     let foundWords = [];
 
     dangerWords.high.forEach((word) => {
-      if (lowerInput.includes(word)) {
-        score += 16; // Reducido de 30
+      if (matchWholeWord(lowerInput, word)) {
+        score += 16;
         foundWords.push({ word, severity: "high" });
       }
     });
 
     dangerWords.medium.forEach((word) => {
-      if (lowerInput.includes(word)) {
-        score += 8; // Reducido de 15
+      if (matchWholeWord(lowerInput, word)) {
+        score += 8;
         foundWords.push({ word, severity: "medium" });
       }
     });
 
     dangerWords.low.forEach((word) => {
-      if (lowerInput.includes(word)) {
-        score += 2; // Reducido de 5
+      if (matchWholeWord(lowerInput, word)) {
+        score += 2;
         foundWords.push({ word, severity: "low" });
       }
     });
@@ -706,13 +801,13 @@ const ThemeRoulette = () => {
     let score = 0;
 
     dangerWords.high.forEach((word) => {
-      if (lowerInput.includes(word)) score += 16;
+      if (matchWholeWord(lowerInput, word)) score += 16;
     });
     dangerWords.medium.forEach((word) => {
-      if (lowerInput.includes(word)) score += 8;
+      if (matchWholeWord(lowerInput, word)) score += 8;
     });
     dangerWords.low.forEach((word) => {
-      if (lowerInput.includes(word)) score += 2;
+      if (matchWholeWord(lowerInput, word)) score += 2;
     });
 
     // Guardar datos en localStorage
@@ -741,13 +836,13 @@ const ThemeRoulette = () => {
       const lowerInput = ideaText.toLowerCase();
       let score = 0;
       dangerWords.high.forEach((word) => {
-        if (lowerInput.includes(word)) score += 16;
+        if (matchWholeWord(lowerInput, word)) score += 16;
       });
       dangerWords.medium.forEach((word) => {
-        if (lowerInput.includes(word)) score += 8;
+        if (matchWholeWord(lowerInput, word)) score += 8;
       });
       dangerWords.low.forEach((word) => {
-        if (lowerInput.includes(word)) score += 2;
+        if (matchWholeWord(lowerInput, word)) score += 2;
       });
       return score < 40;
     })();
