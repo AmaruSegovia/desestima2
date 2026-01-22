@@ -921,14 +921,16 @@ const ScopeCoach = ({ score }) => {
   const state = getCoachState();
 
   return (
-    <div className="flex flex-col items-center justify-center p-3 bg-gray-800/50 border border-gray-700 rounded-xl transition-all duration-300">
-      <div className="text-4xl mb-1 animate-bounce">{state.emoji}</div>
+    <div className="flex flex-col items-center justify-center p-2 md:p-3 bg-gray-800/50 border border-gray-700 rounded-xl transition-all duration-300">
+      <div className="text-2xl md:text-4xl mb-0.5 md:mb-1 animate-bounce">
+        {state.emoji}
+      </div>
       <div
-        className={`text-[10px] uppercase font-black text-center ${state.color} leading-tight`}
+        className={`text-[8px] md:text-[10px] uppercase font-black text-center ${state.color} leading-tight`}
       >
         Coach de Scope dice:
       </div>
-      <div className="text-white text-xs text-center font-medium italic">
+      <div className="text-white text-[10px] md:text-xs text-center font-medium italic leading-snug">
         "{state.msg}"
       </div>
     </div>
@@ -1062,17 +1064,15 @@ const ScopeMeter = ({ text, theme }) => {
       })()}
 
       {/* Barra de ambición */}
-      <div className="bg-gray-800 border-2 border-gray-600 p-3 rounded-lg">
-        <div className="flex items-center justify-between mb-2 text-xs">
+      <div className="bg-gray-800 border-2 border-gray-600 p-2 md:p-3 rounded-lg">
+        <div className="flex items-center justify-between mb-2 text-[10px] md:text-xs">
           <span className="text-gray-400 font-medium tracking-tight">
-            {writingPhase === "bad"
-              ? "🔥 MEDIDOR DE AMBICIÓN (¡SUBILO!)"
-              : "⚖️ MEDIDOR DE AMBICIÓN"}
+            {writingPhase === "bad" ? "🔥 MEDIDOR (¡SUBILO!)" : "⚖️ MEDIDOR"}
           </span>
           <span className={`font-bold ${status.color}`}>{status.label}</span>
         </div>
 
-        <div className="relative h-4 bg-gray-900 rounded overflow-hidden">
+        <div className="relative h-3 md:h-4 bg-gray-900 rounded overflow-hidden">
           <div
             className={`absolute inset-y-0 left-0 transition-all duration-500 ${status.bg}`}
             style={{ width: `${score}%` }}
@@ -1083,7 +1083,7 @@ const ScopeMeter = ({ text, theme }) => {
           />
         </div>
 
-        <div className="flex justify-between mt-1 text-[10px] text-gray-500">
+        <div className="flex justify-between mt-1 text-[8px] md:text-[10px] text-gray-500">
           <span>Simple</span>
           <span className="text-yellow-500">Límite →</span>
           <span>Imposible</span>
@@ -1091,32 +1091,32 @@ const ScopeMeter = ({ text, theme }) => {
       </div>
 
       {/* Coach y Feedback */}
-      <div className="grid grid-cols-2 gap-3 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 items-stretch">
         <ScopeCoach score={score} />
 
         <div
-          className={`p-3 rounded-xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+          className={`p-2 md:p-3 rounded-xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
             themeDetected
               ? "bg-green-900/30 border-green-600/50"
               : "bg-gray-800/30 border-gray-700"
           }`}
         >
           <div
-            className={`text-xl mb-1 ${
+            className={`text-lg md:text-xl mb-0.5 md:mb-1 ${
               themeDetected ? "grayscale-0" : "grayscale opacity-30"
             }`}
           >
             ✨
           </div>
           <div
-            className={`text-[10px] font-bold uppercase ${
+            className={`text-[8px] md:text-[10px] font-bold uppercase ${
               themeDetected ? "text-green-400" : "text-gray-500"
             }`}
           >
             Tema Detectado
           </div>
           <div
-            className={`text-xs ${
+            className={`text-[10px] md:text-xs ${
               themeDetected ? "text-white font-bold" : "text-gray-600"
             }`}
           >
