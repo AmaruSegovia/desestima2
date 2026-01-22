@@ -10,20 +10,20 @@ import {
   Sparkles,
 } from "lucide-react";
 
-// Temas de ejemplo para la ruleta
+// Temas reales de Game Jams (Ludum Dare, GMTK, etc.)
 const themes = [
-  "Solo un botón",
-  "Bajo el agua",
-  "Caos controlado",
-  "Lo pequeño es grande",
-  "Bucle infinito",
-  "Sin gravedad",
-  "Tiempo limitado",
-  "Todo al revés",
-  "Minimalismo",
-  "Conexión",
-  "Supervivencia",
-  "Exploración",
+  "Polimorfismo", // Ludum Dare 56
+  "Invocación", // Ludum Dare 55
+  "Metamorfosis", // Ludum Dare 54
+  "Cultura", // Ludum Dare 53
+  "Roles invertidos", // GMTK 2023
+  "Gatos", // GMTK 2024
+  "Burbujas", // Clásico
+  "Educación", // Popular
+  "Construcción", // Ludum Dare 52
+  "Tiempo", // GMTK 2020
+  "Unido", // GMTK 2021
+  "Aleatorio", // GMTK 2022
 ];
 
 // Palabras clave que indican ambición excesiva (español argentino)
@@ -415,7 +415,7 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
       <div className="text-yellow-400 text-2xl">▼</div>
 
       {/* Ruleta */}
-      <div className="relative w-64 h-64 sm:w-72 sm:h-72">
+      <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
         <div
           className="w-full h-full rounded-full border-4 border-yellow-400 overflow-hidden transition-transform duration-[4000ms] ease-out"
           style={{
@@ -451,9 +451,9 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
                 }}
               >
                 <span
-                  className="absolute text-white text-[8px] sm:text-[10px] font-bold whitespace-nowrap"
+                  className="absolute text-white text-[7px] sm:text-[9px] md:text-[11px] font-bold whitespace-nowrap"
                   style={{
-                    transform: `translateY(-90px) rotate(90deg)`,
+                    transform: `translateY(-80px) rotate(90deg)`,
                     textShadow: "1px 1px 2px black",
                   }}
                 >
@@ -466,7 +466,7 @@ const RouletteWheel = ({ onSpinComplete, isSpinning, setIsSpinning }) => {
 
         {/* Centro de la ruleta */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-16 h-16 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gray-900 border-4 border-yellow-400 flex items-center justify-center">
             <Sparkles className="text-yellow-400" size={24} />
           </div>
         </div>
@@ -512,28 +512,28 @@ const ScopeMeter = ({ text }) => {
 
     dangerWords.high.forEach((word) => {
       if (lowerInput.includes(word)) {
-        score += 30;
+        score += 16; // Reducido de 30
         foundWords.push({ word, severity: "high" });
       }
     });
 
     dangerWords.medium.forEach((word) => {
       if (lowerInput.includes(word)) {
-        score += 15;
+        score += 8; // Reducido de 15
         foundWords.push({ word, severity: "medium" });
       }
     });
 
     dangerWords.low.forEach((word) => {
       if (lowerInput.includes(word)) {
-        score += 5;
+        score += 2; // Reducido de 5
         foundWords.push({ word, severity: "low" });
       }
     });
 
     // Bonus por longitud excesiva
-    if (input.length > 200) score += 20;
-    if (input.length > 300) score += 20;
+    if (input.length > 300) score += 10;
+    if (input.length > 500) score += 15;
 
     return { score: Math.min(score, 100), foundWords };
   };
@@ -703,13 +703,13 @@ const ThemeRoulette = () => {
     let score = 0;
 
     dangerWords.high.forEach((word) => {
-      if (lowerInput.includes(word)) score += 30;
+      if (lowerInput.includes(word)) score += 20;
     });
     dangerWords.medium.forEach((word) => {
-      if (lowerInput.includes(word)) score += 15;
+      if (lowerInput.includes(word)) score += 8;
     });
     dangerWords.low.forEach((word) => {
-      if (lowerInput.includes(word)) score += 5;
+      if (lowerInput.includes(word)) score += 3;
     });
 
     // Guardar datos en localStorage
