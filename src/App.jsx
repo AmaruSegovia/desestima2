@@ -426,6 +426,8 @@ const ImageStack = ({ images, title }) => {
                     alt={`${title} ${i + 1}`}
                     loading="lazy"
                     decoding="async"
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
                     className="w-full h-full object-cover"
                   />
                 </div>
