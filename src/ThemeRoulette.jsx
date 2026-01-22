@@ -822,99 +822,149 @@ const analyzeScope = (input, theme = null) => {
     themeDetected = true;
   }
 
-  return { score: Math.min(score, 100), foundWords, themeDetected };
+  return { score: Math.min(score, 150), foundWords, themeDetected };
 };
 
 const ScopeCoach = ({ score }) => {
   const getCoachState = () => {
     if (score === 0)
       return {
-        emoji: "😄",
-        msg: "¿Qué vamos a romper hoy?",
+        emoji: "😎",
+        msg: "Mantene la idea clara con alcance simple. Si haces eso llegamos de sobra.",
         color: "text-green-300",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 7)
       return {
         emoji: "🙂",
-        msg: "Todo bajo control. Esto es una jam, no la pelicula del señor de los anillos",
+        msg: "A veces lo simple le gana a lo complejo",
         color: "text-green-400",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 14)
       return {
         emoji: "🤔",
-        msg: "Mmm... todavía sigo creyendo en vos...",
+        msg: "Esa mecanica se ve interesante",
         color: "text-green-400",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 21)
       return {
-        emoji: "😅",
-        msg: "¿De verdad hace falta esa mecánica?",
+        emoji: "😋",
+        msg: "Prioridad al core loop y después lo demás. Eso gana jams.",
         color: "text-yellow-400",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 28)
       return {
         emoji: "🧐",
-        msg: "No te lo quiero decir pero... esto ya no entra en un fin de semana.",
+        msg: "Recuerda que lo importante es hacer algo jugable y que te diviertas. Es una Jam, no una tesis.",
         color: "text-yellow-500",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 35)
       return {
-        emoji: "😐",
-        msg: "Acordate: cada idea nueva es un bug que todavía no conocés.",
+        emoji: "😌",
+        msg: "Hasta acá, todo manejable. Si te quedas con esto ahora y no hacemos siesta, terminamos fuerte.",
         color: "text-orange-400",
+        fontSize: "text-[10px] md:text-xs",
       };
     if (score < 42)
       return {
         emoji: "😬",
-        msg: "La PC esta pidiendo 2 modulos de RAM de 32GB extras",
+        msg: "No te lo quiero decir pero... capaz esto ya no entra en un fin de semana.",
         color: "text-orange-500",
+        fontSize: "text-[11px] md:text-sm",
       };
     if (score < 49)
       return {
         emoji: "😟",
-        msg: "Esto huele a tres meses de laburo y deuda técnica incluida.",
+        msg: "Esto ya huele a tres meses de laburo y deuda técnica incluida. ¿Estas seguro de seguir?",
         color: "text-red-400",
+        fontSize: "text-[12px] md:text-base",
       };
     if (score < 56)
       return {
         emoji: "😨",
-        msg: "¿Vas a programar con las manos y los pies al mismo tiempo?",
+        msg: "¿Vas a programar con las manos y diseñar con los pies al mismo tiempo?",
         color: "text-red-500",
+        fontSize: "text-[13px] md:text-lg",
       };
     if (score < 64)
       return {
         emoji: "😱",
         msg: "¡PARÁ! ¡PARÁ UN POCO! Nadie pidió un juego así en una jam.",
         color: "text-red-600",
+        fontSize: "text-[14px] md:text-xl",
       };
     if (score < 73)
       return {
         emoji: "🥵",
         msg: "Estoy viendo commits a las 5 AM que dicen 'fix del fix del fix finalfinal'",
         color: "text-red-700",
+        fontSize: "text-[14px] md:text-2xl",
       };
     if (score < 82)
       return {
         emoji: "😵‍💫",
         msg: "Veo bugs... veo bugs heredados por generaciones.",
         color: "text-purple-400",
+        fontSize: "text-[14px] md:text-2xl",
       };
     if (score < 91)
       return {
         emoji: "🤕",
-        msg: "Mi estabilidad emocional depende de que borres una mecánica. Solo una.",
+        msg: "Si seguís así, este proyecto va a existir solo como trauma.",
         color: "text-purple-500",
+        fontSize: "text-[14px] md:text-2xl",
       };
     if (score < 100)
       return {
         emoji: "☣️",
         msg: "RIESGO CRÍTICO: Ni con todas las IAs trabajando en simultaneo haces esto en una semana",
         color: "text-purple-600",
+        fontSize: "text-[14px] md:text-2xl",
+      };
+    if (score < 106)
+      return {
+        emoji: "🧉",
+        msg: "Tu proyecto está en la fase 'calentando agua para mate'… y nadie trajo yerba",
+        color: "text-orange-600",
+        fontSize: "text-[14px] md:text-2xl",
+      };
+    if (score < 116)
+      return {
+        emoji: "🔥",
+        msg: "Esto ya es una hoguera de ambiciones. Y vos sos el combustible.",
+        color: "text-red-700",
+        fontSize: "text-[14px] md:text-2xl",
+      };
+    if (score < 126)
+      return {
+        emoji: "🛐",
+        msg: "Espero que seas religoso porque esto va a correr a base de pura fe.",
+        color: "text-yellow-600",
+        fontSize: "text-[14px] md:text-2xl",
+      };
+    if (score < 136)
+      return {
+        emoji: "🌪️",
+        msg: "No es un tornado… es tu escritorio después de 7 días sin dormir.",
+        color: "text-cyan-600",
+        fontSize: "text-[14px] md:text-2xl",
+      };
+    if (score < 150)
+      return {
+        emoji: "💀",
+        msg: "No fallaste a la jam. La jam falló en contenerte.",
+        color: "text-gray-400",
+        fontSize: "text-[14px] md:text-2xl",
       };
     return {
       emoji: "💀",
-      msg: "[COACH HA DEJADO LA EXISTENCIA] No fallaste la jam. La jam falló en contenerte.",
+      msg: "No fallaste a la jam. La jam falló en contenerte.",
       color: "text-gray-400",
+      fontSize: "text-[14px] md:text-2xl",
     };
   };
 
@@ -930,7 +980,9 @@ const ScopeCoach = ({ score }) => {
       >
         Coach de Scope dice:
       </div>
-      <div className="text-white text-[10px] md:text-xs text-center font-medium italic leading-snug">
+      <div
+        className={`text-white text-center font-medium italic leading-snug transition-all duration-300 ${state.fontSize}`}
+      >
         "{state.msg}"
       </div>
     </div>
@@ -1072,11 +1124,17 @@ const ScopeMeter = ({ text, theme }) => {
           <span className={`font-bold ${status.color}`}>{status.label}</span>
         </div>
 
-        <div className="relative h-3 md:h-4 bg-gray-900 rounded overflow-hidden">
+        <div className="relative h-3 md:h-4 bg-gray-900 rounded overflow-visible">
           <div
             className={`absolute inset-y-0 left-0 transition-all duration-500 ${status.bg}`}
-            style={{ width: `${score}%` }}
+            style={{ width: `${Math.min(score, 100)}%` }}
           />
+          {score > 100 && (
+            <div
+              className={`absolute inset-y-0 left-0 transition-all duration-500 ${status.bg} animate-pulse opacity-70`}
+              style={{ width: `${score}%` }}
+            />
+          )}
           <div
             className="absolute top-0 bottom-0 w-0.5 bg-white/50"
             style={{ left: "40%" }}
@@ -1167,7 +1225,7 @@ const ThemeRoulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [ideaText, setIdeaText] = useState("");
   const [writingPhase, setWritingPhase] = useState("bad"); // 'bad' | 'good'
-  const [timeLeft, setTimeLeft] = useState(180); // 3 mins iniciales para mala idea
+  const [timeLeft, setTimeLeft] = useState(300); // 5 mins iniciales para mala idea
   const [timerActive, setTimerActive] = useState(false);
   const [currentTip, setCurrentTip] = useState(tips[0]);
   const textareaRef = useRef(null);
@@ -1203,7 +1261,7 @@ const ThemeRoulette = () => {
   const startWriting = () => {
     setPhase("writing");
     setWritingPhase("bad");
-    setTimeLeft(180); // 3 minutos para la mala idea
+    setTimeLeft(300); // 5 minutos para la mala idea
     setTimerActive(true);
     setTimeout(() => textareaRef.current?.focus(), 100);
   };
@@ -1237,11 +1295,12 @@ const ThemeRoulette = () => {
         setTimeLeft(600); // 10 minutos para la buena
       }
     } else {
-      if (score < 40) {
+      if (score < 56) {
         // Guardar buena idea
         workshopData.theme = selectedTheme;
         workshopData.idea = ideaText;
-        workshopData.scopeScore = Math.min(score, 100);
+        workshopData.scopeScore = Math.min(score, 150);
+        workshopData.warningZone = score >= 36 && score < 56; // Flag para advertencia
         localStorage.setItem("workshopData", JSON.stringify(workshopData));
 
         window.dispatchEvent(new CustomEvent("workshop-confetti"));
@@ -1259,7 +1318,9 @@ const ThemeRoulette = () => {
   const { score } = analyzeScope(ideaText, selectedTheme);
 
   const canProceed =
-    ideaText.length > 20 && (writingPhase === "bad" ? score >= 40 : score < 40);
+    ideaText.length > 20 && (writingPhase === "bad" ? score >= 40 : score < 56);
+
+  const isInWarningZone = writingPhase === "good" && score >= 36 && score < 56;
 
   // Screen shake effect for high scope
   const shakeClass =
@@ -1494,7 +1555,13 @@ const ThemeRoulette = () => {
               <p className="text-center text-red-400 text-xs mt-2 font-bold animate-pulse">
                 {writingPhase === "bad"
                   ? "⚠️ ¡Necesitamos más ambición! Alcanza el estado Imposible."
-                  : "⚠️ Simplificá tu idea para poder continuar."}
+                  : "⚠️ Ya es demasiado ambicioso (Score >= 56). Simplificá tu idea para poder continuar."}
+              </p>
+            )}
+            {isInWarningZone && canProceed && (
+              <p className="text-center text-yellow-400 text-xs mt-2 font-bold">
+                ⚠️ Tu idea está en zona de advertencia (Score 36-56). Podés
+                continuar pero aparecerá una advertencia en el resumen.
               </p>
             )}
           </>

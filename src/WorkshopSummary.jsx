@@ -297,7 +297,23 @@ const WorkshopSummary = () => {
           <p className="text-gray-300 text-sm leading-relaxed italic">
             "{data.idea}"
           </p>
-          {data.scopeScore >= 40 && (
+          {data.warningZone && (
+            <div className="mt-3 p-3 bg-yellow-900/30 border border-yellow-600/50 rounded-lg">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle size={14} className="text-yellow-400" />
+                <span className="text-yellow-400 text-xs font-bold uppercase">
+                  Zona de Advertencia
+                </span>
+              </div>
+              <p className="text-yellow-200 text-xs leading-relaxed">
+                Tu idea está en el límite de lo manejable (Score{" "}
+                {data.scopeScore}). Aunque técnicamente es posible, podría ser
+                arriesgado para una Game Jam. Considerá simplificar algunas
+                mecánicas si el tiempo se complica.
+              </p>
+            </div>
+          )}
+          {data.scopeScore >= 40 && !data.warningZone && (
             <div className="mt-2 flex items-center gap-1 text-orange-400 text-xs">
               <AlertTriangle size={12} /> Idea algo ambiciosa
             </div>

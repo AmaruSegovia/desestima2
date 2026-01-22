@@ -742,7 +742,7 @@ const HomePage = () => {
             🎮 ¿Listo para tu primera Game Jam?
           </h3>
           <p className="text-gray-600 text-sm md:text-base mb-6 max-w-2xl mx-auto">
-            Completá 4 actividades interactivas para aprender a hacer juegos sin
+            Completá 3 actividades interactivas para aprender a hacer juegos sin
             frustrarte. Ruleta de temas, simulador de inversión y más.
           </p>
           <Link
